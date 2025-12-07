@@ -17,10 +17,9 @@
 		  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085)
 		  color: white;
 		  cursor: pointer;
-		  padding: 18px;
+		  padding: 1px;
 		  width: 100%;
-		  border: none;
-		  text-align: justify;
+		  text-align: left;
 		  outline: none;
 		  font-size: 15px;
 		}
@@ -47,11 +46,11 @@
 		}
 
 		.content {
-		  padding: 0 18px;
+		  padding: 0 1px;
 		  max-height: 0;
 		  overflow: hidden;
 		  transition: max-height 0.2s ease-out;
-		  background-color: #f1f1f1;
+		  background-color: rgba(0, 0, 0, 0)
 		}
 		</style>
 		<title>Dimension by HTML5 UP</title>
@@ -560,9 +559,28 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			  });
 			}
 			</script>
+			<script src="three.r134.min.js"></script>
+			<script src="vanta.birds.min.js"></script>
+			<script>
+			VANTA.BIRDS({
+			  el: "#bg",
+			  mouseControls: true,
+			  touchControls: true,
+			  gyroControls: false,
+			  minHeight: 200.00,
+			  minWidth: 200.00,
+			  scale: 1.00,
+			  scaleMobile: 1.00,
+			  color1: 0x47005f,
+			  color2: 0x6300c0,
+			  birdSize: 1.60,
+			  backgroundAlpha: 0.00
+			})
+			</script> 
 
 	</body>
 </html>
+
 
 
 
