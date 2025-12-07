@@ -1546,11 +1546,8 @@ input, select, textarea {
 			position: relative;
 			width: 40rem;
 			max-width: 100%;
-			background-color: rgba(255, 255, 255, 0.027)
+			background-color: rgba(31, 31, 31, 0.8)
 			backdrop-filter: blur(8px);
-			border-top: 1px solid rgba(31, 31, 31, 0.8)
-			border-left: 1px solid rgba(255, 255, 255, 0.3) 
-			box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085)
 			border-radius: 4px;
 			opacity: 0;
 		}
@@ -1663,3 +1660,4 @@ input, select, textarea {
 		body.is-preload #footer {
 			opacity: 0;
 		}
+
