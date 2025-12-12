@@ -1529,7 +1529,15 @@ input, select, textarea {
 		-ms-flex-direction: column;
 		flex-direction: column;
 		position: relative;
+		background-color: rgba(27, 31, 34, 0.85);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		border-top: 1px solid rgba(31, 31, 31, 0.8);
+		border-left: 1px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+		border-radius: 4px;
 		max-width: 100%;
+
 		z-index: 3;
 	}
 
