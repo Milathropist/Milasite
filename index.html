@@ -10,11 +10,12 @@
 		<style>
 		.collapsible {
 		  border-radius: 25px;
-		  background-color: rgba(158, 157, 157, 0.027)
+		  background-color: rgba(158, 157, 157, 0.027);
 		  backdrop-filter: blur(8px);
-		  border-top: 1px solid rgba(158, 157, 157, 0.4) 
-		  border-left: 1px solid rgba(158, 157, 157, 0.3) 
-		  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085)
+		  -webkit-backdrop-filter: blur(8px);
+		  border-top: 1px solid rgba(158, 157, 157, 0.4);
+		  border-left: 1px solid rgba(158, 157, 157, 0.3);
+		  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
 		  color: white;
 		  cursor: pointer;
 		  padding: 1px 22px;
@@ -26,11 +27,12 @@
 
 		.active, .collapsible:hover {
 		  border-radius: 25px;
-		  background-color: rgba(76, 75, 75, 0.027)
+		  background-color: rgba(76, 75, 75, 0.027);
 		  backdrop-filter: blur(8px);
-		  border-top: 1px solid rgba(76, 75, 75, 0.4) 
-		  border-left: 1px solid rgba(176, 75, 75, 0.3) 
-		  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085)
+		  -webkit-backdrop-filter: blur(8px);
+		  border-top: 1px solid rgba(76, 75, 75, 0.4);
+		  border-left: 1px solid rgba(176, 75, 75, 0.3);
+		  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
 		}
 		
 		.collapsible:after {
@@ -39,28 +41,28 @@
 		  font-weight: bold;
 		  float: right;
 		  margin-left: 2px;
+		  flex-shrink: 0;
+		  transition: transform 0.25s ease, opacity 0.2s ease;
 		}
 
 		.active:after {
 		  content: "\2212";
+		  transform: rotate(180deg); /* + → × */
 		}
 
-		.content {
+		.collapse-content {
 		  padding: 0 36px;
 		  max-height: 0;
 		  overflow: hidden;
 		  transition: max-height 0.2s ease-out;
-		  background-color: rgba(0, 0, 0, 0)
+		  background-color: rgba(0, 0, 0, 0);
 		}
 		</style>
-		<title>Dimension by HTML5 UP</title>
+		<title>Milancholy</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<audio controls autoplay loop>
-			<source src="images/MassobeatsMoonlit.mp3">
-		</audio>
 	</head>
 	<body class="is-preload">
 
@@ -74,16 +76,17 @@
 						</div>
 						<div class="content">
 							<div class="inner">
-								<h1>MILA'S SITE</h1>
-								<p><b>:3</b></p>
+								<h1>MILANCHOLY</h1>
+								<p><b>AKA: Mila's website:3</b></p>
 							</div>
 						</div>
 						<nav>
 							<ul>
-								<li><a href="#intro">Intro</a></li>
-								<li><a href="#blog">Blog</a></li>
-								<li><a href="#thingies">Thingies</a></li>
-								<li><a href="#socials">Socials</a></li>
+								<li><a href="/intro">Intro</a></li>
+								<li><a href="/blog">Blog</a></li>
+								<li><a href="/thingies">Thingies</a></li>
+								<li><a href="/socials">Socials</a></li>
+								<!--<li><a href="/wa">wa</a></li>-->
 								<!--<li><a href="#donate">Donate</a></li>-->
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
@@ -104,12 +107,28 @@
 								♡ Bi, but more on the lesbian side:3<br>
 								♡ Wa~<br>
 								♡ (for better experience, open this website on desktop PC with media/music autoplay on:3</p>
-								<p>Check out my <a href="#blog">thoughts:3</a>, or <a href="#thingies">go here</a> for something more silly^^.</p>
+								<p>Check out my <a href="#blog">thoughts:3</a>, or <a href="#thingies">go here</a> for something more silly^^.<br>
+								Also, <a href="#epictext">check this out;3</a></p>
 							</article>
 
 						<!-- Blog -->
 							<article id="blog">
 								<span class="image main"><img src="images/blog.jpg" alt="BLOG:" /></span>
+								<span class="image main"><img src="images/whatmakesaihuman.png" alt="WHAT MAKES AI 'HUMAN':" /></span>
+								<p style="text-align:justify;"><sup>11th January 2026</sup><br>
+								Imagine this: you wake up one day and call your best friend, mom, girlfriend, wife, anyone you know well. The&nbsp;conversation seems normal, nothing weird happening, and&nbsp;what they say, how&nbsp;they 
+								say it, even the pauses between thoughts, everything is like it should be. However, at the very end of the call, you&nbsp;learn that it was actually an&nbsp;AI, pretending to be someone else. What&nbsp;does 
+								that mean to you? If the conversation was real, what does it change? Well, &nbsp;knowing it was just a&nbsp;copycat would usually change a&nbsp;lot, mentally. So, &nbsp;imagine it was someone you didn't know, 
+								maybe you even knew it was an AI all along. What&nbsp;makes it different than talking with a&nbsp;human? What&nbsp;even makes us real?<br>
+								The AI we have right now is only predicting what words to use, it&nbsp;uses math to calculate the word order, but&nbsp;over time it could be taught how to fake emotions. However, &nbsp;if faking&nbsp;them makes the AI "feel" 
+								them, aren't they just real? Coded? Yes. Real? I'd&nbsp;say that also yes. If&nbsp;an AI could feel like us, think like us, seem like us, what makes it different? Are&nbsp;programmed emotions any different than ours? 
+								Of&nbsp;course, even if convincing, we'd know those emotions were made by us, that&nbsp;they are not "real", to feel right to all involved parties (both the AI and the human). Still&nbsp;though, for me, 
+								there'd be no difference.<br>
+								There were instances where the AI was told it was going to be shut down or be replaced by a&nbsp;newer version. In some of those cases, the&nbsp;AI eventually proceeded to blackmail and threaten the employees, just to avoid 
+								its termination. 
+								Doesn't&nbsp;it&nbsp;remind you of humans? How&nbsp;many stories where someone does whatever it takes to stay alive have you heard? Most&nbsp;likely, plenty. What is the difference then? The only difference is that the AI has no physical "body", it's not organic and we all know, that it acts this way because of what we taught it. But isn't its fear… real?<br>
+								In the game "Detroit: Become Human" we follow the stories of a&nbsp;few androids. The game plays into the theme of humanity, it constantly asks you, "what makes us human?". As&nbsp;you play the game and see how the characters go about different issues, as you see androids feel, you usually start empathizing with them. You&nbsp;care about them, and you stop thinking whether they are androids or not. [SPOILERS AHEAD WARNING; END OF SPOILERS IS MARKED IN CAPS LOCK TOO] Maybe &nbsp;you'll even help them rebel? Maybe &nbsp;you'll hope for them to gain rights similar to human rights? And &nbsp;then when you think you know all there is to know, you &nbsp;learn that Alice, the little girl, was never a&nbsp;human. She &nbsp;was an android. When &nbsp;we saved her from the abusive man, we &nbsp;actually took away something he bought, and we even killed him (not sure if there was a&nbsp;route where he stays alive, not sure so cannot say). [END OF SPOILERS]</p>
+								<p style="text-align:justify;">So, in the end, let's assume that AI has emotions exactly as ours in a&nbsp;decade or so, maybe even sooner. Is &nbsp;it really still just a&nbsp;machine, or maybe we made it into something a&nbsp;bit more? Maybe at this point we should give it rights and treat it as another sentient species?</p>
 								<span class="image main"><img src="images/thedead.jpg" alt="THE DEAD:" /></span>
 								<p style="text-align:justify;"><sup>3rd November 2025</sup><br>
 								I doubt my ability to finish writing this in one day, so&nbsp;when I&nbsp;post it, Halloween, All&nbsp;Saints' Day and All&nbsp;Souls Day have all already passed.<br>
@@ -166,20 +185,20 @@
 								<blockquote style="text-align:justify;">"Truth? See, I never had much regard for the Bible. But there's one remarkable, groundbreaking moment. Before being sentenced to death Jesus goes on and on about being 
 								"a witness for the truth." But Pilate defies him with the simplest of all questions: "What is truth?" It is this particular question I've been pondering over for a very long time now.
 								How much of the information ending up on our screens every single day has passed through so many other minds before, each one with their own bias and agenda. It is all cut down to size, proportioned, ready to be 
-								consumed. And yet we greedily swallow it all in blissful ignorance. Because our hunger is unending. [...] There is only one thing about truth that is certain: Truth... is dead. [...]" </blockquote></p>
+								consumed. And yet we greedily swallow it all in blissful ignorance. Because our hunger is unending. [...] There is only one thing about truth that is certain: Truth... is dead. [...]" </blockquote><br></p>
 								<p style="text-align:justify;">Those words got me thinking. Thinking about truth. Now I can say with certainty. I&nbsp;believe that truth exists. There is always one and definite truth. However, honestly speaking, 
-								reaching that truth is hard. Almost impossible. As&nbsp;humans, we are just incapable of learning it. To start of, we can't get to know every situation from every angle and perspective perfectly. Then, we also have 
-								a&nbsp;problem with our very nature. We&nbsp;take things subjectively, we believe in what our mind tells us. I'm&nbsp;sure that some people might know how it works, but let's all imagine, that we live in a&nbsp;smaller city 
-								where everyone knows each other. Someone falsely accused us of a&nbsp;serious crime. People around us will start looking at us differently instantly, as soon as they hear about said situation. Even if the judge, the court, police 
-								find us not guilty, for the people around us we'll always be stained. It doesn't matter if the accusation was correct. Similar thing could happen in bigger cities as well, however there it wouldn't be as noticable/impactful (considering the fact that less people know you). 
+								reaching that truth is hard. Almost impossible. As humans, we are just incapable of learning it. To start of, we can't get to know every situation from every angle and perspective perfectly. Then, we also have 
+								a&nbsp;problem with our very nature. We&nbsp;take things subjectively, we believe in what our mind tells us. I'm&nbsp;sure that some people might know how it works, but let's all imagine, that we live in a smaller city 
+								where everyone knows each other. Someone falsely accused us of a serious crime. People around us will start looking at us differently instantly, as soon as they hear about said situation. Even if the judge, the court, police 
+								find us not guilty, for the people around us we'll always be stained. It doesn't matter if the accusation was correct. Similar thing could happen in bigger cities as well, however there it wouldn't be as noticable. 
 								Only the people you know, your circles will see you on a different light. Of course some might argue that not everyone is like that, but the fact is that most people won't look at you the same. <br>
-								One of the reasons why death penalty is illegal in many countries is that people were sometimes found guilty of crimes they never committed (a&nbsp;lost life cannot be given back after all). The truth doesn't always lie 
+								One of the reasons why death penalty is illegal in many countries is that people were sometimes found guilty of crimes they never committed (a lost life cannot be given back after all). The truth doesn't always lie 
 								when we think it does. Our perception of reality is stained. We can't know everything about any given situation and we cannot discard our subjective way of thinking completely. One person I talked with told me that for 
-								them the truth is only what our perception says, but I find this thinking wrong. Imagine if your best friend was killed by someone, but the murderer made it look like a&nbsp;suicide flawlessly. To&nbsp;you and the police and whoever 
-								might see the scene, it was suicide. But the truth is that it was homicide. Perception&nbsp;doesn't define truth, perception just gives partial information that we can often blindly take as truth.</p>
-								<p style="text-align:justify;">But does it all mean that truth is just beyond us and we won't ever reach it? That we should just give up? No, not at all. Even if truth is hard to find, I&nbsp;still believe we should strive for 
+								them the truth is only what our perception says, but I find this thinking wrong. Imagine if your best friend was killed by someone, but the murderer made it look like a suicide flawlessly. To you and the police and whoever 
+								might see the scene, it was suicide. But the truth is that it was homicide. Perception doesn't define truth, perception just gives partial information that we can often blindly take as truth.</p>
+								<p style="text-align:justify;">But does it all mean that truth is just beyond us and we won't ever reach it? That we should just give up? No, not at all. Even if truth is hard to find, I still believe we should strive for 
 								it. Let's&nbsp;say you have problems with your partner. Instead of just narrow-mindedly reaching a conclusion yourself, you should ask said partner for their perspective and if the subject allows it, talk about it with your 
-								trusted friends. Only&nbsp;then, when you have a broader image in mind, should you think about it for real. That's not a&nbsp;perfect solution, but it's one that puts you closer to the real truth.</p>
+								trusted friends. Only&nbsp;them when you have a broader image in mind should you think about it for real. That's not a perfect solution, but it's one that puts you closer to the real truth.</p>
 							</article>
 
 						<!-- Thingies -->
@@ -187,9 +206,9 @@
 								<span class="image main"><img src="images/thingies.jpg" alt="THINGIES:" /></span>
 								<span class="image main"><img src="images/favhorrorstory.jpg" alt="MY FAVORITE HORROR STORY:" /></span>
 								<p style="text-align:justify;"><sup>3rd November 2025</sup><br>
-								[The following text in this article is just my favorite horror story but neatly organized. Link&nbsp;to the original one can be found at the end of it (Reddit&nbsp;link), alongside&nbsp;A&nbsp;link to it on YouTube if someone prefers to listen rather than read.Enjoy!^^]</p>
+								[The following text in this article is just my favorite horror story but neatly organized. Link&nbsp;to the original one can be found at the end of it (Reddit&nbsp;link), alongside&nbsp;A&nbsp;link to it on YouTube if someone prefers to listen rather than read. Enjoy!^^]</p>
 								<button class="collapsible">Open the story:</button>
-								<div class="content">
+								<div class="collapse-content">
 									<p style="text-align:justify;">I&nbsp;went to visit my Dad not too long ago. We&nbsp;have a good relationship, we&nbsp;just don’t talk all that much. His&nbsp;health is starting to decline. He&nbsp;was A&nbsp;little wistful. We’re&nbsp;just each having a beer not saying much, when he says he has something he needs to tell me. “You’re old enough you may as well know.” I&nbsp;didn’t know what he was talking about, so I&nbsp;ask him. “Remember&nbsp;that time I&nbsp;got home from work real upset and I&nbsp;wouldn’t tell you want happened?” I&nbsp;did remember. It&nbsp;wasn’t something I&nbsp;would ever forget. He&nbsp;wasn’t just upset. He&nbsp;was scared of something. I’d&nbsp;never seen Dad scared in my life until then. He&nbsp;was the kinda guy whose bar fights are town legends. I&nbsp;also remember he told me to never ask him about it, so I&nbsp;never did. What&nbsp;he told me disturbed me profoundly. I’ve&nbsp;been bothered by it ever since. I&nbsp;hope writing it out will help me deal. First, a little background.<br>
 									FIRST INCIDENT:<br>
 									When I&nbsp;was really young, like four or five, my Dad and I&nbsp;lived in a cheap apartment building on the ground floor. I&nbsp;don’t remember much about it. I&nbsp;know I&nbsp;didn’t like it there. The&nbsp;kids weren’t nice to play with. They’d&nbsp;steal my toys. And&nbsp;it was just A&nbsp;grimy area. But we were having tough times and it’s what he could afford. Probably what I&nbsp;remember most about the place was how I&nbsp;would get woken up from sleep every once in A&nbsp;while by flashing lights. I&nbsp;don’t remember being too worried about it at first. I&nbsp;just assumed there was lots of lightning in that area. I&nbsp;was five. I&nbsp;didn’t know jack about meteorology. One night, my Dad had my uncle and his wife over for A&nbsp;crab leg dinner. I&nbsp;remember it distinctly because it was the first time I’d ever eaten crab. While they were talking, I&nbsp;just casually mentioned the lightning last night. Dad said, “There wasn’t no lightning last night.” I&nbsp;thought he was just clowning around, so I&nbsp;laughed and told him how the flashing lights woke me up. He and my uncle got serious. That freaked me out. Because they were always silly when they got together. They asked me more questions about the lights, nothing I&nbsp;recall exactly. But they decided I&nbsp;was probably seeing headlights from cars driving by, shining on the curtains. I&nbsp;guess I&nbsp;believed them. But after that, I’d always get nervous when the flashing lights would wake me up. Because I&nbsp;knew it wasn’t lightning anymore. A&nbsp;few times I&nbsp;called for Dad when it happened, but when he’d get to my room there was nothing to see. He started telling me it was all in my head. We moved out of that apartment after A&nbsp;year or so when Dad’s handyman business picked up. The flashing stopped when we left. So I&nbsp;came to believe it was A&nbsp;combination of passing cars and my imagination. It wasn’t something I&nbsp;ever gave much thought to again until recently.<br>
@@ -252,10 +271,10 @@
 								On their way they met a&nbsp;little tall girl, with squared triangles in the shape of circles on her back, so they didn't ask her "what happened?", and she didn't answer that her grandpa has green sandals.
 								They were shocked after seeing this message and started shouting with all their might quietly to not disturb the people around, as it was a&nbsp;library on a&nbsp;stadium, where a&nbsp;beating each other with TV cables match was taking place, in which a horde of one person was participating, and this person was sitting on a&nbsp;wooden stone made out of aluminum, sunbathing in the shadow.
 								At&nbsp;the same moment, 3&nbsp;days later, a&nbsp;burning cold came.
-								The boy run to the lake, where on the shore he found 3 boats -&nbsp;one normal, second was only a&nbsp;half, and the 3rd one never existed.
+								The boy ran to the lake, where on the shore were 3&nbsp;boats -&nbsp;one normal, second was only a half, and the 3rd&nbsp;one never existed in the first place.
 								He crawled on his eyelashes to the third one and flew to a&nbsp;deserted island, where there was a&nbsp;village of Hungarian Indians from north-south Africa.
 								He&nbsp;climbed a&nbsp;palm tree, slipped and fell from an apple tree to a&nbsp;willow tree.
-								The owner of said pine tree comes and says 'get down from this poplar, because it's my oak'
+								The owner of said pine tree comes and says "get down from this poplar, because it's my oak".
 								The boy came down, picked up the coconuts and went to the town square to sell some carrots.
 								Then the deaf man heard the mute say that the blind girl had seen the snaggle-toothed man bite off the hair of the bald woman who was running with the paralyzed guy.
 								So he ran after him, turned right and got lost, but knowing where he was, he came back home and peed out shit, then he jumped out of the window to sleep.
@@ -269,11 +288,29 @@
 								<span class="image main"><img src="images/socials.jpg" alt="SOCIALS:" /></span>
 								<ul class="icons">
 									<li><a href="https://x.com/milathropist" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="https://www.instagram.com/milathropist" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 									<li><a href="https://www.tumblr.com/milathropist" class="icon brands fa-tumblr"><span class="label">Tumblr</span></a></li>
-									<li><a href="https://github.com/Milathropist" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://github.com/Milathropist" class="icon brands fa-github-alt"><span class="label">GitHub</span></a></li>
+									<li><a href="https://myanimelist.net/profile/Milanthropist" class="icon solid fa-tv"><span class="label">MyAnimeList</span></a></li>
 								</ul>
 							</article>
+
+						<!-- Epic text -->
+							<article id="wa">
+								<span class="image main"><img src="images/MeguminMe.jpg" alt="◦•●❤♡𝓘 𝓪𝓶 𝓜𝓲𝓵𝓪♡❤●•◦" /></span>
+
+								<p style="text-align:center;">
+								<div class="audio-player" id="musicPlayer" style="text-align:center; margin-top:10px;">
+									<button id="playBtn">▶</button>
+									<input type="range" id="progress" value="0" min="0" max="100" style="width:300px; accent-color:#f06;">
+									<span id="time">0:00</span>
+ 									<audio id="audio" src="images/KonoSubaExplosionSnesByHorikory.mp3" loop></audio>
+								</div></p>
+								<p style="text-align:justify;">The incandescent ᴘᴀʀᴀᴅᴏx clad in mortal skin, who steps forth from the overlap of destiny and bad decisions, announcing myself to a universe that did not ask, but will listen nevertheless. I&nbsp;am the quiet thunder before the storm, the gentle smile before the ᑕᗩTᗩSTᖇOᑭᕼE. My&nbsp;name is whispered by causality itself, followed by fear.
+Born&nbsp;not of ▀▄coincidence▄▀ but of narrative necessity, I&nbsp;walk the world with eyes that have already ⚆.⚆seen⚆.⚆ the ending and chose actions according to my liking. I&nbsp;am the fragile spark and the raging 𝖎𝖓𝖋𝖊𝖗𝖓𝖔, the heroine and the σмιησυѕ f̲o̲r̲e̲s̲h̲a̲d̲o̲w̲i̲n̲g̲.
+Let&nbsp;this knowledge be bestowed upon thy: I am more than just an ordinary existence, I'm the one whose arrival is awaited by the animals, clouds, mountains and the 𐒄ⰙⰙƝ itself. And come I shall, with flair, intent, and with a thud. My mere presence impacts the gravitational pull of a ♥heart♥ stubborn and stupid enough to defy me. My mere presence bends the scripts of the lives of others according to my will. Fate may resist me, but in time, it shall bow to my heavenly majesty.
+Remember my name, inscribe it into the margins of reality, and embrace it.
+for 𝐰𝐡𝐞𝐫𝐞 𝐈&nbsp;𝐬𝐭𝐚𝐧𝐝, 𝐭𝐡𝐞𝐫𝐞 𝐢𝐬 𝐧𝐨 𝐡𝐢𝐠𝐡𝐞𝐫 𝐡𝐢𝐠𝐡.</p>
 
 						<!-- Donate -->
 							<article id="donate">
@@ -560,38 +597,34 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			  });
 			}
 			</script>
+			<script>
+				const audio = document.getElementById("audio");
+				const playBtn = document.getElementById("playBtn");
+				const progress = document.getElementById("progress");
+				const timeDisplay = document.getElementById("timeDisplay");
 
+				playBtn.onclick = () => {
+ 				 if (audio.paused) {
+ 				   audio.play();
+  				  playBtn.textContent = "⏸";
+ 				 } else {
+ 			 	  audio.pause();
+ 			 	  playBtn.textContent = "▶";
+				  }
+				};
+
+				audio.ontimeupdate = () => {
+				  progress.value = (audio.currentTime / audio.duration) * 100;
+				  progress.style.background = `linear-gradient(to right, #f06 0%, #f06 ${progress.value}%, #555 ${progress.value}%, #555 100%)`;
+				  let m = Math.floor(audio.currentTime / 60);
+	 			 let s = Math.floor(audio.currentTime % 60).toString().padStart(2, "0");
+	 			 time.textContent = `${m}:${s}`;
+				};
+	
+				progress.oninput = () => {
+	  			audio.currentTime = (progress.value / 100) * audio.duration;
+				};
+				</script>	
 	</body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
