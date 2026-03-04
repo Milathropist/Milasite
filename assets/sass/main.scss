@@ -47,4 +47,23 @@
 	@import 'layout/wrapper';
 	@import 'layout/header';
 	@import 'layout/main';
+
 	@import 'layout/footer';
+// Spoiler text.
+
+	spo {
+		background: rgba(10, 10, 10, 0.9);
+		border-radius: 0.2rem;
+		color: transparent;
+		cursor: pointer;
+		padding: 0 0.22rem;
+		transition: color 0.2s ease;
+		user-select: none;
+	}
+
+	spo:hover,
+	spo:focus-visible,
+	spo:active,
+	spo.revealed {
+		color: rgba(255, 255, 255, 0.88);
+	}
