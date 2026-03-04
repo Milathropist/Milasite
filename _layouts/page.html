@@ -116,6 +116,57 @@
         font-size: 0.9rem;
         opacity: 0.85;
       }
+  
+      .collapsible {
+        border-radius: 25px;
+        background-color: rgba(158, 157, 157, 0.027);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(158, 157, 157, 0.4);
+        border-left: 1px solid rgba(158, 157, 157, 0.3);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+        color: white;
+        cursor: pointer;
+        padding: 1px 22px;
+        width: 100%;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+      }
+
+      .active,
+      .collapsible:hover {
+        border-radius: 25px;
+        background-color: rgba(76, 75, 75, 0.027);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(76, 75, 75, 0.4);
+        border-left: 1px solid rgba(176, 75, 75, 0.3);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+      }
+
+      .collapsible:after {
+        content: "\002B";
+        color: white;
+        font-weight: bold;
+        float: right;
+        margin-left: 2px;
+        flex-shrink: 0;
+        transition: transform 0.25s ease, opacity 0.2s ease;
+      }
+
+      .active:after {
+        content: "\2212";
+        transform: rotate(180deg);
+      }
+
+      .collapse-content {
+        padding: 0 36px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        background-color: rgba(0, 0, 0, 0);
+      }
 
       @media (max-width: 640px) {
         .page-inner {
@@ -150,6 +201,21 @@
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
             node.classList.toggle("revealed");
+          }
+        });
+      });
+      
+      const collapsibleNodes = document.querySelectorAll(".collapsible");
+      collapsibleNodes.forEach((node) => {
+        node.addEventListener("click", () => {
+          node.classList.toggle("active");
+          const content = node.nextElementSibling;
+          if (!content) return;
+
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = `${content.scrollHeight}px`;
           }
         });
       });
