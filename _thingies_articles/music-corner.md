@@ -1,5 +1,5 @@
 ---
 title: Music Corner
 slug: music-corner
+image: /images/story.jpg
 ---
-A small section for tracks, playlists, or current favorites.
