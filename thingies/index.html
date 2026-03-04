@@ -2,6 +2,7 @@
 layout: page
 title: Thingies
 permalink: /thingies/
+hero_image: /images/thingies.jpg
 ---
 
 <p class="toc"><strong>Thingies links (scrollable URLs):</strong></p>
@@ -16,6 +17,11 @@ permalink: /thingies/
 
 {% for item in site.thingies_articles %}
   <section class="article-block" id="{{ item.slug }}">
+        {% if item.image %}
+      <figure class="article-cover">
+        <img src="{{ item.image | relative_url }}" alt="{{ item.title }}" />
+      </figure>
+    {% endif %}
     <h2>{{ item.title }}</h2>
     {{ item.content }}
     <p class="article-link"><a href="#{{ item.slug }}">Direct anchor</a></p>
