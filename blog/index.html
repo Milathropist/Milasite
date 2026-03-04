@@ -1,0 +1,25 @@
+---
+layout: page
+title: Blog
+permalink: /blog/
+---
+
+<p class="toc"><strong>Article links (scrollable URLs):</strong></p>
+<ul>
+  {% assign posts = site.blog_articles | sort: 'date' | reverse %}
+  {% for article in posts %}
+    <li>
+      <a href="#{{ article.slug }}">{{ article.title }}</a>
+      <span class="article-link">— shareable: <code>{{ '/blog/' | relative_url }}#{{ article.slug }}</code></span>
+    </li>
+  {% endfor %}
+</ul>
+
+{% for article in posts %}
+  <section class="article-block" id="{{ article.slug }}">
+    <h2>{{ article.title }}</h2>
+    <p><em>{{ article.date | date: "%d %B %Y" }}</em></p>
+    {{ article.content }}
+    <p class="article-link"><a href="#{{ article.slug }}">Direct anchor</a></p>
+  </section>
+{% endfor %}

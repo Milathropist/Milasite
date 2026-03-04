@@ -1,0 +1,8 @@
+title: Milancholy
+markdown: kramdown
+permalink: pretty
+collections:
+  blog_articles:
+    output: false
+  thingies_articles:
+    output: false

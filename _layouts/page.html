@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page.title }} | {{ site.title }}</title>
+    <link rel="icon" type="image/png" href="{{ '/images/Favicon.png' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+    <style>
+      body { padding: 2rem; }
+      main { max-width: 900px; margin: 0 auto; }
+      nav ul { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
+      nav a { border-bottom: none; }
+      .toc { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem; }
+      .article-block { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2); }
+      .article-link { font-size: 0.9rem; opacity: 0.8; }
+    </style>
+  </head>
+  <body>
+    <main>
+      {% include nav.html %}
+      <h1>{{ page.title }}</h1>
+      {{ content }}
+    </main>
+  </body>
+</html>
