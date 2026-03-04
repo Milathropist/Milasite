@@ -481,10 +481,10 @@ input, select, textarea {
 		input[type="checkbox"] + label,
 		input[type="radio"] + label {
 			text-decoration: none;
-			-moz-user-select: none;
-			-webkit-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
+			-moz-user-select: text;
+			-webkit-user-select: text;
+			-ms-user-select: text;
+			user-select: text;
 			color: #ffffff;
 			cursor: pointer;
 			display: inline-block;
@@ -1668,18 +1668,16 @@ input, select, textarea {
 /* Spoiler text */
 
 	spo {
-		background: rgba(10, 10, 10, 0.9);
+		background: rgba(139, 15, 92, 0.9);
 		border-radius: 0.2rem;
 		color: transparent;
 		cursor: pointer;
 		padding: 0 0.22rem;
 		transition: color 0.2s ease;
-		user-select: none;
+		user-select: text;
 	}
 
-	spo:hover,
-	spo:focus-visible,
-	spo:active,
 	spo.revealed {
 		color: rgba(255, 255, 255, 0.88);
 	}
+
