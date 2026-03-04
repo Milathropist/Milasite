@@ -7,45 +7,246 @@
     <link rel="icon" type="image/png" href="{{ '/images/Favicon.png' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
     <style>
-      body {
-        min-height: 100vh;
-        margin: 0;
-        padding: 2.5rem 1.25rem;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        background-image: radial-gradient(circle at 20% 20%, rgba(245, 131, 182, 0.25), transparent 40%), radial-gradient(circle at 80% 0%, rgba(120, 70, 180, 0.35), transparent 35%), url("{{ '/images/bg.jpg' | relative_url }}");
-        background-size: cover;
-        background-attachment: fixed;
+      /* Button */
+      input[type="submit"],
+      input[type="reset"],
+      input[type="button"],
+      button,
+      .button,
+      nav a {
+        appearance: none;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        background-color: transparent;
+        border-radius: 4px;
+        border: 0;
+        box-shadow: inset 0 0 0 1px #ffffff;
+        color: #ffffff !important;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 0.8rem;
+        font-weight: 300;
+        height: 2.75rem;
+        letter-spacing: 0.2rem;
+        line-height: 2.75rem;
+        outline: 0;
+        padding: 0 1.25rem 0 1.35rem;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+        border-bottom: 0;
       }
 
-      .page-shell {
-        width: min(100%, 850px);
-        background: rgba(108, 63, 138, 0.82);
-        border-radius: 0.45rem;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        box-shadow: 0 0.75rem 2rem rgba(24, 12, 35, 0.4);
-        backdrop-filter: blur(3px);
+      input[type="submit"]:hover,
+      input[type="reset"]:hover,
+      input[type="button"]:hover,
+      button:hover,
+      .button:hover,
+      nav a:hover {
+        background-color: rgba(255, 255, 255, 0.075);
       }
+
+      input[type="submit"]:active,
+      input[type="reset"]:active,
+      input[type="button"]:active,
+      button:active,
+      .button:active,
+      nav a:active {
+        background-color: rgba(255, 255, 255, 0.175);
+      }
+
+      input[type="submit"],
+      input[type="reset"],
+      input[type="button"],
+      button {
+        line-height: calc(2.75rem - 2px);
+      }
+
+      /* Audio Player */
+      .audio-player {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 15px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(158, 157, 157, 0.4);
+        border-left: 1px solid rgba(158, 157, 157, 0.3);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+      }
+
+      .audio-player button {
+        background: transparent;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .audio-player input[type="range"] {
+        flex: 1;
+        height: 9px;
+        border-radius: 5px;
+        -webkit-appearance: none;
+        background: linear-gradient(to right, #f06 0%, #f06 0%, #555 0%, #555 100%);
+        cursor: pointer;
+      }
+
+      .audio-player input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #f06;
+        cursor: pointer;
+        margin-top: -1px;
+      }
+
+      .audio-player input[type="range"]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #f06;
+        cursor: pointer;
+      }
+
+      /* BG */
+      #bg {
+        transform: scale(1);
+        -webkit-backface-visibility: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 1;
+      }
+
+      #bg:before,
+      #bg:after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #bg:before {
+        transition: background-color 2.5s ease-in-out;
+        transition-delay: 0.75s;
+        background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("{{ '/images/overlay.png' | relative_url }}");
+        background-size: auto, 256px 256px;
+        background-position: center, center;
+        background-repeat: no-repeat, repeat;
+        z-index: 2;
+      }
+
+      #bg:after {
+        transform: scale(1.125);
+        transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out;
+        background-image: url("{{ '/images/bg.jpg' | relative_url }}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: 1;
+      }
+
+      /* Wrapper */
+      #wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        min-height: 100vh;
+        width: 100%;
+        padding: 3rem 2rem;
+        z-index: 3;
+      }
+
+      /* Header */
+      #header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+        text-align: center;
+      }
+
+      #header .content {
+        border-style: solid;
+        border-color: #ffffff;
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        max-width: 100%;
+        margin-bottom: 1.25rem;
+      }
+
+      #header .content .inner {
+        padding: 1.5rem 2rem;
+      }
+
+      #header nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 0;
+        list-style: none;
+        padding-left: 0;
+        border: solid 1px #ffffff;
+        border-radius: 4px;
+        justify-content: center;
+      }
+      #header nav ul li {
+        padding-left: 0;
+        border-left: solid 1px #ffffff;
 
       .page-inner {
         padding: 2.4rem;
       }
+      #header nav ul li:first-child {
+        border-left: 0;
+      }
+
+      #main {
+        flex-grow: 1;
+        flex-shrink: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        position: relative;
+        max-width: 100%;
+        z-index: 3;
+        width: 100%;
+      }
+
+      #main article {
+        transform: translateY(0);
+        transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
+        padding: 3.5rem 2.5rem 1.5rem;
+        position: relative;
+        width: 52rem;
+        max-width: 100%;
+        background-color: rgba(76, 42, 133, 0.35);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 8px;
+        opacity: 1;
 
       .close-link {
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 1000;
-        width: 2.25rem;
-        height: 2.25rem;
-        line-height: 2.25rem;
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        line-height: 2.5rem;
         border-radius: 999px;
         text-align: center;
         text-decoration: none;
-        border-bottom: 0;
-        background: rgba(81, 43, 127, 0.8);
-        color: rgba(255, 255, 255, 0.85);
       }
 
       .hero {
@@ -64,23 +265,6 @@
         letter-spacing: 0.14rem;
       }
 
-      nav ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.7rem;
-        justify-content: center;
-        list-style: none;
-        padding: 0;
-        margin: 0 0 1.2rem;
-      }
-
-      nav a {
-        border-bottom: none;
-        padding: 0.2rem 0.7rem;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.08);
-      }
-
       .toc {
         background: rgba(238, 162, 214, 0.23);
         padding: 0.95rem;
@@ -93,14 +277,6 @@
         border-radius: 0.25rem;
         background: rgba(231, 161, 217, 0.2);
         border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .article-block h2 {
-        margin-bottom: 0.55rem;
-      }
-
-      .article-cover {
-        margin: 0 0 1rem;
       }
 
       .article-cover img {
@@ -171,29 +347,36 @@
         display: block;
       }
 
-      @media (max-width: 640px) {
-        .page-inner {
-          padding: 1.4rem;
-        }
+      @media (max-width: 736px) {
+        #wrapper { padding: 2rem 1rem; }
+        #main article { padding: 3rem 1.5rem 1rem; }
       }
     </style>
   </head>
   <body>
-    <main class="page-shell">
-      <div class="page-inner">
-        <div class="page-top">
+    <div id="bg"></div>
+    <div id="wrapper">
+      <header id="header">
+        <div class="content">
+          <div class="inner">
+            <h1>{{ page.title }}</h1>
+          </div>
+        </div>
+        {% include nav.html %}
+      </header>
+
+      <main id="main">
+        <article id="page-content" class="active">
           <a class="close-link" href="{{ '/' | relative_url }}" aria-label="Back to home">×</a>
-          {% include nav.html %}
           <header class="hero">
             {% if page.hero_image %}
               <img src="{{ page.hero_image | relative_url }}" alt="{{ page.title }}" />
             {% endif %}
-            <h1>{{ page.title }}</h1>
           </header>
-        </div>
-        {{ content }}
-      </div>
-    </main>
+          {{ content }}
+        </article>
+      </main>
+    </div>
     <script>
       const spoilerNodes = document.querySelectorAll("spo");
       spoilerNodes.forEach((node) => {
