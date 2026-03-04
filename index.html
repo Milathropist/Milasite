@@ -582,6 +582,19 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
+			const spoilerNodes = document.querySelectorAll("spo");
+			spoilerNodes.forEach((node) => {
+			  node.setAttribute("tabindex", "0");
+			  node.setAttribute("role", "button");
+			  node.addEventListener("click", () => node.classList.toggle("revealed"));
+			  node.addEventListener("keydown", (event) => {
+			    if (event.key === "Enter" || event.key === " ") {
+			      event.preventDefault();
+			      node.classList.toggle("revealed");
+			    }
+			  });
+			});
+
 			var coll = document.getElementsByClassName("collapsible");
 			var i;
 
