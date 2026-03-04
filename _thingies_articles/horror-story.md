@@ -1,5 +1,5 @@
 ---
 title: Horror Story Pick
 slug: horror-story-pick
+image: /images/favhorrorstory.jpg
 ---
-A featured creepy story reference from the original page.
