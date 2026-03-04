@@ -10,19 +10,36 @@ hero_image: /images/thingies.jpg
   {% for item in site.thingies_articles %}
     <li>
       <a href="#{{ item.slug }}">{{ item.title }}</a>
-      <span class="article-link">— shareable: <code>{{ '/thingies/' | relative_url }}#{{ item.slug }}</code></span>
+      <button
+        class="share-article"
+        type="button"
+        data-share-hash="#{{ item.slug }}"
+        aria-label="Copy link to {{ item.title }}"
+        title="Copy share link">
+        <i class="fa-solid fa-share" aria-hidden="true"></i>
+      </button>
     </li>
   {% endfor %}
 </ul>
 
 {% for item in site.thingies_articles %}
   <section class="article-block" id="{{ item.slug }}">
-        {% if item.image %}
+    {% if item.image %}
       <figure class="article-cover">
         <img src="{{ item.image | relative_url }}" alt="{{ item.title }}" />
       </figure>
     {% endif %}
-    <h2>{{ item.title }}</h2>
+    <h2>
+      {{ item.title }}
+      <button
+        class="share-article"
+        type="button"
+        data-share-hash="#{{ item.slug }}"
+        aria-label="Copy link to {{ item.title }}"
+        title="Copy share link">
+        <i class="fa-solid fa-share" aria-hidden="true"></i>
+      </button>
+    </h2>
     {{ item.content }}
     <p class="article-link"><a href="#{{ item.slug }}">Direct anchor</a></p>
   </section>

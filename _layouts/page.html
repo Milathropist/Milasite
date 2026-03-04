@@ -74,6 +74,9 @@
 
       .article-block h2 {
         margin-bottom: 0.55rem;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
       }
 
       .article-cover {
@@ -89,6 +92,19 @@
       .article-link {
         font-size: 0.9rem;
         opacity: 0.85;
+      }
+
+      .share-article {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+      }
+
+      .share-article.is-copied {
+        opacity: 0.6;
       }
 
       .audio-player {
@@ -323,6 +339,34 @@
         });
 
         updateProgressFill();
+      });
+
+      const shareButtons = document.querySelectorAll(".share-article");
+      shareButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          const shareHash = button.dataset.shareHash || "";
+          const shareUrl = `${window.location.origin}${window.location.pathname}${shareHash}`;
+
+          try {
+            if (navigator.clipboard?.writeText) {
+              await navigator.clipboard.writeText(shareUrl);
+            } else {
+              const helper = document.createElement("textarea");
+              helper.value = shareUrl;
+              helper.setAttribute("readonly", "");
+              helper.style.position = "absolute";
+              helper.style.left = "-9999px";
+              document.body.appendChild(helper);
+              helper.select();
+              document.execCommand("copy");
+              document.body.removeChild(helper);
+            }
+
+            button.classList.add("is-copied");
+            setTimeout(() => button.classList.remove("is-copied"), 650);
+          } catch (error) {
+          }
+        });
       });
     </script>
   </body>

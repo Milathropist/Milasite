@@ -1,0 +1,51 @@
+---
+layout: page
+title: Wa
+permalink: /wa/
+hero_image: /images/intro.jpg
+---
+
+<p class="toc"><strong>Wa links (scrollable URLs):</strong></p>
+{% assign wa_posts = site.wa_articles | sort: 'date' | reverse %}
+{% if wa_posts and wa_posts.size > 0 %}
+  <ul>
+    {% for item in wa_posts %}
+      <li>
+        <a href="#{{ item.slug }}">{{ item.title }}</a>
+        <button
+          class="share-article"
+          type="button"
+          data-share-hash="#{{ item.slug }}"
+          aria-label="Copy link to {{ item.title }}"
+          title="Copy share link">
+          <i class="fa-solid fa-share" aria-hidden="true"></i>
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% for item in wa_posts %}
+    <section class="article-block" id="{{ item.slug }}">
+      {% if item.image %}
+        <figure class="article-cover">
+          <img src="{{ item.image | relative_url }}" alt="{{ item.title }}" />
+        </figure>
+      {% endif %}
+      <h2>
+        {{ item.title }}
+        <button
+          class="share-article"
+          type="button"
+          data-share-hash="#{{ item.slug }}"
+          aria-label="Copy link to {{ item.title }}"
+          title="Copy share link">
+          <i class="fa-solid fa-share" aria-hidden="true"></i>
+        </button>
+      </h2>
+      {{ item.content }}
+      <p class="article-link"><a href="#{{ item.slug }}">Direct anchor</a></p>
+    </section>
+  {% endfor %}
+{% else %}
+  <p>No Wa articles yet.</p>
+{% endif %}
