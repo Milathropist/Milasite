@@ -1,0 +1,23 @@
+---
+layout: page
+title: Thingies
+permalink: /thingies/
+---
+
+<p class="toc"><strong>Thingies links (scrollable URLs):</strong></p>
+<ul>
+  {% for item in site.thingies_articles %}
+    <li>
+      <a href="#{{ item.slug }}">{{ item.title }}</a>
+      <span class="article-link">— shareable: <code>{{ '/thingies/' | relative_url }}#{{ item.slug }}</code></span>
+    </li>
+  {% endfor %}
+</ul>
+
+{% for item in site.thingies_articles %}
+  <section class="article-block" id="{{ item.slug }}">
+    <h2>{{ item.title }}</h2>
+    {{ item.content }}
+    <p class="article-link"><a href="#{{ item.slug }}">Direct anchor</a></p>
+  </section>
+{% endfor %}
