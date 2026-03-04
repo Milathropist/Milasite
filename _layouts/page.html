@@ -6,63 +6,91 @@
     <title>{{ page.title }} | {{ site.title }}</title>
     <link rel="icon" type="image/png" href="{{ '/images/Favicon.png' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
+    <noscript><link rel="stylesheet" href="{{ '/assets/css/noscript.css' | relative_url }}" /></noscript>
     <style>
-      /* Button */
-      input[type="submit"],
-      input[type="reset"],
-      input[type="button"],
-      button,
-      .button,
-      nav a {
-        appearance: none;
-        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-        background-color: transparent;
-        border-radius: 4px;
-        border: 0;
-        box-shadow: inset 0 0 0 1px #ffffff;
-        color: #ffffff !important;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 0.8rem;
-        font-weight: 300;
-        height: 2.75rem;
-        letter-spacing: 0.2rem;
-        line-height: 2.75rem;
-        outline: 0;
-        padding: 0 1.25rem 0 1.35rem;
+      #header {
+        margin-top: 0;
+      }
+
+      #header > * {
+        margin-top: 2rem;
+      }
+
+      #header > *:before {
+        top: calc(-2rem - 1px);
+        height: calc(2rem + 1px);
+      }
+
+      #header .content .inner {
+        padding: 1.5rem 1.75rem;
+      }
+
+      #header .content p {
+        margin: 0;
+      }
+
+      #main {
+        width: 100%;
+        margin-top: 2rem;
+      }
+
+      #main article {
+        width: min(100%, 56rem);
+        margin: 0 auto;
+      }
+
+      #main article .close {
+        text-indent: -9999px;
+      }
+
+      .hero {
+        margin: 0 0 2rem;
+      }
+
+      .hero h1 {
         text-align: center;
-        text-decoration: none;
-        text-transform: uppercase;
-        white-space: nowrap;
-        border-bottom: 0;
+        margin-top: 1rem;
       }
 
-      input[type="submit"]:hover,
-      input[type="reset"]:hover,
-      input[type="button"]:hover,
-      button:hover,
-      .button:hover,
-      nav a:hover {
-        background-color: rgba(255, 255, 255, 0.075);
+      .hero img {
+        width: 100%;
+        display: block;
+        border-radius: 0.2rem;
       }
 
-      input[type="submit"]:active,
-      input[type="reset"]:active,
-      input[type="button"]:active,
-      button:active,
-      .button:active,
-      nav a:active {
-        background-color: rgba(255, 255, 255, 0.175);
+      .toc {
+        background: rgba(238, 162, 214, 0.23);
+        padding: 0.95rem;
+        border-radius: 0.3rem;
       }
 
-      input[type="submit"],
-      input[type="reset"],
-      input[type="button"],
-      button {
-        line-height: calc(2.75rem - 2px);
+      .article-block {
+        margin-top: 1.25rem;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        background: rgba(231, 161, 217, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
-      /* Audio Player */
+      .article-block h2 {
+        margin-bottom: 0.55rem;
+      }
+
+      .article-cover {
+        margin: 0 0 1rem;
+      }
+
+      .article-cover img {
+        width: 100%;
+        display: block;
+        border-radius: 0.2rem;
+      }
+
+      .article-link {
+        font-size: 0.9rem;
+        opacity: 0.85;
+      }
+
       .audio-player {
         display: flex;
         align-items: center;
@@ -112,184 +140,6 @@
         cursor: pointer;
       }
 
-      /* BG */
-      #bg {
-        transform: scale(1);
-        -webkit-backface-visibility: hidden;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        z-index: 1;
-      }
-
-      #bg:before,
-      #bg:after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      #bg:before {
-        transition: background-color 2.5s ease-in-out;
-        transition-delay: 0.75s;
-        background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("{{ '/images/overlay.png' | relative_url }}");
-        background-size: auto, 256px 256px;
-        background-position: center, center;
-        background-repeat: no-repeat, repeat;
-        z-index: 2;
-      }
-
-      #bg:after {
-        transform: scale(1.125);
-        transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out;
-        background-image: url("{{ '/images/bg.jpg' | relative_url }}");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        z-index: 1;
-      }
-
-      /* Wrapper */
-      #wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        min-height: 100vh;
-        width: 100%;
-        padding: 3rem 2rem;
-        z-index: 3;
-      }
-
-      /* Header */
-      #header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 100%;
-        text-align: center;
-      }
-
-      #header .content {
-        border-style: solid;
-        border-color: #ffffff;
-        border-top-width: 1px;
-        border-bottom-width: 1px;
-        max-width: 100%;
-        margin-bottom: 1.25rem;
-      }
-
-      #header .content .inner {
-        padding: 1.5rem 2rem;
-      }
-
-      #header nav ul {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 0;
-        list-style: none;
-        padding-left: 0;
-        border: solid 1px #ffffff;
-        border-radius: 4px;
-        justify-content: center;
-      }
-      #header nav ul li {
-        padding-left: 0;
-        border-left: solid 1px #ffffff;
-
-      .page-inner {
-        padding: 2.4rem;
-      }
-      #header nav ul li:first-child {
-        border-left: 0;
-      }
-
-      #main {
-        flex-grow: 1;
-        flex-shrink: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        position: relative;
-        max-width: 100%;
-        z-index: 3;
-        width: 100%;
-      }
-
-      #main article {
-        transform: translateY(0);
-        transition: opacity 0.325s ease-in-out, transform 0.325s ease-in-out;
-        padding: 3.5rem 2.5rem 1.5rem;
-        position: relative;
-        width: 52rem;
-        max-width: 100%;
-        background-color: rgba(76, 42, 133, 0.35);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border-radius: 8px;
-        opacity: 1;
-
-      .close-link {
-        position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        border-radius: 999px;
-        text-align: center;
-        text-decoration: none;
-      }
-
-      .hero {
-        margin: 0 0 1.8rem;
-      }
-
-      .hero img {
-        width: 100%;
-        border-radius: 0.25rem;
-        display: block;
-      }
-
-      .hero h1 {
-        margin-top: 1rem;
-        text-align: center;
-        letter-spacing: 0.14rem;
-      }
-
-      .toc {
-        background: rgba(238, 162, 214, 0.23);
-        padding: 0.95rem;
-        border-radius: 0.3rem;
-      }
-
-      .article-block {
-        margin-top: 1.25rem;
-        padding: 1rem;
-        border-radius: 0.25rem;
-        background: rgba(231, 161, 217, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .article-cover img {
-        width: 100%;
-        display: block;
-        border-radius: 0.2rem;
-      }
-
-      .article-link {
-        font-size: 0.9rem;
-        opacity: 0.85;
-      }
-  
       .collapsible {
         border-radius: 25px;
         background-color: rgba(158, 157, 157, 0.027);
@@ -307,7 +157,7 @@
         font-size: 15px;
       }
 
-      .active,
+      .collapsible.active,
       .collapsible:hover {
         border-radius: 25px;
         background-color: rgba(76, 75, 75, 0.027);
@@ -328,7 +178,7 @@
         transition: transform 0.25s ease, opacity 0.2s ease;
       }
 
-      .active:after {
+      .collapsible.active:after {
         content: "\2212";
         transform: rotate(180deg);
       }
@@ -347,37 +197,47 @@
         display: block;
       }
 
-      @media (max-width: 736px) {
-        #wrapper { padding: 2rem 1rem; }
-        #main article { padding: 3rem 1.5rem 1rem; }
+      @media (max-width: 640px) {
+        #header .content .inner {
+          padding: 1.25rem 1rem;
+        }
+
+        #main article {
+          padding: 3rem 1rem 0.75rem 1rem;
+        }
       }
     </style>
   </head>
-  <body>
-    <div id="bg"></div>
+  <body class="is-preload">
     <div id="wrapper">
       <header id="header">
         <div class="content">
           <div class="inner">
-            <h1>{{ page.title }}</h1>
+            <h1>{{ site.title }}</h1>
+            <p>{{ page.title }}</p>
           </div>
         </div>
         {% include nav.html %}
       </header>
-
-      <main id="main">
+      <div id="main">
         <article id="page-content" class="active">
-          <a class="close-link" href="{{ '/' | relative_url }}" aria-label="Back to home">×</a>
+          <a class="close" href="{{ '/' | relative_url }}" aria-label="Back to home">&times;</a>
           <header class="hero">
             {% if page.hero_image %}
               <img src="{{ page.hero_image | relative_url }}" alt="{{ page.title }}" />
             {% endif %}
+            <h1>{{ page.title }}</h1>
           </header>
           {{ content }}
         </article>
-      </main>
+      </div>
     </div>
+    <div id="bg"></div>
     <script>
+      window.setTimeout(() => {
+        document.body.classList.remove("is-preload");
+      }, 100);
+
       const spoilerNodes = document.querySelectorAll("spo");
       spoilerNodes.forEach((node) => {
         node.setAttribute("tabindex", "0");
@@ -390,16 +250,65 @@
           }
         });
       });
-      
+
       const collapsibleNodes = document.querySelectorAll(".collapsible");
       collapsibleNodes.forEach((node) => {
         node.addEventListener("click", () => {
           node.classList.toggle("active");
           const content = node.nextElementSibling;
           if (!content) return;
-
           content.classList.toggle("open");
         });
+      });
+
+      const players = document.querySelectorAll(".audio-player");
+      players.forEach((player) => {
+        const audio = player.querySelector("audio");
+        const playBtn = player.querySelector('[data-audio="play"], #playBtn');
+        const progress = player.querySelector('input[type="range"]');
+        const timeNode = player.querySelector('[data-audio="time"], #time');
+        if (!audio || !playBtn || !progress) return;
+
+        const updateProgressFill = () => {
+          const value = Number(progress.value) || 0;
+          progress.style.background = `linear-gradient(to right, #f06 0%, #f06 ${value}%, #555 ${value}%, #555 100%)`;
+        };
+
+        const formatTime = (seconds) => {
+          const mins = Math.floor(seconds / 60) || 0;
+          const secs = Math.floor(seconds % 60) || 0;
+          return `${mins}:${String(secs).padStart(2, "0")}`;
+        };
+
+        audio.addEventListener("timeupdate", () => {
+          if (!audio.duration) return;
+          progress.value = (audio.currentTime / audio.duration) * 100;
+          updateProgressFill();
+          if (timeNode) {
+            timeNode.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+          }
+        });
+
+        progress.addEventListener("input", () => {
+          if (!audio.duration) return;
+          audio.currentTime = (Number(progress.value) / 100) * audio.duration;
+          updateProgressFill();
+        });
+
+        playBtn.addEventListener("click", async () => {
+          if (audio.paused) {
+            try {
+              await audio.play();
+              playBtn.textContent = "II";
+            } catch (error) {
+            }
+          } else {
+            audio.pause();
+            playBtn.textContent = ">";
+          }
+        });
+
+        updateProgressFill();
       });
     </script>
   </body>
