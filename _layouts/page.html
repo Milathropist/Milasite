@@ -33,9 +33,10 @@
       }
 
       .close-link {
-        position: absolute;
+        position: fixed;
         top: 1rem;
         right: 1rem;
+        z-index: 1000;
         width: 2.25rem;
         height: 2.25rem;
         line-height: 2.25rem;
@@ -45,10 +46,6 @@
         border-bottom: 0;
         background: rgba(81, 43, 127, 0.8);
         color: rgba(255, 255, 255, 0.85);
-      }
-
-      .page-top {
-        position: relative;
       }
 
       .hero {
@@ -161,11 +158,17 @@
       }
 
       .collapse-content {
+        display: none;
         padding: 0 36px;
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.2s ease-out;
+        margin-top: 0.5rem;
         background-color: rgba(0, 0, 0, 0);
+      }
+
+      .collapse-content.open {
+        display: block;
       }
 
       @media (max-width: 640px) {
@@ -212,11 +215,7 @@
           const content = node.nextElementSibling;
           if (!content) return;
 
-          if (content.style.maxHeight) {
-            content.style.maxHeight = null;
-          } else {
-            content.style.maxHeight = `${content.scrollHeight}px`;
-          }
+          content.classList.toggle("open");
         });
       });
     </script>
