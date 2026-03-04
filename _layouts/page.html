@@ -208,7 +208,7 @@
       }
     </style>
   </head>
-  <body class="is-preload">
+  <body>
     <div id="wrapper">
       <header id="header">
         <div class="content">
@@ -234,10 +234,6 @@
     </div>
     <div id="bg"></div>
     <script>
-      window.setTimeout(() => {
-        document.body.classList.remove("is-preload");
-      }, 100);
-
       const spoilerNodes = document.querySelectorAll("spo");
       spoilerNodes.forEach((node) => {
         node.setAttribute("tabindex", "0");
@@ -255,7 +251,18 @@
       collapsibleNodes.forEach((node) => {
         node.addEventListener("click", () => {
           const isOpen = node.classList.toggle("active");
-          const content = node.nextElementSibling;
+          let content = node.nextElementSibling;
+          while (content && !content.classList.contains("collapse-content")) {
+            content = content.nextElementSibling;
+          }
+
+          if (!content && node.parentElement) {
+            content = node.parentElement.nextElementSibling;
+            while (content && !content.classList.contains("collapse-content")) {
+              content = content.nextElementSibling;
+            }
+          }
+
           if (!content) return;
 
           if (isOpen) {
