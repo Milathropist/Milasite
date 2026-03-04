@@ -184,7 +184,7 @@
       }
 
       .collapse-content {
-        display: none;
+        display: block;
         padding: 0 36px;
         max-height: 0;
         overflow: hidden;
@@ -194,7 +194,7 @@
       }
 
       .collapse-content.open {
-        display: block;
+        max-height: 200rem;
       }
 
       @media (max-width: 640px) {
@@ -254,10 +254,17 @@
       const collapsibleNodes = document.querySelectorAll(".collapsible");
       collapsibleNodes.forEach((node) => {
         node.addEventListener("click", () => {
-          node.classList.toggle("active");
+          const isOpen = node.classList.toggle("active");
           const content = node.nextElementSibling;
           if (!content) return;
-          content.classList.toggle("open");
+
+          if (isOpen) {
+            content.classList.add("open");
+            content.style.maxHeight = `${content.scrollHeight}px`;
+          } else {
+            content.style.maxHeight = "0px";
+            content.classList.remove("open");
+          }
         });
       });
 
