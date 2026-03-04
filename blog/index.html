@@ -11,14 +11,6 @@ hero_image: /images/blog.jpg
   {% for article in posts %}
     <li>
       <a href="#{{ article.slug }}">{{ article.title }}</a>
-      <button
-        class="share-article"
-        type="button"
-        data-share-hash="#{{ article.slug }}"
-        aria-label="Copy link to {{ article.title }}"
-        title="Copy share link">
-        <i class="fa-solid fas fa-share" aria-hidden="true"></i>
-      </button>
     </li>
   {% endfor %}
 </ul>
@@ -32,17 +24,20 @@ hero_image: /images/blog.jpg
     {% endif %}
     <h2>
       {{ article.title }}
-      <button
-        class="share-article"
-        type="button"
-        data-share-hash="#{{ article.slug }}"
-        aria-label="Copy link to {{ article.title }}"
-        title="Copy share link">
-        <i class="fa-solid fas fa-share" aria-hidden="true"></i>
-      </button>
     </h2>
     <p><em>{{ article.date | date: "%d %B %Y" }}</em></p>
     {{ article.content }}
-    <p class="article-link"><a href="#{{ article.slug }}">Direct anchor</a></p>
+    <ul class="icons article-link">
+      <li>
+        <a
+          href="#{{ article.slug }}"
+          class="icon solid fa-share share-article"
+          data-share-hash="#{{ article.slug }}"
+          aria-label="Copy link to {{ article.title }}"
+          title="Copy share link">
+          <span class="label">Copy share link</span>
+        </a>
+      </li>
+    </ul>
   </section>
 {% endfor %}

@@ -95,17 +95,7 @@
       }
 
       .share-article {
-        border: 0;
-        background: transparent;
-        color: inherit;
         cursor: pointer;
-        padding: 0;
-        line-height: 1;
-      }
-
-      .fa-solid {
-        font-family: "Font Awesome 5 Free";
-        font-weight: 900;
       }
 
       .share-article.is-copied {
@@ -348,7 +338,9 @@
 
       const shareButtons = document.querySelectorAll(".share-article");
       shareButtons.forEach((button) => {
-        button.addEventListener("click", async () => {
+        button.addEventListener("click", async (event) => {
+          event.preventDefault();
+
           const shareHash = button.dataset.shareHash || "";
           const shareUrl = `${window.location.origin}${window.location.pathname}${shareHash}`;
 
