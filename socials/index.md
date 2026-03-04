@@ -2,6 +2,7 @@
 layout: page
 title: Socials
 permalink: /socials/
+hero_image: /images/socials.jpg
 ---
 
 You can keep your social links here as a simple path-based page.
