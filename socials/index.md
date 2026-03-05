@@ -4,10 +4,10 @@ title: Socials
 permalink: /socials/
 hero_image: /images/socials.jpg
 ---
-<ul class="icons">
-	<li><a href="https://x.com/milathropist" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-	<li><a href="https://www.instagram.com/milathropist" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-	<li><a href="https://www.tumblr.com/milathropist" class="icon brands fa-tumblr"><span class="label">Tumblr</span></a></li>
-	<li><a href="https://github.com/Milathropist" class="icon brands fa-github-alt"><span class="label">GitHub</span></a></li>
-	<li><a href="https://myanimelist.net/profile/Milanthropist" class="icon solid fa-tv"><span class="label">MyAnimeList</span></a></li>
+<ul class="actions stacked">
+	<li><a href="https://x.com/milathropist" class="button icon brands fa-twitter">Twitter</a></li>
+	<li><a href="https://www.instagram.com/milathropist" class="button icon brands fa-instagram">Instagram</a></li>
+	<li><a href="https://www.tumblr.com/milathropist" class="button icon brands fa-tumblr">Tumblr</a></li>
+	<li><a href="https://github.com/Milathropist" class="button icon brands fa-github-alt">GitHub</a></li>
+	<li><a href="https://myanimelist.net/profile/Milanthropist" class="button icon solid fa-tv">MyAnimeList</a></li>
 </ul>
