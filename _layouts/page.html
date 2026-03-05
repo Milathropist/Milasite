@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ site.title }}</title>
     <link rel="icon" type="image/png" href="{{ '/images/Favicon.png' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
     <noscript><link rel="stylesheet" href="{{ '/assets/css/noscript.css' | relative_url }}" /></noscript>
@@ -40,8 +39,14 @@
       }
 
       #main article .close {
+        background-color: rgb(238, 162, 214, 0.23);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 25px;
+        border-top: 1px solid rgba(158, 157, 157, 0.4);
+        border-left: 1px solid rgba(158, 157, 157, 0.3);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
         text-indent: -9999px;
-        border-bottom: none;
         width: 3rem;
         height: 3rem;
         top: 1rem;
