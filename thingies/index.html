@@ -4,43 +4,39 @@ title: Thingies
 permalink: /thingies/
 hero_image: /images/thingies.jpg
 ---
-
 <p class="toc"><strong>Table of Contents:</strong></p>
 <ul>
-  {% for item in site.thingies_articles %}
+  {% assign posts = site.thingies_articles | sort: 'order' | reverse %}
+  {% for article in posts %}
     <li>
       <a href="#{{ item.slug }}">{{ item.title }}</a>
-      <button
-        class="share-article"
-        type="button"
-        data-share-hash="#{{ item.slug }}"
-        aria-label="Copy link to {{ item.title }}"
-        title="Copy share link">
-        <i class="fa-solid fas fa-share" aria-hidden="true"></i>
-      </button>
     </li>
   {% endfor %}
 </ul>
 
-{% for item in site.thingies_articles %}
-  <section class="article-block" id="{{ item.slug }}">
+{% for item in posts %}
+  <section class="item-block" id="{{ item.slug }}">
     {% if item.image %}
-      <figure class="article-cover">
+      <figure class="item-cover">
         <img src="{{ item.image | relative_url }}" alt="{{ item.title }}" />
       </figure>
     {% endif %}
     <h2>
       {{ item.title }}
-      <button
-        class="share-article"
-        type="button"
-        data-share-hash="#{{ item.slug }}"
-        aria-label="Copy link to {{ item.title }}"
-        title="Copy share link">
-        <i class="fa-solid fas fa-share" aria-hidden="true"></i>
-      </button>
     </h2>
+    <p><em>{{ item.date | date: "%d %B %Y" }}</em></p>
     {{ item.content }}
-    <p class="article-link"><a href="#{{ item.slug }}">Direct anchor</a></p>
+    <ul class="icons item-link">
+      <li>
+        <a
+          href="#{{ item.slug }}"
+          class="icon solid fa-share share-article"
+          data-share-hash="#{{ item.slug }}"
+          aria-label="Copy link to {{ item.title }}"
+          title="Copy share link">
+          <span class="label">Copy share link</span>
+        </a>
+      </li>
+    </ul>
   </section>
 {% endfor %}

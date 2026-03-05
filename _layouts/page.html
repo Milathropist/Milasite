@@ -98,14 +98,26 @@
         cursor: pointer;
       }
 
+      #main article ul.icons li {
+        padding: 0 0.6rem 0 0;
+      }
+
       #main article ul.icons li a,
       #main article .share-article {
         background-color: rgba(76, 42, 133, 0.35);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
         border-radius: 100%;
+        color: #ffffff !important;
+        width: 3rem;
+        height: 3rem;
+        line-height: 3rem;
+        font-size: 1.25rem;
         opacity: 0;
-        transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out,
+          border-color 0.2s ease-in-out;
       }
 
       #main article.active ul.icons li a,
@@ -113,6 +125,12 @@
       body.is-article-visible #main article ul.icons li a,
       body.is-article-visible #main article .share-article {
         opacity: 1;
+      }
+
+      #main article ul.icons li a:hover,
+      #main article .share-article:hover {
+        background-color: rgba(91, 53, 152, 0.5);
+        border-color: rgba(255, 255, 255, 0.45);
       }
 
       .share-article.is-copied {
