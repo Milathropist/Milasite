@@ -89,17 +89,49 @@
         border-radius: 0.2rem;
       }
 
-      .article-link {
+      #main article .article-block p img,
+      #main article .item-block p img,
+      #main article .article-block > img,
+      #main article .item-block > img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 0.2rem;
+      }
+
+      .article-link,
+      .item-link {
         font-size: 0.9rem;
         opacity: 0.85;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding-left: 0;
+        margin-left: 0;
       }
 
       .share-article {
         cursor: pointer;
       }
 
+      #main article ul.socials-icons,
+      #main article ul.article-link,
+      #main article ul.item-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-left: 0;
+        padding-left: 0;
+        text-align: center;
+      }
+
       #main article ul.icons li {
-        padding: 0 0.6rem 0 0;
+        padding: 0;
+        margin: 0 0.3rem;
       }
 
       #main article ul.icons li a,
@@ -107,17 +139,15 @@
         background-color: rgba(76, 42, 133, 0.35);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-        border-radius: 100%;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
         color: #ffffff !important;
         width: 3rem;
         height: 3rem;
         line-height: 3rem;
         font-size: 1.25rem;
         opacity: 0;
-        transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out,
-          border-color 0.2s ease-in-out;
+        transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
       }
 
       #main article.active ul.icons li a,
@@ -129,8 +159,7 @@
 
       #main article ul.icons li a:hover,
       #main article .share-article:hover {
-        background-color: rgba(91, 53, 152, 0.5);
-        border-color: rgba(255, 255, 255, 0.45);
+        background-color: rgba(76, 42, 133, 0.5);
       }
 
       .share-article.is-copied {

@@ -1,6 +1,7 @@
 ---
 title: What Makes AI "Human"
 image: /images/whatmakesaihuman.png
+order: 004
 ---
 <p style="text-align:justify;"><sup>11th January 2026</sup><br>
 Imagine this: you wake up one day and call your best friend, mom, girlfriend, wife, anyone you know well. The&nbsp;conversation seems normal, nothing weird happening, and&nbsp;what they say, how&nbsp;they say it, even the pauses between thoughts, everything is like it should be. However, at the very end of the call, you&nbsp;learn that it was actually an&nbsp;AI, pretending to be someone else. What&nbsp;does that mean to you? If the conversation was real, what does it change? Well, &nbsp;knowing it was just a&nbsp;copycat would usually change a&nbsp;lot, mentally. So, &nbsp;imagine it was someone you didn't know, maybe you even knew it was an AI all along. What&nbsp;makes it different than talking with a&nbsp;human? What&nbsp;even makes us real?<br>

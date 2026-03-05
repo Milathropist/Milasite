@@ -1,6 +1,7 @@
 ---
 title: Numbers
 image: /images/numbers.jpg
+order: 002
 ---
 <p style="text-align:justify;"><sup>19th October 2025</sup><br>
 I think my first encounter with someone's suicide was in November 2024, when one of my best friends... <br>

@@ -1,6 +1,7 @@
 ---
 title: Story
 image: /images/story.jpg
+order: 001
 ---
 <p style="text-align:justify;">Once upon a time, a few hours ago, a tall boy of a short height was walking with a&nbsp;6yo grandma on a&nbsp;meadow covered in&nbsp;asphalt. It was Thursday, and as befits the beginning of the week, the boy was walking lying on the ground in&nbsp;a&nbsp;squatting position while crawling to the plumbing store for flour, but&nbsp;they only had green oranges. He&nbsp;took them to his uncle, with whom he went by car on a bike to the pool to run on hands with weights in the mountains. After&nbsp;coming back, the uncle comes in the elevator, and&nbsp;here are the stairs. He&nbsp;pushes the button and walks upwards.
 There awaited a&nbsp;naked person with clothes on, barefoot in shoes and with a&nbsp;fire extinguisher, he asked if they want to go shopping at a&nbsp;cinema. It&nbsp;was evening, around 8:00 AM after noon, so they decided to drink some sandwiches and eat some still water with sparkles. After an insatiable meal, they were very full, so they continued eating, because they were hungry.
