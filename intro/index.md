@@ -5,10 +5,12 @@ permalink: /intro/
 hero_image: /images/donate.jpg
 ---
 
-Hi, I'm Mila! Welcome to my page.
-
-- Spawned on June 1st 2007
-- Taken ^w^
-- Bi, but more on the lesbian side :3
-
-Browse by section paths using the navigation above.
+<p>Hi, I'm Mila!<br>
+Welcome to my page!<br>
+Some info on me:<br>
+♡ Spawned on June 1st 2007<br>
+♡ Taken ^w^<br>
+♡ Bi, but more on the lesbian side:3<br>
+♡ Wa~<br>
+p>Check out my <a href="/blog/">thoughts:3</a>, or <a href="/thingies/">go here</a> for something more silly^^.<br>
+Also, <a href="/wa/">check this out;3</a></p>

@@ -1,9 +1,7 @@
 ---
 title: Horror Story Pick
-slug: horror-story-pick
 image: /images/favhorrorstory.jpg
 ---
-<span class="image main"><img src="images/favhorrorstory.jpg" alt="MY FAVORITE HORROR STORY:" /></span>
 <p style="text-align:justify;"><sup>3rd November 2025</sup><br>
 [The following text in this article is just my favorite horror story but neatly organized. Link&nbsp;to the original one can be found at the end of it (Reddit&nbsp;link), alongside&nbsp;A&nbsp;link to it on YouTube if someone prefers to listen rather than read. Enjoy!^^]</p>
 <button class="collapsible">Open the story:</button>
