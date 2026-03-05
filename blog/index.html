@@ -27,15 +27,15 @@ hero_image: /images/blog.jpg
     </h2>
     <p><em>{{ article.date | date: "%d %B %Y" }}</em></p>
     {{ article.content }}
-    <ul class="actions article-link">
+    <ul class="icons article-link">
       <li>
         <a
           href="#{{ article.slug }}"
-          class="button small icon solid fa-share share-article"
+          class="icon solid fa-share share-article"
           data-share-hash="#{{ article.slug }}"
           aria-label="Copy link to {{ article.title }}"
           title="Copy share link">
-          Copy share link
+          <span class="label">Copy share link</span>
         </a>
       </li>
     </ul>

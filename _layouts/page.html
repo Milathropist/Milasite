@@ -98,6 +98,23 @@
         cursor: pointer;
       }
 
+      #main article ul.icons li a,
+      #main article .share-article {
+        background-color: rgba(76, 42, 133, 0.35);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 100%;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+      }
+
+      #main article.active ul.icons li a,
+      #main article.active .share-article,
+      body.is-article-visible #main article ul.icons li a,
+      body.is-article-visible #main article .share-article {
+        opacity: 1;
+      }
+
       .share-article.is-copied {
         opacity: 0.6;
       }
