@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ page.title }} | {{ site.title }}</title>
+    <title>{{ site.title }}</title>
     <link rel="icon" type="image/png" href="{{ '/images/Favicon.png' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
     <noscript><link rel="stylesheet" href="{{ '/assets/css/noscript.css' | relative_url }}" /></noscript>
@@ -187,6 +187,26 @@
         background-color: rgba(255, 88, 88, 0.3);
       }
 
+      #main article .close:before {
+        background-color: rgba(180, 40, 40, 0.25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 25px;
+        border-top: 1px solid rgba(255, 152, 152, 0.45);
+        border-left: 1px solid rgba(240, 120, 120, 0.35);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+      }
+
+      #main article .close:hover:before {
+        background-color: rgba(220, 64, 64, 0.28);
+        border-top-color: rgba(255, 188, 188, 0.5);
+        border-left-color: rgba(255, 156, 156, 0.4);
+      }
+
+      #main article .close:active:before {
+        background-color: rgba(255, 88, 88, 0.3);
+      }
+
       .share-article.is-copied {
         opacity: 0.6;
       }
@@ -269,26 +289,6 @@
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
       }
 
-      #main article .close:before {
-        background-color: rgba(180, 40, 40, 0.25);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-radius: 25px;
-        border-top: 1px solid rgba(255, 152, 152, 0.45);
-        border-left: 1px solid rgba(240, 120, 120, 0.35);
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
-      }
-
-      #main article .close:hover:before {
-        background-color: rgba(220, 64, 64, 0.28);
-        border-top-color: rgba(255, 188, 188, 0.5);
-        border-left-color: rgba(255, 156, 156, 0.4);
-      }
-
-      #main article .close:active:before {
-        background-color: rgba(255, 88, 88, 0.3);
-      }
-
       .collapsible:after {
         content: "\002B";
         color: white;
@@ -335,7 +335,6 @@
         <div class="content">
           <div class="inner">
             <h1>{{ site.title }}</h1>
-            <p>{{ page.title }}</p>
           </div>
         </div>
         {% include nav.html %}
@@ -347,7 +346,6 @@
             {% if page.hero_image %}
               <img src="{{ page.hero_image | relative_url }}" alt="{{ page.title }}" />
             {% endif %}
-            <h1>{{ page.title }}</h1>
           </header>
           {{ content }}
         </article>
