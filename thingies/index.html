@@ -6,7 +6,7 @@ hero_image: /images/thingies.jpg
 ---
 <p class="toc"><strong>Table of Contents:</strong></p>
 <ul>
-  {% assign posts = site.thingies_articles | sort: 'order' %}
+  {% assign posts = site.thingies_articles | sort: 'order' | reverse %}
   {% for item in posts %}
     <li>
       <a href="#{{ item.slug }}">{{ item.title }}</a>
