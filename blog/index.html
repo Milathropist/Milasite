@@ -21,9 +21,6 @@ hero_image: /images/blog.jpg
         <img src="{{ article.image | relative_url }}" alt="{{ article.title }}" />
       </figure>
     {% endif %}
-    <h2>
-      {{ article.title }}
-    </h2>
     <p><em>{{ article.date | date: "%d %B %Y" }}</em></p>
     {{ article.content }}
     <ul class="icons article-link">
