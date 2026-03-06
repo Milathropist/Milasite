@@ -6,6 +6,29 @@
     <link rel="icon" type="image/png" href="{{ '/images/Favicon.png' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}" />
     <noscript><link rel="stylesheet" href="{{ '/assets/css/noscript.css' | relative_url }}" /></noscript>
+    <script>
+      (() => {
+        try {
+          if (!document.referrer) return;
+
+          const referrerUrl = new URL(document.referrer);
+          if (referrerUrl.origin !== window.location.origin) return;
+
+          const homeUrl = new URL("{{ '/' | relative_url }}", window.location.origin);
+          const homeIndexUrl = new URL("index.html", homeUrl);
+          const normalizePath = (value) => value.replace(/\/+$/, "") || "/";
+          const normalizedReferrerPath = normalizePath(referrerUrl.pathname);
+          const isHomeReferrer =
+            normalizedReferrerPath === normalizePath(homeUrl.pathname) ||
+            normalizedReferrerPath === normalizePath(homeIndexUrl.pathname);
+
+          if (isHomeReferrer) {
+            document.documentElement.classList.add("morph-enter");
+          }
+        } catch (error) {
+        }
+      })();
+    </script>
     <style>
       #header {
         margin-top: 0;
@@ -36,6 +59,21 @@
       #main article {
         width: min(100%, 56rem);
         margin: 0 auto;
+        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
+        transform-origin: center top;
+      }
+
+      html.morph-enter #main article {
+        opacity: 0;
+        transform: scale(0.94);
+        filter: blur(10px);
+      }
+
+      html.morph-enter.morph-active #main article {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
       }
 
       .hero {
@@ -174,41 +212,6 @@
         background-color: rgba(231, 161, 217, 0.2);
       }
 
-      #main article .close {
-        background-color: rgba(238, 162, 214, 0.23);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-radius: 25px;
-        border-top: 1px solid rgba(158, 157, 157, 0.4);
-        border-left: 1px solid rgba(158, 157, 157, 0.3);
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
-        border-bottom: 0;
-        width: 3rem;
-        height: 3rem;
-        top: 1rem;
-        right: 1rem;
-      }
-
-      #main article .close:before {
-        background-color: rgba(238, 162, 214, 0.23);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-radius: 25px;
-        border-top: 1px solid rgba(158, 157, 157, 0.4);
-        border-left: 1px solid rgba(158, 157, 157, 0.3);
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
-      }
-
-      #main article .close:hover:before {
-        background-color: rgba(231, 161, 217, 0.2);
-        border-top-color: rgba(76, 75, 75, 0.4);
-        border-left-color: rgba(176, 75, 75, 0.3);
-      }
-
-      #main article .close:active:before {
-        background-color: rgba(231, 161, 217, 0.2);
-      }
-
       .share-article.is-copied {
         opacity: 0.6;
       }
@@ -282,7 +285,7 @@
       .collapsible.active,
       .collapsible:hover {
         border-radius: 25px;
-        background-color: rgba(158, 157, 157, 0.027);
+        background-color: rgba(76, 75, 75, 0.027);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border-top: 1px solid rgba(76, 75, 75, 0.4);
@@ -312,13 +315,7 @@
         overflow: hidden;
         transition: max-height 0.2s ease-out;
         margin-top: 0.5rem;
-        background-color: rgba(158, 157, 157, 0.027);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border-top: 1px solid rgba(158, 157, 157, 0.4);
-        border-left: 1px solid rgba(158, 157, 157, 0.3);
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
-        border-radius: 25px;
+        background-color: rgba(0, 0, 0, 0);
       }
 
       .collapse-content.open {
@@ -492,6 +489,19 @@
 
         window.location.href = "{{ '/' | relative_url }}";
       });
+
+      const rootNode = document.documentElement;
+      if (rootNode.classList.contains("morph-enter")) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            rootNode.classList.add("morph-active");
+            setTimeout(() => {
+              rootNode.classList.remove("morph-enter");
+              rootNode.classList.remove("morph-active");
+            }, 500);
+          });
+        });
+      }
     </script>
   </body>
 </html>
