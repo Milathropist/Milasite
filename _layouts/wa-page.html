@@ -177,6 +177,41 @@
         background-color: rgba(255, 88, 88, 0.3);
       }
 
+      #main article .close {
+        background-color: rgba(180, 40, 40, 0.25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 25px;
+        border-top: 1px solid rgba(255, 152, 152, 0.45);
+        border-left: 1px solid rgba(240, 120, 120, 0.35);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+        border-bottom: 0;
+        width: 3rem;
+        height: 3rem;
+        top: 1rem;
+        right: 1rem;
+      }
+
+      #main article .close:before {
+        background-color: rgba(180, 40, 40, 0.25);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 25px;
+        border-top: 1px solid rgba(255, 152, 152, 0.45);
+        border-left: 1px solid rgba(240, 120, 120, 0.35);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+      }
+
+      #main article .close:hover:before {
+        background-color: rgba(220, 64, 64, 0.28);
+        border-top-color: rgba(255, 188, 188, 0.5);
+        border-left-color: rgba(255, 156, 156, 0.4);
+      }
+
+      #main article .close:active:before {
+        background-color: rgba(255, 88, 88, 0.3);
+      }
+
       .share-article.is-copied {
         opacity: 0.6;
       }
@@ -251,7 +286,7 @@
       .collapsible.active,
       .collapsible:hover {
         border-radius: 25px;
-        background-color: rgba(220, 64, 64, 0.3);
+        background-color: rgba(180, 40, 40, 0.24);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         border-top: 1px solid rgba(255, 188, 188, 0.5);
@@ -281,7 +316,13 @@
         overflow: hidden;
         transition: max-height 0.2s ease-out;
         margin-top: 0.5rem;
-        background-color: rgba(0, 0, 0, 0);
+        background-color: rgba(180, 40, 40, 0.22);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(255, 152, 152, 0.45);
+        border-left: 1px solid rgba(240, 120, 120, 0.35);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+        border-radius: 25px;
       }
 
       .collapse-content.open {

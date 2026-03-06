@@ -2,7 +2,7 @@
 layout: page
 title: Intro
 permalink: /intro/
-hero_image: /images/donate.jpg
+hero_image: /images/intro.jpg
 ---
 
 <p>Hi, I'm Mila!<br>
