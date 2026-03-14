@@ -22,7 +22,7 @@ hero_image: /images/donate.jpg
     <li>
       <a
         href="https://throne.com/milanthropist"
-        class="icon solid fa-queen"
+        class="icon solid fa-chess_queen"
         aria-label="Open Throne"
         title="Support on Throne">
         <span class="label">Throne</span>
