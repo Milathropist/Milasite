@@ -60,6 +60,49 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body>
+		<div class="site-corner-tools" aria-label="Site tools">
+			<button
+				type="button"
+				class="site-corner-tool site-search-trigger"
+				data-site-search-open
+				aria-label="Search articles"
+				title="Search">
+				<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+			</button>
+		</div>
+
+		<section
+			class="xp-search-window"
+			id="siteSearchWindow"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="siteSearchTitle"
+			aria-hidden="true"
+			hidden>
+			<header class="xp-search-titlebar" data-site-search-drag-handle>
+				<div class="xp-search-title" id="siteSearchTitle">Search Articles</div>
+				<button
+					type="button"
+					class="xp-search-close"
+					data-site-search-close
+					aria-label="Close search"
+					title="Close">
+					x
+				</button>
+			</header>
+			<div class="xp-search-body">
+				<label class="xp-search-label" for="siteSearchInput">Find:</label>
+				<input
+					id="siteSearchInput"
+					class="xp-search-input"
+					type="search"
+					placeholder="Type to search blog + thingies..."
+					autocomplete="off"
+					spellcheck="false" />
+				<div class="xp-search-meta" id="siteSearchMeta" aria-live="polite"></div>
+				<div class="xp-search-results" id="siteSearchResults" role="list"></div>
+			</div>
+		</section>
 
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -574,6 +617,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/site-search.js"></script>
 			<script>
 			const spoilerNodes = document.querySelectorAll("spo");
 			spoilerNodes.forEach((node) => {

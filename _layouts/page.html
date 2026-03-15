@@ -218,11 +218,11 @@
       }
 
       .share-article::after {
-        content: "Link copied";
+        content: "Link\A copied";
         position: absolute;
         left: 50%;
         top: -0.35rem;
-        transform: translate(-50%, -90%);
+        transform: translate(-50%, -100%);
         background-color: rgba(238, 162, 214, 0.45);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -230,13 +230,20 @@
         border-top-color: rgba(255, 255, 255, 0.5);
         border-left-color: rgba(255, 255, 255, 0.4);
         box-shadow: 0 0.4rem 0.9rem rgba(0, 0, 0, 0.25);
-        color: #ffffff;
-        font-size: 0.7rem;
+        color: #eea2d6;
+        font-size: 0.95rem;
         font-weight: 600;
         letter-spacing: 0.03em;
-        padding: 0.25rem 0.6rem;
+        line-height: 1.05;
+        padding: 0.4rem 0.75rem;
         border-radius: 999px;
-        white-space: nowrap;
+        text-align: center;
+        white-space: pre;
+        -webkit-text-stroke: 1px rgba(15, 15, 15, 0.85);
+        text-shadow: 1px 0 0 rgba(15, 15, 15, 0.85), -1px 0 0 rgba(15, 15, 15, 0.85),
+          0 1px 0 rgba(15, 15, 15, 0.85), 0 -1px 0 rgba(15, 15, 15, 0.85),
+          1px 1px 0 rgba(15, 15, 15, 0.7), -1px 1px 0 rgba(15, 15, 15, 0.7),
+          1px -1px 0 rgba(15, 15, 15, 0.7), -1px -1px 0 rgba(15, 15, 15, 0.7);
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.2s ease, transform 0.2s ease;
@@ -244,7 +251,7 @@
 
       .share-article.is-copied::after {
         opacity: 1;
-        transform: translate(-50%, -130%);
+        transform: translate(-50%, -150%);
       }
 
       .audio-player {
@@ -433,6 +440,50 @@
     </style>
   </head>
   <body>
+    <div class="site-corner-tools" aria-label="Site tools">
+      <button
+        type="button"
+        class="site-corner-tool site-search-trigger"
+        data-site-search-open
+        aria-label="Search articles"
+        title="Search">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <section
+      class="xp-search-window"
+      id="siteSearchWindow"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="siteSearchTitle"
+      aria-hidden="true"
+      hidden>
+      <header class="xp-search-titlebar" data-site-search-drag-handle>
+        <div class="xp-search-title" id="siteSearchTitle">Search Articles</div>
+        <button
+          type="button"
+          class="xp-search-close"
+          data-site-search-close
+          aria-label="Close search"
+          title="Close">
+          x
+        </button>
+      </header>
+      <div class="xp-search-body">
+        <label class="xp-search-label" for="siteSearchInput">Find:</label>
+        <input
+          id="siteSearchInput"
+          class="xp-search-input"
+          type="search"
+          placeholder="Type to search blog + thingies..."
+          autocomplete="off"
+          spellcheck="false" />
+        <div class="xp-search-meta" id="siteSearchMeta" aria-live="polite"></div>
+        <div class="xp-search-results" id="siteSearchResults" role="list"></div>
+      </div>
+    </section>
+
     <div id="wrapper">
       <header id="header">
         <div class="content">
@@ -617,5 +668,6 @@
         });
       }
     </script>
+    <script src="{{ '/assets/js/site-search.js' | relative_url }}"></script>
   </body>
 </html>

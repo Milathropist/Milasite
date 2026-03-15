@@ -1,0 +1,32 @@
+---
+layout: null
+---
+[
+  {% assign is_first = true %}
+  {% assign posts = site.blog_articles | sort: 'order' | reverse %}
+  {% for post in posts %}
+    {% capture post_url %}{{ '/blog/' | relative_url }}#{{ post.slug }}{% endcapture %}
+    {% unless is_first %},{% endunless %}
+    {% assign is_first = false %}
+    {
+      "title": {{ post.title | jsonify }},
+      "url": {{ post_url | jsonify }},
+      "type": "Blog",
+      "content": {{ post.content | strip_html | strip_newlines | jsonify }}
+    }
+  {% endfor %}
+
+  {% assign posts = site.thingies_articles | sort: 'order' | reverse %}
+  {% for post in posts %}
+    {% capture post_url %}{{ '/thingies/' | relative_url }}#{{ post.slug }}{% endcapture %}
+    {% unless is_first %},{% endunless %}
+    {% assign is_first = false %}
+    {
+      "title": {{ post.title | jsonify }},
+      "url": {{ post_url | jsonify }},
+      "type": "Thingies",
+      "content": {{ post.content | strip_html | strip_newlines | jsonify }}
+    }
+  {% endfor %}
+]
+
