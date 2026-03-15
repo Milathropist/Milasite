@@ -59,11 +59,38 @@
     }
   };
 
+  const QUERY_SPLIT_RE = (() => {
+    try {
+      return new RegExp("[^\\p{L}\\p{N}]+", "u");
+    } catch {
+      return /[^a-z0-9]+/;
+    }
+  })();
+
   const tokenize = (query) =>
     normalizeText(query)
-      .split(/\s+/)
+      .split(QUERY_SPLIT_RE)
       .map((token) => token.trim())
-      .filter(Boolean);
+      .filter((token) => token.length >= MIN_QUERY_LENGTH);
+
+  const WORD_BOUNDARY_PATTERN = (() => {
+    try {
+      // `\p{…}` support varies; keep the script working in browsers without it.
+      new RegExp("\\p{L}", "u");
+      return { boundary: "[^\\p{L}\\p{N}]", flags: "u" };
+    } catch {
+      return { boundary: "[^a-z0-9]", flags: "" };
+    }
+  })();
+
+  const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const makeWholeWordRegex = (token) => {
+    const escaped = escapeRegExp(token);
+    const boundary = WORD_BOUNDARY_PATTERN.boundary;
+    const flags = WORD_BOUNDARY_PATTERN.flags;
+    return new RegExp(`(?:^|${boundary})${escaped}(?:$|${boundary})`, flags);
+  };
 
   const state = {
     index: null,
@@ -186,6 +213,8 @@
     const tokens = tokenize(query);
     if (tokens.length === 0) return [];
 
+    const matchers = tokens.map((token) => makeWholeWordRegex(token));
+
     const scored = [];
     for (const item of items) {
       const titleText = normalizeText(item.title);
@@ -194,13 +223,13 @@
 
       let score = 0;
       let matchesAll = true;
-      for (const token of tokens) {
-        const idx = haystack.indexOf(token);
-        if (idx === -1) {
+      for (let i = 0; i < tokens.length; i += 1) {
+        const matcher = matchers[i];
+        if (!matcher.test(haystack)) {
           matchesAll = false;
           break;
         }
-        score += titleText.includes(token) ? 4 : 1;
+        score += matcher.test(titleText) ? 4 : 1;
       }
       if (!matchesAll) continue;
       scored.push({ item, score });
