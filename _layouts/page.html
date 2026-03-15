@@ -151,6 +151,7 @@
 
       .share-article {
         cursor: pointer;
+        position: relative;
       }
 
       #main article ul.socials-icons,
@@ -214,6 +215,36 @@
 
       .share-article.is-copied {
         opacity: 0.6;
+      }
+
+      .share-article::after {
+        content: "Link copied";
+        position: absolute;
+        left: 50%;
+        top: -0.35rem;
+        transform: translate(-50%, -90%);
+        background-color: rgba(238, 162, 214, 0.45);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-top-color: rgba(255, 255, 255, 0.5);
+        border-left-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0.4rem 0.9rem rgba(0, 0, 0, 0.25);
+        color: #ffffff;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .share-article.is-copied::after {
+        opacity: 1;
+        transform: translate(-50%, -130%);
       }
 
       .audio-player {
@@ -472,7 +503,13 @@
             }
 
             button.classList.add("is-copied");
-            setTimeout(() => button.classList.remove("is-copied"), 650);
+            if (button.copyTimeoutId) {
+              clearTimeout(button.copyTimeoutId);
+            }
+            button.copyTimeoutId = setTimeout(() => {
+              button.classList.remove("is-copied");
+              button.copyTimeoutId = null;
+            }, 1000);
           } catch (error) {
           }
         });
