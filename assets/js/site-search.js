@@ -1,5 +1,19 @@
 (() => {
-  const SEARCH_INDEX_URL = "/search.json";
+  const getSearchIndexUrl = () => {
+    const scriptNode =
+      document.currentScript || document.querySelector('script[src*="site-search.js"]');
+    const scriptSrc = scriptNode && scriptNode.src ? scriptNode.src : "";
+    if (scriptSrc) {
+      try {
+        const siteRoot = new URL("../../", scriptSrc);
+        return new URL("search.json", siteRoot).toString();
+      } catch {
+      }
+    }
+    return "/search.json";
+  };
+
+  const SEARCH_INDEX_URL = getSearchIndexUrl();
   const MIN_QUERY_LENGTH = 2;
   const MAX_RESULTS = 12;
   const WINDOW_MARGIN = 12;
@@ -30,7 +44,7 @@
   const getIndex = async () => {
     if (state.index) return state.index;
     if (!state.indexPromise) {
-      state.indexPromise = fetch(SEARCH_INDEX_URL, { cache: "force-cache" })
+      state.indexPromise = fetch(SEARCH_INDEX_URL, { cache: "no-store" })
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Search index request failed: ${response.status}`);

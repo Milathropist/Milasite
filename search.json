@@ -1,5 +1,6 @@
 ---
 layout: null
+permalink: /search.json
 ---
 [
   {% assign is_first = true %}
@@ -29,4 +30,3 @@ layout: null
     }
   {% endfor %}
 ]
-
