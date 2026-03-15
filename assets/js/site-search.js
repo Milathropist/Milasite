@@ -129,6 +129,10 @@
 
     if (!windowNode || !inputNode || !resultsNode || !metaNode || openNodes.length === 0) return;
 
+    // Ensure the window never flashes open before the user clicks the search icon.
+    windowNode.hidden = true;
+    windowNode.setAttribute("aria-hidden", "true");
+
     const setMeta = (value) => {
       metaNode.textContent = value || "";
     };
