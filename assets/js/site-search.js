@@ -1,19 +1,49 @@
 (() => {
-  const getSearchIndexUrl = () => {
+  const getSearchIndexUrls = () => {
+    const urls = [];
+    const pushUrl = (value) => {
+      if (!value) return;
+      const url = String(value);
+      if (!url) return;
+      if (urls.includes(url)) return;
+      urls.push(url);
+    };
+
     const scriptNode =
       document.currentScript || document.querySelector('script[src*="site-search.js"]');
     const scriptSrc = scriptNode && scriptNode.src ? scriptNode.src : "";
     if (scriptSrc) {
       try {
-        const siteRoot = new URL("../../", scriptSrc);
-        return new URL("search.json", siteRoot).toString();
+        const scriptUrl = new URL(scriptSrc, window.location.href);
+
+        // If assets are served from a CDN (or just a different origin), prefer the page origin
+        // and only reuse the base path derived from where the assets live.
+        const assetsMarkerIndex = scriptUrl.pathname.lastIndexOf("/assets/");
+        if (assetsMarkerIndex !== -1) {
+          const basePath = `${scriptUrl.pathname.slice(0, assetsMarkerIndex)}/`;
+          pushUrl(new URL(`${basePath}search.json`, window.location.origin).toString());
+        }
+
+        const siteRoot = new URL("../../", scriptUrl);
+        pushUrl(new URL("search.json", siteRoot).toString());
       } catch {
       }
     }
-    return "/search.json";
+
+    try {
+      const pageUrl = new URL(window.location.href);
+      for (let depth = 0; depth <= 4; depth += 1) {
+        const prefix = "../".repeat(depth);
+        pushUrl(new URL(`${prefix}search.json`, pageUrl).toString());
+      }
+    } catch {
+    }
+
+    pushUrl("/search.json");
+    return urls;
   };
 
-  const SEARCH_INDEX_URL = getSearchIndexUrl();
+  const SEARCH_INDEX_URLS = getSearchIndexUrls();
   const MIN_QUERY_LENGTH = 2;
   const MAX_RESULTS = 12;
   const WINDOW_MARGIN = 12;
@@ -44,17 +74,65 @@
   const getIndex = async () => {
     if (state.index) return state.index;
     if (!state.indexPromise) {
-      state.indexPromise = fetch(SEARCH_INDEX_URL, { cache: "no-store" })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Search index request failed: ${response.status}`);
+      state.indexPromise = (async () => {
+        let lastError = null;
+        const attemptErrors = [];
+
+        for (const url of SEARCH_INDEX_URLS) {
+          try {
+            const response = await fetch(url, { cache: "no-store" });
+            if (!response.ok) {
+              throw new Error(`Search index request failed: ${response.status}`);
+            }
+
+            const rawText = await response.text();
+            const trimmedStart = rawText.trimStart();
+            if (trimmedStart.startsWith("---")) {
+              throw new Error(
+                "Search index looks unbuilt (Liquid/front matter detected). Make sure the site is served via Jekyll."
+              );
+            }
+
+            const cleaned = rawText.replace(/^\uFEFF/, "");
+            let data;
+            try {
+              data = JSON.parse(cleaned);
+            } catch (parseError) {
+              const head = trimmedStart.slice(0, 512);
+              if (head.includes("{%") || head.includes("{{")) {
+                throw new Error(
+                  "Search index looks unbuilt (Liquid/front matter detected). Make sure the site is served via Jekyll."
+                );
+              }
+              throw parseError;
+            }
+            state.index = Array.isArray(data) ? data : [];
+            return state.index;
+          } catch (error) {
+            lastError = error;
+            attemptErrors.push({ url, error });
           }
-          return response.json();
-        })
-        .then((data) => {
-          state.index = Array.isArray(data) ? data : [];
-          return state.index;
-        });
+        }
+
+        if (attemptErrors.length) {
+          try {
+            const summary = attemptErrors
+              .map(({ url, error }) => {
+                const message = error && error.message ? error.message : String(error);
+                return `${url} -> ${message}`;
+              })
+              .join("\n");
+            console.warn(`[SiteSearch] Failed to load search index:\n${summary}`);
+          } catch {
+          }
+        }
+
+        throw lastError || new Error("Search index failed to load.");
+      })().catch((error) => {
+        // Allow retry if the issue is transient (offline, rebuild, etc).
+        state.indexPromise = null;
+        throw error;
+      });
     }
     return state.indexPromise;
   };
