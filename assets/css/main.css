@@ -1892,8 +1892,12 @@ input, select, textarea {
 
 	.xp-search-results {
 		margin-top: 0.6rem;
-		max-height: min(52vh, 19rem);
-		overflow: auto;
+		max-height: min(52vh, calc(8 * 2.2rem + 0.5rem + 2px));
+		overflow-y: auto;
+		overflow-x: hidden;
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(238, 162, 214, 0.78) rgba(255, 255, 255, 0.08);
 		background: rgba(0, 0, 0, 0.18);
 		backdrop-filter: blur(8px);
 		-webkit-backdrop-filter: blur(8px);
@@ -1902,16 +1906,49 @@ input, select, textarea {
 		padding: 0.25rem;
 	}
 
+	.xp-search-results::-webkit-scrollbar {
+		width: 10px;
+	}
+
+	.xp-search-results::-webkit-scrollbar-track {
+		background: rgba(255, 255, 255, 0.08);
+		border-radius: 2px;
+	}
+
+	.xp-search-results::-webkit-scrollbar-thumb {
+		background: linear-gradient(#f7b4e4, #d35aa9);
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		border-radius: 2px;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+	}
+
+	.xp-search-results::-webkit-scrollbar-thumb:hover {
+		background: linear-gradient(#ffd1ee, #e06ab4);
+	}
+
+	.xp-search-results::-webkit-scrollbar-thumb:active {
+		background: linear-gradient(#e06ab4, #b73b8d);
+	}
+
 	.xp-search-results a {
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
 		gap: 0.75rem;
+		min-height: 2.2rem;
 		padding: 0.35rem 0.45rem;
 		border-radius: 2px;
 		color: rgba(255, 255, 255, 0.92);
 		text-decoration: none;
 		font-size: 0.9rem;
+	}
+
+	.xp-search-results .xp-search-result-title {
+		flex: 1 1 auto;
+		min-width: 0;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.xp-search-results a:hover,
