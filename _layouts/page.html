@@ -506,6 +506,37 @@
         <div class="xp-search-results" id="siteSearchResults" role="list"></div>
       </div>
     </section>
+    {% if page.permalink == '/intro/' %}
+      <section
+        class="xp-search-window xp-bubble-wrap-window"
+        id="bubbleWrapWindow"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="bubbleWrapTitle"
+        aria-hidden="true"
+        hidden>
+        <header class="xp-search-titlebar" data-bubble-wrap-drag-handle>
+          <div class="xp-search-title" id="bubbleWrapTitle">Bubble Wrap</div>
+          <button
+            type="button"
+            class="xp-search-close"
+            data-bubble-wrap-close
+            aria-label="Close bubble wrap game"
+            title="Close">
+            X
+          </button>
+        </header>
+        <div class="xp-search-body">
+          <p class="bubble-wrap-intro">Pop every bubble. Close and reopen the window to reset it.</p>
+          <div class="bubble-wrap-meta" id="bubbleWrapMeta" aria-live="polite"></div>
+          <div class="bubble-wrap-board" id="bubbleWrapBoard" role="group" aria-label="Bubble wrap sheet"></div>
+        </div>
+      </section>
+      <audio
+        id="bubbleWrapPopSound"
+        preload="auto"
+        src="{{ '/images/bubblepopsoundeffect.mp3' | relative_url }}"></audio>
+    {% endif %}
 
     <div id="wrapper">
       <header id="header">
@@ -694,5 +725,8 @@
       }
     </script>
     <script src="{{ '/assets/js/site-search.js' | relative_url }}"></script>
+    {% if page.permalink == '/intro/' %}
+      <script src="{{ '/assets/js/bubble-wrap.js' | relative_url }}"></script>
+    {% endif %}
   </body>
 </html>
