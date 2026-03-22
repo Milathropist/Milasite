@@ -16,10 +16,10 @@ Some info on me:<br>
 <p>Check out my <a href="https://milancholy.com/blog">thoughts:3</a>, or <a href="https://milancholy.com/thingies">go here</a> for something more silly^^.<br>
 Also, <a href="https://milancholy.com/wa">check this out;3</a></p>
 
-<ul class="actions special">
+<ul class="icons socials-icons">
   <li>
-    <button type="button" class="button icon brands fa-gamepad" data-bubble-wrap-open>
-      Bubble Wrap
-    </button>
+    <a href="#bubble-wrap" class="icon brands fa-gamepad" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
+      <span class="label">Bubble Wrap</span>
+    </a>
   </li>
 </ul>
