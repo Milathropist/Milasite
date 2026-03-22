@@ -1707,7 +1707,11 @@ input, select, textarea {
 	}
 
 	html,
-	body,
+	body {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(238, 162, 214, 0.9) transparent;
+	}
+
 	.xp-search-results {
 		scrollbar-width: thin;
 		scrollbar-color: rgba(238, 162, 214, 0.9) rgba(255, 255, 255, 0.08);
@@ -1721,7 +1725,11 @@ input, select, textarea {
 	}
 
 	html::-webkit-scrollbar-track,
-	body::-webkit-scrollbar-track,
+	body::-webkit-scrollbar-track {
+		background: transparent;
+		border-radius: 2px;
+	}
+
 	.xp-search-results::-webkit-scrollbar-track {
 		background:
 			linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)),
@@ -1761,7 +1769,10 @@ input, select, textarea {
 	}
 
 	html::-webkit-scrollbar-corner,
-	body::-webkit-scrollbar-corner,
+	body::-webkit-scrollbar-corner {
+		background: transparent;
+	}
+
 	.xp-search-results::-webkit-scrollbar-corner {
 		background: rgba(255, 255, 255, 0.08);
 	}

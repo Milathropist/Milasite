@@ -97,6 +97,10 @@
         border-radius: 0.3rem;
       }
 
+      .toc > :last-child {
+        margin-bottom: 0;
+      }
+
       .article-block,
       .item-block {
         margin-top: 1.25rem;
@@ -329,6 +333,21 @@
         border-top: 1px solid rgba(76, 75, 75, 0.4);
         border-left: 1px solid rgba(176, 75, 75, 0.3);
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+      }
+
+      .toc-collapsible {
+        background-color: rgb(255, 112, 214);
+        border-top: 1px solid rgba(255, 226, 247, 0.75);
+        border-left: 1px solid rgba(255, 196, 235, 0.65);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.12);
+      }
+
+      .toc-collapsible.active,
+      .toc-collapsible:hover {
+        background-color: rgb(255, 112, 214);
+        border-top: 1px solid rgba(255, 240, 251, 0.88);
+        border-left: 1px solid rgba(255, 214, 242, 0.8);
+        box-shadow: 0 0 0 1px rgba(255, 170, 231, 0.28), 3px 3px 3px rgba(0, 0, 0, 0.12);
       }
 
       .collapsible:after {
