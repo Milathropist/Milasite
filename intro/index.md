@@ -8,7 +8,7 @@ hero_image: /images/intro.jpg
 <p>Hi, I'm Mila!<br>
 Welcome to my page!<br>
 Some info on me:<br>
-♡ Spawned on June 1st 2007<br>
+♡ Spawned on <a href="https://milancholy.com/calendar">June 1st 2007</a><br>
 ♡ Taken ^w^<br>
 ♡ Bi, but more on the lesbian side:3<br>
 ♡ Wa~<br>
