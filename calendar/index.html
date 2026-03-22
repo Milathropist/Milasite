@@ -152,8 +152,7 @@ calendar_entries:
     text-transform: uppercase;
   }
 
-  .calendar-day,
-  .calendar-day-button {
+  .calendar-day {
     align-items: center;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -169,20 +168,21 @@ calendar_entries:
     justify-content: center;
     justify-self: center;
     aspect-ratio: 1 / 1;
+    overflow: visible;
     padding: 0;
     position: relative;
     text-align: center;
     width: min(100%, 3rem);
   }
 
-  .calendar-day {
-    width: min(100%, 3rem);
-  }
-
-  .calendar-day--note {
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085),
-      0 0 0 1px rgb(255, 112, 214),
-      0 0 0.75rem rgba(255, 112, 214, 0.65);
+  .calendar-day--note::after {
+    border: 1px solid rgb(255, 112, 214);
+    border-radius: inherit;
+    box-shadow: 0 0 0.75rem rgba(255, 112, 214, 0.65);
+    content: "";
+    inset: -1px;
+    pointer-events: none;
+    position: absolute;
   }
 
   .calendar-day--empty {
@@ -207,10 +207,14 @@ calendar_entries:
     font: inherit;
     justify-content: center;
     left: 0;
+    margin: 0;
     padding: 0;
     position: absolute;
     right: 0;
     top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
   }
 
   .calendar-day-button:hover,
@@ -226,14 +230,19 @@ calendar_entries:
   .calendar-day--note:hover,
   .calendar-day--note:focus-within,
   .calendar-day--note.calendar-day--active {
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085),
-      0 0 0 1px rgb(255, 112, 214),
-      0 0 1rem rgba(255, 112, 214, 0.75);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+  }
+
+  .calendar-day--note:hover::after,
+  .calendar-day--note:focus-within::after,
+  .calendar-day--note.calendar-day--active::after {
+    box-shadow: 0 0 1rem rgba(255, 112, 214, 0.75);
   }
 
   .calendar-day-number {
     align-items: center;
     display: flex;
+    flex: 1 1 auto;
     font-size: 0.92rem;
     font-weight: 600;
     height: 100%;
