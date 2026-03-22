@@ -1709,7 +1709,7 @@ input, select, textarea {
 	html,
 	body {
 		scrollbar-width: thin;
-		scrollbar-color: rgba(238, 162, 214, 0.9) transparent;
+		scrollbar-color: rgba(238, 162, 214, 0.9) rgba(105, 38, 93, 0.78);
 	}
 
 	.xp-search-results {
@@ -1726,7 +1726,9 @@ input, select, textarea {
 
 	html::-webkit-scrollbar-track,
 	body::-webkit-scrollbar-track {
-		background: transparent;
+		background:
+			linear-gradient(180deg, rgba(177, 92, 153, 0.2), rgba(78, 24, 69, 0.12)),
+			rgba(105, 38, 93, 0.78);
 		border-radius: 2px;
 	}
 
@@ -1770,7 +1772,7 @@ input, select, textarea {
 
 	html::-webkit-scrollbar-corner,
 	body::-webkit-scrollbar-corner {
-		background: transparent;
+		background: rgba(105, 38, 93, 0.78);
 	}
 
 	.xp-search-results::-webkit-scrollbar-corner {

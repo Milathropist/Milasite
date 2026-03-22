@@ -336,18 +336,22 @@
       }
 
       .toc-collapsible {
-        background-color: rgb(255, 112, 214);
-        border-top: 1px solid rgba(255, 226, 247, 0.75);
-        border-left: 1px solid rgba(255, 196, 235, 0.65);
-        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.12);
+        background-color: rgba(255, 112, 214, 0.22);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(255, 226, 247, 0.45);
+        border-left: 1px solid rgba(255, 196, 235, 0.35);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
       }
 
       .toc-collapsible.active,
       .toc-collapsible:hover {
-        background-color: rgb(255, 112, 214);
-        border-top: 1px solid rgba(255, 240, 251, 0.88);
-        border-left: 1px solid rgba(255, 214, 242, 0.8);
-        box-shadow: 0 0 0 1px rgba(255, 170, 231, 0.28), 3px 3px 3px rgba(0, 0, 0, 0.12);
+        background-color: rgba(255, 112, 214, 0.3);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(255, 240, 251, 0.5);
+        border-left: 1px solid rgba(255, 214, 242, 0.4);
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
       }
 
       .collapsible:after {
