@@ -155,53 +155,46 @@ calendar_entries:
   .calendar-day,
   .calendar-day-button {
     align-items: center;
-    border-radius: 0.95rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(238, 162, 214, 0.23);
+    border-radius: 25px;
+    border-top: 1px solid rgba(158, 157, 157, 0.4);
+    border-left: 1px solid rgba(158, 157, 157, 0.3);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+    color: #ffffff;
     display: flex;
     justify-content: center;
     min-height: 3.35rem;
     padding: 0.45rem;
     position: relative;
+    text-align: center;
   }
 
   .calendar-day {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
   }
 
   .calendar-day--empty {
     background: transparent;
-    border-color: transparent;
+    border-left: none;
+    border-top: none;
     box-shadow: none;
+    color: inherit;
   }
 
   .calendar-day-button {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    background: rgba(158, 157, 157, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-top-color: rgba(158, 157, 157, 0.4);
-    border-left-color: rgba(158, 157, 157, 0.3);
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
-    color: #ffffff;
     cursor: pointer;
     font: inherit;
     transition: background-color 0.2s ease, border-color 0.2s ease,
-      transform 0.2s ease;
+      box-shadow 0.2s ease, transform 0.2s ease;
     width: 100%;
   }
 
   .calendar-day-button--note {
-    padding: 0.45rem;
-  }
-
-  .calendar-day-content {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-    justify-content: center;
-    margin: 0 auto;
-    min-width: 1.5rem;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085),
+      0 0 0 1px rgb(255, 112, 214),
+      0 0 0.75rem rgba(255, 112, 214, 0.65);
   }
 
   .calendar-day-button:hover,
@@ -218,13 +211,12 @@ calendar_entries:
     border-left-color: rgba(255, 147, 186, 0.45);
   }
 
-  .calendar-day-marker {
-    background: #ff9dc8;
-    border-radius: 999px;
-    box-shadow: 0 0 0 0.18rem rgba(255, 157, 200, 0.15);
-    height: 0.45rem;
-    pointer-events: none;
-    width: 0.45rem;
+  .calendar-day-button--note:hover,
+  .calendar-day-button--note:focus-visible,
+  .calendar-day-button--note.calendar-day-button--active {
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085),
+      0 0 0 1px rgb(255, 112, 214),
+      0 0 1rem rgba(255, 112, 214, 0.75);
   }
 
   .calendar-day-number {
@@ -232,8 +224,8 @@ calendar_entries:
     font-size: 0.92rem;
     font-weight: 600;
     line-height: 1;
-    min-width: 1.5rem;
     text-align: center;
+    width: 100%;
   }
 
   .calendar-note-panel {
@@ -425,21 +417,6 @@ calendar_entries:
       return node;
     };
 
-    const createNoteMarker = () => {
-      const node = document.createElement("span");
-      node.className = "calendar-day-marker";
-      node.setAttribute("aria-hidden", "true");
-      return node;
-    };
-
-    const createNoteDayContent = (day) => {
-      const node = document.createElement("span");
-      node.className = "calendar-day-content";
-      node.appendChild(createDayNumber(day));
-      node.appendChild(createNoteMarker());
-      return node;
-    };
-
     const createNoteCard = (note) => {
       const card = document.createElement("div");
       card.className = "calendar-note-card";
@@ -520,7 +497,7 @@ calendar_entries:
             "aria-label",
             `${formatLongDate(dateKey)} with ${notes.length} ${noteLabel}`
           );
-          button.appendChild(createNoteDayContent(day));
+          button.appendChild(createDayNumber(day));
 
           button.addEventListener("click", () => {
             selectedDateKey = selectedDateKey === dateKey ? null : dateKey;
