@@ -47,6 +47,8 @@
   const MIN_QUERY_LENGTH = 2;
   const MAX_RESULTS = 12;
   const WINDOW_MARGIN = 12;
+  const CLOSE_ANIMATION_DURATION = 340;
+  const CLOSE_ANIMATION_NAME = "xp-window-close";
 
   const normalizeText = (value) => {
     try {
@@ -69,6 +71,9 @@
     index: null,
     indexPromise: null,
     hasPosition: false,
+    isClosing: false,
+    closeAnimationHandler: null,
+    closeTimerId: 0,
   };
 
   const getIndex = async () => {
@@ -225,16 +230,59 @@
     windowNode.hidden = true;
     windowNode.setAttribute("aria-hidden", "true");
 
+    const reduceMotionQuery =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const prefersReducedMotion = () => Boolean(reduceMotionQuery?.matches);
+
     const setMeta = (value) => {
       metaNode.textContent = value || "";
     };
 
-    const close = () => {
+    const clearCloseTimer = () => {
+      if (!state.closeTimerId) return;
+      window.clearTimeout(state.closeTimerId);
+      state.closeTimerId = 0;
+    };
+
+    const clearCloseAnimation = () => {
+      clearCloseTimer();
+      if (state.closeAnimationHandler) {
+        windowNode.removeEventListener("animationend", state.closeAnimationHandler);
+        state.closeAnimationHandler = null;
+      }
+      state.isClosing = false;
+      windowNode.classList.remove("is-closing");
+    };
+
+    const finishClose = () => {
+      clearCloseAnimation();
       windowNode.hidden = true;
       windowNode.setAttribute("aria-hidden", "true");
     };
 
+    const close = () => {
+      if (windowNode.hidden || state.isClosing) return;
+
+      if (prefersReducedMotion()) {
+        finishClose();
+        return;
+      }
+
+      clearCloseAnimation();
+      state.isClosing = true;
+      windowNode.classList.add("is-closing");
+      state.closeAnimationHandler = (event) => {
+        if (event.target !== windowNode || event.animationName !== CLOSE_ANIMATION_NAME) return;
+        finishClose();
+      };
+      windowNode.addEventListener("animationend", state.closeAnimationHandler);
+      state.closeTimerId = window.setTimeout(finishClose, CLOSE_ANIMATION_DURATION + 50);
+    };
+
     const open = async () => {
+      clearCloseAnimation();
       windowNode.hidden = false;
       windowNode.setAttribute("aria-hidden", "false");
 

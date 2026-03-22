@@ -1,12 +1,19 @@
 (() => {
   const WINDOW_MARGIN = 12;
   const BUBBLE_COUNT = 36;
+  const REFORM_DURATION = 420;
+  const RESTART_WAVE_DURATION = 220;
+  const CLOSE_ANIMATION_DURATION = 340;
+  const CLOSE_ANIMATION_NAME = "xp-window-close";
 
   const state = {
     hasPosition: false,
     activeEffects: new Set(),
     isResetting: false,
     resetTimerIds: new Set(),
+    isClosing: false,
+    closeAnimationHandler: null,
+    closeTimerId: 0,
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -35,6 +42,12 @@
 
     windowNode.hidden = true;
     windowNode.setAttribute("aria-hidden", "true");
+
+    const reduceMotionQuery =
+      typeof window.matchMedia === "function"
+        ? window.matchMedia("(prefers-reduced-motion: reduce)")
+        : null;
+    const prefersReducedMotion = () => Boolean(reduceMotionQuery?.matches);
 
     const setRestartDisabled = (disabled) => {
       restartNodes.forEach((node) => {
@@ -75,6 +88,28 @@
         effect.pause();
       });
       state.activeEffects.clear();
+    };
+
+    const clearCloseTimer = () => {
+      if (!state.closeTimerId) return;
+      window.clearTimeout(state.closeTimerId);
+      state.closeTimerId = 0;
+    };
+
+    const clearCloseAnimation = () => {
+      clearCloseTimer();
+      if (state.closeAnimationHandler) {
+        windowNode.removeEventListener("animationend", state.closeAnimationHandler);
+        state.closeAnimationHandler = null;
+      }
+      state.isClosing = false;
+      windowNode.classList.remove("is-closing");
+    };
+
+    const finishClose = () => {
+      clearCloseAnimation();
+      windowNode.hidden = true;
+      windowNode.setAttribute("aria-hidden", "true");
     };
 
     const setMeta = () => {
@@ -146,6 +181,46 @@
       setMeta();
     };
 
+    const getResetPlan = (bubbles) => {
+      const boardRect = boardNode.getBoundingClientRect();
+      const centerX = boardRect.left + boardRect.width / 2;
+      const centerY = boardRect.top + boardRect.height / 2;
+
+      const plan = bubbles.map((bubble, index) => {
+        const rect = bubble.getBoundingClientRect();
+        const bubbleCenterX = rect.left + rect.width / 2;
+        const bubbleCenterY = rect.top + rect.height / 2;
+
+        return {
+          bubble,
+          index,
+          distance: Math.hypot(bubbleCenterX - centerX, bubbleCenterY - centerY),
+        };
+      });
+
+      const maxDistance = plan.reduce(
+        (furthestDistance, step) => Math.max(furthestDistance, step.distance),
+        0
+      );
+
+      return plan
+        .map((step) => ({
+          ...step,
+          delay: maxDistance
+            ? Math.round((step.distance / maxDistance) * RESTART_WAVE_DURATION)
+            : 0,
+        }))
+        .sort((leftStep, rightStep) => {
+          if (leftStep.delay !== rightStep.delay) {
+            return leftStep.delay - rightStep.delay;
+          }
+          if (leftStep.distance !== rightStep.distance) {
+            return leftStep.distance - rightStep.distance;
+          }
+          return leftStep.index - rightStep.index;
+        });
+    };
+
     const restartBoard = () => {
       if (state.isResetting) return;
 
@@ -162,7 +237,29 @@
       state.isResetting = true;
       setRestartDisabled(true);
 
-      poppedBubbles.forEach((bubble, index) => {
+      if (prefersReducedMotion()) {
+        poppedBubbles.forEach((bubble, index) => {
+          bubble.disabled = false;
+          bubble.classList.remove("is-popped", "is-reforming");
+          bubble.setAttribute(
+            "aria-label",
+            `Pop bubble ${bubble.dataset.bubbleIndex || String(index + 1)}`
+          );
+        });
+        setMeta();
+        state.isResetting = false;
+        setRestartDisabled(false);
+        boardNode.querySelector(".bubble-wrap-bubble")?.focus();
+        return;
+      }
+
+      const resetPlan = getResetPlan(poppedBubbles);
+      const finalDelay = resetPlan.reduce(
+        (latestDelay, step) => Math.max(latestDelay, step.delay),
+        0
+      );
+
+      resetPlan.forEach(({ bubble, index, delay }) => {
         scheduleResetStep(() => {
           bubble.disabled = false;
           bubble.classList.remove("is-popped");
@@ -175,25 +272,41 @@
 
           scheduleResetStep(() => {
             bubble.classList.remove("is-reforming");
-          }, 420);
-        }, index * 36);
+          }, REFORM_DURATION);
+        }, delay);
       });
 
       scheduleResetStep(() => {
         state.isResetting = false;
         setRestartDisabled(false);
         boardNode.querySelector(".bubble-wrap-bubble")?.focus();
-      }, poppedBubbles.length * 36 + 440);
+      }, finalDelay + REFORM_DURATION + 20);
     };
 
     const close = () => {
+      if (windowNode.hidden || state.isClosing) return;
+
       clearResetTimers();
       stopSounds();
-      windowNode.hidden = true;
-      windowNode.setAttribute("aria-hidden", "true");
+
+      if (prefersReducedMotion()) {
+        finishClose();
+        return;
+      }
+
+      clearCloseAnimation();
+      state.isClosing = true;
+      windowNode.classList.add("is-closing");
+      state.closeAnimationHandler = (event) => {
+        if (event.target !== windowNode || event.animationName !== CLOSE_ANIMATION_NAME) return;
+        finishClose();
+      };
+      windowNode.addEventListener("animationend", state.closeAnimationHandler);
+      state.closeTimerId = window.setTimeout(finishClose, CLOSE_ANIMATION_DURATION + 50);
     };
 
     const open = () => {
+      clearCloseAnimation();
       resetBoard();
       windowNode.hidden = false;
       windowNode.setAttribute("aria-hidden", "false");
