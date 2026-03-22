@@ -16,11 +16,6 @@ calendar_entries:
     margin-bottom: 1rem;
   }
 
-  .calendar-helper {
-    margin: 0 0 1rem;
-    text-align: center;
-  }
-
   .calendar-toolbar {
     display: flex;
     align-items: center;
@@ -54,6 +49,25 @@ calendar_entries:
     transform: translateY(-1px);
   }
 
+  .calendar-year-button:disabled {
+    background: rgba(158, 157, 157, 0.04);
+    border-top-color: rgba(158, 157, 157, 0.16);
+    border-left-color: rgba(158, 157, 157, 0.12);
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.42);
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+  }
+
+  .calendar-year-button:disabled:hover,
+  .calendar-year-button:disabled:focus-visible {
+    background: rgba(158, 157, 157, 0.04);
+    border-top-color: rgba(158, 157, 157, 0.16);
+    border-left-color: rgba(158, 157, 157, 0.12);
+    transform: none;
+  }
+
   .calendar-year-display {
     min-width: 10rem;
     padding: 0.75rem 1.2rem;
@@ -61,6 +75,20 @@ calendar_entries:
     border-radius: 1.2rem;
     background: rgba(238, 162, 214, 0.23);
     border: 1px solid rgba(255, 255, 255, 0.16);
+    transition: box-shadow 0.25s ease, border-color 0.25s ease,
+      text-shadow 0.25s ease;
+  }
+
+  .calendar-year-display--glow {
+    border-color: rgba(206, 143, 255, 0.45);
+    box-shadow: 0 0 1rem rgba(170, 94, 255, 0.38),
+      0 0 1.8rem rgba(170, 94, 255, 0.2);
+  }
+
+  .calendar-year-display--glow .calendar-kicker,
+  .calendar-year-display--glow .calendar-year-value {
+    text-shadow: 0 0 0.45rem rgba(212, 170, 255, 0.9),
+      0 0 1rem rgba(149, 74, 255, 0.52);
   }
 
   .calendar-kicker {
@@ -132,10 +160,10 @@ calendar_entries:
 
   .calendar-day,
   .calendar-day-button {
-    align-items: flex-start;
+    align-items: center;
     border-radius: 0.95rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     min-height: 3.35rem;
     padding: 0.45rem;
     position: relative;
@@ -168,6 +196,13 @@ calendar_entries:
     width: 100%;
   }
 
+  .calendar-day-button--note {
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 0.5rem;
+  }
+
   .calendar-day-button:hover,
   .calendar-day-button:focus-visible {
     background: rgba(231, 161, 217, 0.2);
@@ -182,15 +217,12 @@ calendar_entries:
     border-left-color: rgba(255, 147, 186, 0.45);
   }
 
-  .calendar-day-button--note::after {
+  .calendar-day-marker {
     background: #ff9dc8;
     border-radius: 999px;
-    bottom: 0.45rem;
     box-shadow: 0 0 0 0.18rem rgba(255, 157, 200, 0.15);
-    content: "";
     height: 0.45rem;
-    left: 0.45rem;
-    position: absolute;
+    margin-top: 0.48rem;
     width: 0.45rem;
   }
 
@@ -215,11 +247,6 @@ calendar_entries:
     margin-bottom: 0.25rem;
     opacity: 0.82;
     text-transform: uppercase;
-  }
-
-  .calendar-note-placeholder {
-    margin: 0;
-    opacity: 0.8;
   }
 
   .calendar-note-card {
@@ -256,19 +283,16 @@ calendar_entries:
 </style>
 
 <section class="item-block calendar-shell">
-  <p class="calendar-helper">
-    Highlighted days hold expandable notes. Switch years and click a marked date to open its text.
-  </p>
   <div class="calendar-toolbar">
     <button type="button" class="calendar-year-button" data-calendar-prev>
-      Previous year
+      Year -1
     </button>
     <div class="calendar-year-display" aria-live="polite">
       <span class="calendar-kicker">Viewing</span>
       <strong class="calendar-year-value" data-calendar-year>2007</strong>
     </div>
     <button type="button" class="calendar-year-button" data-calendar-next>
-      Next year
+      Year +1
     </button>
   </div>
 </section>
@@ -299,6 +323,7 @@ calendar_entries:
       "December"
     ];
     const weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const minimumYear = 2007;
 
     const entryMap = new Map();
     rawEntries.forEach((entry) => {
@@ -315,19 +340,19 @@ calendar_entries:
 
     const datedKeys = Array.from(entryMap.keys()).sort();
     const defaultYear = datedKeys.length
-      ? Number(datedKeys[0].slice(0, 4))
-      : new Date().getUTCFullYear();
+      ? Math.max(minimumYear, Number(datedKeys[0].slice(0, 4)))
+      : Math.max(minimumYear, new Date().getUTCFullYear());
 
     let currentYear = defaultYear;
-    let selectedDateKey =
-      datedKeys.find((dateKey) => dateKey.startsWith(`${currentYear}-`)) || null;
+    let selectedDateKey = null;
 
     const rootNode = document.querySelector("[data-calendar-root]");
     const yearNode = document.querySelector("[data-calendar-year]");
+    const yearDisplayNode = document.querySelector(".calendar-year-display");
     const prevButton = document.querySelector("[data-calendar-prev]");
     const nextButton = document.querySelector("[data-calendar-next]");
 
-    if (!rootNode || !yearNode || !prevButton || !nextButton) return;
+    if (!rootNode || !yearNode || !yearDisplayNode || !prevButton || !nextButton) return;
 
     const getDaysInMonth = (year, monthIndex) =>
       new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
@@ -338,8 +363,8 @@ calendar_entries:
     const toDateKey = (year, monthIndex, day) =>
       `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
-    const getFirstDateInYear = (year) =>
-      datedKeys.find((dateKey) => dateKey.startsWith(`${year}-`)) || null;
+    const yearHasNotes = (year) =>
+      datedKeys.some((dateKey) => dateKey.startsWith(`${year}-`));
 
     const formatLongDate = (dateKey) => {
       const [year, month, day] = dateKey.split("-").map(Number);
@@ -350,6 +375,13 @@ calendar_entries:
       const node = document.createElement("span");
       node.className = "calendar-day-number";
       node.textContent = String(day);
+      return node;
+    };
+
+    const createNoteMarker = () => {
+      const node = document.createElement("span");
+      node.className = "calendar-day-marker";
+      node.setAttribute("aria-hidden", "true");
       return node;
     };
 
@@ -441,6 +473,7 @@ calendar_entries:
             `${formatLongDate(dateKey)} with ${notes.length} ${noteLabel}`
           );
           button.appendChild(createDayNumber(day));
+          button.appendChild(createNoteMarker());
 
           button.addEventListener("click", () => {
             selectedDateKey = selectedDateKey === dateKey ? null : dateKey;
@@ -471,26 +504,19 @@ calendar_entries:
         selectedDateKey &&
         selectedDateKey.startsWith(`${currentYear}-${String(monthIndex + 1).padStart(2, "0")}-`);
 
-      if (monthDates.length && (isSelectedMonth || selectedDateKey === null)) {
+      if (monthDates.length && isSelectedMonth) {
         const notePanel = document.createElement("div");
         notePanel.className = "calendar-note-panel";
 
-        if (isSelectedMonth) {
-          const label = document.createElement("span");
-          label.className = "calendar-note-date";
-          label.textContent = formatLongDate(selectedDateKey);
-          notePanel.appendChild(label);
+        const label = document.createElement("span");
+        label.className = "calendar-note-date";
+        label.textContent = formatLongDate(selectedDateKey);
+        notePanel.appendChild(label);
 
-          const selectedNotes = entryMap.get(selectedDateKey) || [];
-          selectedNotes.forEach((note) => {
-            notePanel.appendChild(createNoteCard(note));
-          });
-        } else {
-          const placeholder = document.createElement("p");
-          placeholder.className = "calendar-note-placeholder";
-          placeholder.textContent = "Click one of this month's highlighted days to open its note.";
-          notePanel.appendChild(placeholder);
-        }
+        const selectedNotes = entryMap.get(selectedDateKey) || [];
+        selectedNotes.forEach((note) => {
+          notePanel.appendChild(createNoteCard(note));
+        });
 
         monthNode.appendChild(notePanel);
       }
@@ -500,6 +526,8 @@ calendar_entries:
 
     const renderCalendar = () => {
       yearNode.textContent = String(currentYear);
+      yearDisplayNode.classList.toggle("calendar-year-display--glow", yearHasNotes(currentYear));
+      prevButton.disabled = currentYear <= minimumYear;
       rootNode.innerHTML = "";
 
       let yearHasAnyNotes = false;
@@ -524,9 +552,14 @@ calendar_entries:
     };
 
     const changeYear = (direction) => {
-      currentYear += direction;
-      if (!selectedDateKey || !selectedDateKey.startsWith(`${currentYear}-`)) {
-        selectedDateKey = getFirstDateInYear(currentYear);
+      const nextYear = currentYear + direction;
+      if (nextYear < minimumYear) {
+        return;
+      }
+
+      currentYear = nextYear;
+      if (selectedDateKey && !selectedDateKey.startsWith(`${currentYear}-`)) {
+        selectedDateKey = null;
       }
       renderCalendar();
     };
