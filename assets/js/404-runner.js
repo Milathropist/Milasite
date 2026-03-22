@@ -38,6 +38,7 @@
   const LOLIPOP_RATIO = 1903 / 927;
   const PAPER_PLANE_RATIO = 883 / 1910;
   const AIR_UNLOCK_SCORE = 200;
+  const GROUND_OBSTACLE_MAX_HEIGHT_RATIO = 0.8;
   const BASE_SPEED = 262;
   const SCORE_SPEED_LIMIT = 240;
   const GRAVITY = 1880;
@@ -230,8 +231,8 @@
         maxAirHeight
       );
     } else {
-      obstacle.width = playerWidth * choose([0.34, 0.42, 0.5, 0.58]);
-      obstacle.height = obstacle.width * LOLIPOP_RATIO;
+      obstacle.height = playerHeight * choose([0.52, 0.62, 0.72, GROUND_OBSTACLE_MAX_HEIGHT_RATIO]);
+      obstacle.width = obstacle.height / LOLIPOP_RATIO;
     }
 
     const lastObstacle = state.obstacles[state.obstacles.length - 1];
