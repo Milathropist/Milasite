@@ -1,0 +1,539 @@
+---
+layout: page
+title: Calendar
+permalink: /calendar/
+hero_image: /images/intro.jpg
+calendar_entries:
+  # Add more dates below using YYYY-MM-DD.
+  # Repeat a date if you want more than one expandable note on the same day.
+  - date: 2007-06-01
+    title: Mila has been born!
+    content: ""
+---
+
+<style>
+  .calendar-shell {
+    margin-bottom: 1rem;
+  }
+
+  .calendar-helper {
+    margin: 0 0 1rem;
+    text-align: center;
+  }
+
+  .calendar-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .calendar-year-button {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-top-color: rgba(158, 157, 157, 0.4);
+    border-left-color: rgba(158, 157, 157, 0.3);
+    border-radius: 999px;
+    background: rgba(158, 157, 157, 0.08);
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.72rem;
+    letter-spacing: 0.18rem;
+    padding: 0.8rem 1.15rem;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .calendar-year-button:hover,
+  .calendar-year-button:focus-visible {
+    background: rgba(231, 161, 217, 0.2);
+    border-top-color: rgba(76, 75, 75, 0.4);
+    border-left-color: rgba(176, 75, 75, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .calendar-year-display {
+    min-width: 10rem;
+    padding: 0.75rem 1.2rem;
+    text-align: center;
+    border-radius: 1.2rem;
+    background: rgba(238, 162, 214, 0.23);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .calendar-kicker {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.18rem;
+    opacity: 0.78;
+    text-transform: uppercase;
+  }
+
+  .calendar-year-value {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    margin-top: 0.2rem;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+  }
+
+  .calendar-month {
+    margin-top: 0;
+  }
+
+  .calendar-month-head {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-bottom: 0.95rem;
+  }
+
+  .calendar-month-head h2 {
+    margin: 0;
+  }
+
+  .calendar-month-count {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    font-size: 0.66rem;
+    letter-spacing: 0.12rem;
+    opacity: 0.88;
+    padding: 0.35rem 0.65rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .calendar-weekdays,
+  .calendar-days {
+    display: grid;
+    gap: 0.4rem;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .calendar-weekdays {
+    margin-bottom: 0.4rem;
+  }
+
+  .calendar-weekday {
+    font-size: 0.66rem;
+    letter-spacing: 0.1rem;
+    opacity: 0.8;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .calendar-day,
+  .calendar-day-button {
+    align-items: flex-start;
+    border-radius: 0.95rem;
+    display: flex;
+    justify-content: flex-end;
+    min-height: 3.35rem;
+    padding: 0.45rem;
+    position: relative;
+  }
+
+  .calendar-day {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .calendar-day--empty {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .calendar-day-button {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(158, 157, 157, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-top-color: rgba(158, 157, 157, 0.4);
+    border-left-color: rgba(158, 157, 157, 0.3);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    transition: background-color 0.2s ease, border-color 0.2s ease,
+      transform 0.2s ease;
+    width: 100%;
+  }
+
+  .calendar-day-button:hover,
+  .calendar-day-button:focus-visible {
+    background: rgba(231, 161, 217, 0.2);
+    border-top-color: rgba(76, 75, 75, 0.4);
+    border-left-color: rgba(176, 75, 75, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .calendar-day-button--active {
+    background: rgba(238, 162, 214, 0.28);
+    border-top-color: rgba(255, 255, 255, 0.42);
+    border-left-color: rgba(255, 147, 186, 0.45);
+  }
+
+  .calendar-day-button--note::after {
+    background: #ff9dc8;
+    border-radius: 999px;
+    bottom: 0.45rem;
+    box-shadow: 0 0 0 0.18rem rgba(255, 157, 200, 0.15);
+    content: "";
+    height: 0.45rem;
+    left: 0.45rem;
+    position: absolute;
+    width: 0.45rem;
+  }
+
+  .calendar-day-number {
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .calendar-note-panel {
+    background: rgba(238, 162, 214, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1rem;
+    margin-top: 0.85rem;
+    padding: 0.95rem;
+  }
+
+  .calendar-note-date {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.14rem;
+    margin-bottom: 0.25rem;
+    opacity: 0.82;
+    text-transform: uppercase;
+  }
+
+  .calendar-note-placeholder {
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  .calendar-note-card {
+    background: rgba(0, 0, 0, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.9rem;
+    margin-top: 0.75rem;
+    padding: 0.85rem 0.9rem;
+  }
+
+  .calendar-note-card h3 {
+    margin: 0;
+  }
+
+  .calendar-note-card p {
+    margin: 0.55rem 0 0;
+  }
+
+  .calendar-empty-year {
+    margin-top: 0;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .calendar-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .calendar-year-display {
+      min-width: 0;
+      width: 100%;
+    }
+  }
+</style>
+
+<section class="item-block calendar-shell">
+  <p class="calendar-helper">
+    Highlighted days hold expandable notes. Switch years and click a marked date to open its text.
+  </p>
+  <div class="calendar-toolbar">
+    <button type="button" class="calendar-year-button" data-calendar-prev>
+      Previous year
+    </button>
+    <div class="calendar-year-display" aria-live="polite">
+      <span class="calendar-kicker">Viewing</span>
+      <strong class="calendar-year-value" data-calendar-year>2007</strong>
+    </div>
+    <button type="button" class="calendar-year-button" data-calendar-next>
+      Next year
+    </button>
+  </div>
+</section>
+
+<div class="calendar-grid" data-calendar-root></div>
+
+<noscript>
+  <section class="item-block">
+    <p>The calendar needs JavaScript enabled to render.</p>
+  </section>
+</noscript>
+
+<script>
+  (() => {
+    const rawEntries = {{ page.calendar_entries | jsonify }};
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+    const weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    const entryMap = new Map();
+    rawEntries.forEach((entry) => {
+      const dateKey = String(entry.date || "");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) return;
+
+      const list = entryMap.get(dateKey) || [];
+      list.push({
+        title: String(entry.title || "Note"),
+        content: String(entry.content || "")
+      });
+      entryMap.set(dateKey, list);
+    });
+
+    const datedKeys = Array.from(entryMap.keys()).sort();
+    const defaultYear = datedKeys.length
+      ? Number(datedKeys[0].slice(0, 4))
+      : new Date().getUTCFullYear();
+
+    let currentYear = defaultYear;
+    let selectedDateKey =
+      datedKeys.find((dateKey) => dateKey.startsWith(`${currentYear}-`)) || null;
+
+    const rootNode = document.querySelector("[data-calendar-root]");
+    const yearNode = document.querySelector("[data-calendar-year]");
+    const prevButton = document.querySelector("[data-calendar-prev]");
+    const nextButton = document.querySelector("[data-calendar-next]");
+
+    if (!rootNode || !yearNode || !prevButton || !nextButton) return;
+
+    const getDaysInMonth = (year, monthIndex) =>
+      new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+
+    const getLeadingOffset = (year, monthIndex) =>
+      (new Date(Date.UTC(year, monthIndex, 1)).getUTCDay() + 6) % 7;
+
+    const toDateKey = (year, monthIndex, day) =>
+      `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+    const getFirstDateInYear = (year) =>
+      datedKeys.find((dateKey) => dateKey.startsWith(`${year}-`)) || null;
+
+    const formatLongDate = (dateKey) => {
+      const [year, month, day] = dateKey.split("-").map(Number);
+      return `${day} ${monthNames[month - 1]} ${year}`;
+    };
+
+    const createDayNumber = (day) => {
+      const node = document.createElement("span");
+      node.className = "calendar-day-number";
+      node.textContent = String(day);
+      return node;
+    };
+
+    const createNoteCard = (note) => {
+      const card = document.createElement("div");
+      card.className = "calendar-note-card";
+
+      const heading = document.createElement("h3");
+      heading.textContent = note.title;
+      card.appendChild(heading);
+
+      const paragraphs = note.content
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+
+      paragraphs.forEach((line) => {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = line;
+        card.appendChild(paragraph);
+      });
+
+      return card;
+    };
+
+    const buildMonth = (monthIndex) => {
+      const monthNode = document.createElement("section");
+      monthNode.className = "item-block calendar-month";
+
+      const monthHeader = document.createElement("div");
+      monthHeader.className = "calendar-month-head";
+
+      const monthTitle = document.createElement("h2");
+      monthTitle.textContent = monthNames[monthIndex];
+      monthHeader.appendChild(monthTitle);
+
+      const monthKeyPrefix = `${currentYear}-${String(monthIndex + 1).padStart(2, "0")}-`;
+      const monthDates = datedKeys.filter((dateKey) => dateKey.startsWith(monthKeyPrefix));
+
+      if (monthDates.length) {
+        const monthCount = document.createElement("span");
+        monthCount.className = "calendar-month-count";
+        monthCount.textContent = `${monthDates.length} noted day${monthDates.length === 1 ? "" : "s"}`;
+        monthHeader.appendChild(monthCount);
+      }
+
+      monthNode.appendChild(monthHeader);
+
+      const weekdaysNode = document.createElement("div");
+      weekdaysNode.className = "calendar-weekdays";
+      weekdayNames.forEach((weekday) => {
+        const weekdayNode = document.createElement("span");
+        weekdayNode.className = "calendar-weekday";
+        weekdayNode.textContent = weekday;
+        weekdaysNode.appendChild(weekdayNode);
+      });
+      monthNode.appendChild(weekdaysNode);
+
+      const daysNode = document.createElement("div");
+      daysNode.className = "calendar-days";
+
+      const leadingOffset = getLeadingOffset(currentYear, monthIndex);
+      for (let index = 0; index < leadingOffset; index += 1) {
+        const emptyNode = document.createElement("div");
+        emptyNode.className = "calendar-day calendar-day--empty";
+        emptyNode.setAttribute("aria-hidden", "true");
+        daysNode.appendChild(emptyNode);
+      }
+
+      const monthLength = getDaysInMonth(currentYear, monthIndex);
+      for (let day = 1; day <= monthLength; day += 1) {
+        const dateKey = toDateKey(currentYear, monthIndex, day);
+        const notes = entryMap.get(dateKey);
+
+        if (notes && notes.length) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "calendar-day-button calendar-day-button--note";
+          if (selectedDateKey === dateKey) {
+            button.classList.add("calendar-day-button--active");
+            button.setAttribute("aria-expanded", "true");
+          } else {
+            button.setAttribute("aria-expanded", "false");
+          }
+
+          const noteLabel = notes.length === 1 ? "note" : "notes";
+          button.setAttribute(
+            "aria-label",
+            `${formatLongDate(dateKey)} with ${notes.length} ${noteLabel}`
+          );
+          button.appendChild(createDayNumber(day));
+
+          button.addEventListener("click", () => {
+            selectedDateKey = selectedDateKey === dateKey ? null : dateKey;
+            renderCalendar();
+          });
+
+          daysNode.appendChild(button);
+          continue;
+        }
+
+        const dayNode = document.createElement("div");
+        dayNode.className = "calendar-day";
+        dayNode.appendChild(createDayNumber(day));
+        daysNode.appendChild(dayNode);
+      }
+
+      const trailingOffset = (7 - ((leadingOffset + monthLength) % 7)) % 7;
+      for (let index = 0; index < trailingOffset; index += 1) {
+        const emptyNode = document.createElement("div");
+        emptyNode.className = "calendar-day calendar-day--empty";
+        emptyNode.setAttribute("aria-hidden", "true");
+        daysNode.appendChild(emptyNode);
+      }
+
+      monthNode.appendChild(daysNode);
+
+      const isSelectedMonth =
+        selectedDateKey &&
+        selectedDateKey.startsWith(`${currentYear}-${String(monthIndex + 1).padStart(2, "0")}-`);
+
+      if (monthDates.length && (isSelectedMonth || selectedDateKey === null)) {
+        const notePanel = document.createElement("div");
+        notePanel.className = "calendar-note-panel";
+
+        if (isSelectedMonth) {
+          const label = document.createElement("span");
+          label.className = "calendar-note-date";
+          label.textContent = formatLongDate(selectedDateKey);
+          notePanel.appendChild(label);
+
+          const selectedNotes = entryMap.get(selectedDateKey) || [];
+          selectedNotes.forEach((note) => {
+            notePanel.appendChild(createNoteCard(note));
+          });
+        } else {
+          const placeholder = document.createElement("p");
+          placeholder.className = "calendar-note-placeholder";
+          placeholder.textContent = "Click one of this month's highlighted days to open its note.";
+          notePanel.appendChild(placeholder);
+        }
+
+        monthNode.appendChild(notePanel);
+      }
+
+      return monthNode;
+    };
+
+    const renderCalendar = () => {
+      yearNode.textContent = String(currentYear);
+      rootNode.innerHTML = "";
+
+      let yearHasAnyNotes = false;
+      for (let monthIndex = 0; monthIndex < 12; monthIndex += 1) {
+        const monthKeyPrefix = `${currentYear}-${String(monthIndex + 1).padStart(2, "0")}-`;
+        if (datedKeys.some((dateKey) => dateKey.startsWith(monthKeyPrefix))) {
+          yearHasAnyNotes = true;
+        }
+        rootNode.appendChild(buildMonth(monthIndex));
+      }
+
+      if (!yearHasAnyNotes) {
+        const emptyYearNode = document.createElement("section");
+        emptyYearNode.className = "item-block calendar-empty-year";
+
+        const emptyText = document.createElement("p");
+        emptyText.textContent = "No noted dates have been added for this year yet.";
+        emptyYearNode.appendChild(emptyText);
+
+        rootNode.appendChild(emptyYearNode);
+      }
+    };
+
+    const changeYear = (direction) => {
+      currentYear += direction;
+      if (!selectedDateKey || !selectedDateKey.startsWith(`${currentYear}-`)) {
+        selectedDateKey = getFirstDateInYear(currentYear);
+      }
+      renderCalendar();
+    };
+
+    prevButton.addEventListener("click", () => changeYear(-1));
+    nextButton.addEventListener("click", () => changeYear(1));
+
+    renderCalendar();
+  })();
+</script>
