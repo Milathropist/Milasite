@@ -5,6 +5,8 @@
   const state = {
     hasPosition: false,
     activeEffects: new Set(),
+    isResetting: false,
+    resetTimerIds: new Set(),
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -33,6 +35,32 @@
 
     windowNode.hidden = true;
     windowNode.setAttribute("aria-hidden", "true");
+
+    const setRestartDisabled = (disabled) => {
+      restartNodes.forEach((node) => {
+        node.disabled = disabled;
+        node.setAttribute("aria-disabled", disabled ? "true" : "false");
+      });
+    };
+
+    const scheduleResetStep = (callback, delay) => {
+      const timeoutId = window.setTimeout(() => {
+        state.resetTimerIds.delete(timeoutId);
+        callback();
+      }, delay);
+
+      state.resetTimerIds.add(timeoutId);
+      return timeoutId;
+    };
+
+    const clearResetTimers = () => {
+      state.resetTimerIds.forEach((timeoutId) => {
+        window.clearTimeout(timeoutId);
+      });
+      state.resetTimerIds.clear();
+      state.isResetting = false;
+      setRestartDisabled(false);
+    };
 
     const stopSounds = () => {
       if (soundNode) {
@@ -90,6 +118,7 @@
       const bubble = document.createElement("button");
       bubble.type = "button";
       bubble.className = "bubble-wrap-bubble";
+      bubble.dataset.bubbleIndex = String(index + 1);
       bubble.setAttribute("aria-label", `Pop bubble ${index + 1}`);
 
       bubble.addEventListener("click", () => {
@@ -106,6 +135,7 @@
     };
 
     const resetBoard = () => {
+      clearResetTimers();
       stopSounds();
       boardNode.innerHTML = "";
 
@@ -116,7 +146,48 @@
       setMeta();
     };
 
+    const restartBoard = () => {
+      if (state.isResetting) return;
+
+      const poppedBubbles = Array.from(
+        boardNode.querySelectorAll(".bubble-wrap-bubble.is-popped")
+      );
+      if (!poppedBubbles.length) {
+        boardNode.querySelector(".bubble-wrap-bubble")?.focus();
+        return;
+      }
+
+      clearResetTimers();
+      stopSounds();
+      state.isResetting = true;
+      setRestartDisabled(true);
+
+      poppedBubbles.forEach((bubble, index) => {
+        scheduleResetStep(() => {
+          bubble.disabled = false;
+          bubble.classList.remove("is-popped");
+          bubble.classList.add("is-reforming");
+          bubble.setAttribute(
+            "aria-label",
+            `Pop bubble ${bubble.dataset.bubbleIndex || String(index + 1)}`
+          );
+          setMeta();
+
+          scheduleResetStep(() => {
+            bubble.classList.remove("is-reforming");
+          }, 420);
+        }, index * 36);
+      });
+
+      scheduleResetStep(() => {
+        state.isResetting = false;
+        setRestartDisabled(false);
+        boardNode.querySelector(".bubble-wrap-bubble")?.focus();
+      }, poppedBubbles.length * 36 + 440);
+    };
+
     const close = () => {
+      clearResetTimers();
       stopSounds();
       windowNode.hidden = true;
       windowNode.setAttribute("aria-hidden", "true");
@@ -152,7 +223,7 @@
     restartNodes.forEach((node) =>
       node.addEventListener("click", (event) => {
         event.preventDefault();
-        resetBoard();
+        restartBoard();
       })
     );
 

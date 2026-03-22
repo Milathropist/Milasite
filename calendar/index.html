@@ -263,12 +263,85 @@ calendar_entries:
   }
 
   .calendar-note-panel--open {
-    animation: collapse-text-drop 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: calendar-note-glitch-in 0.36s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .calendar-note-panel--closing {
-    animation: collapse-text-glitch 0.24s steps(2, end);
+    animation: calendar-note-glitch-out 0.26s steps(2, end);
     pointer-events: none;
+  }
+
+  @keyframes calendar-note-glitch-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-0.75rem) scale(0.98) skewX(7deg);
+      filter: blur(6px);
+      clip-path: inset(0 0 78% 0);
+      text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+    18% {
+      opacity: 0.38;
+      transform: translateX(-0.35rem) skewX(-8deg);
+      filter: blur(2.5px);
+      clip-path: inset(58% 0 6% 0);
+      text-shadow: 3px 0 rgba(255, 0, 102, 0.45), -3px 0 rgba(0, 255, 255, 0.35);
+    }
+    36% {
+      opacity: 0.72;
+      transform: translateX(0.35rem) skewX(6deg);
+      filter: blur(1.2px);
+      clip-path: inset(8% 0 44% 0);
+      text-shadow: -3px 0 rgba(255, 0, 102, 0.42), 3px 0 rgba(0, 255, 255, 0.32);
+    }
+    58% {
+      opacity: 0.92;
+      transform: translateX(-0.14rem) scale(1.01);
+      filter: blur(0.6px);
+      clip-path: inset(18% 0 10% 0);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      clip-path: inset(0 0 0 0);
+      text-shadow: none;
+    }
+  }
+
+  @keyframes calendar-note-glitch-out {
+    0% {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      clip-path: inset(0 0 0 0);
+      text-shadow: none;
+    }
+    22% {
+      transform: translateX(-0.22rem) skewX(5deg);
+      filter: blur(0.8px);
+      clip-path: inset(12% 0 42% 0);
+      text-shadow: 2px 0 rgba(255, 0, 102, 0.42), -2px 0 rgba(0, 255, 255, 0.32);
+    }
+    48% {
+      opacity: 0.76;
+      transform: translateX(0.3rem) skewX(-8deg);
+      filter: blur(1.6px);
+      clip-path: inset(52% 0 8% 0);
+      text-shadow: -3px 0 rgba(255, 0, 102, 0.45), 3px 0 rgba(0, 255, 255, 0.35);
+    }
+    76% {
+      opacity: 0.36;
+      transform: translateX(-0.42rem) scale(0.97);
+      filter: blur(3px);
+      clip-path: inset(8% 0 70% 0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(0.55rem) scale(0.95);
+      filter: blur(5px);
+      clip-path: inset(84% 0 0 0);
+      text-shadow: none;
+    }
   }
 
   .calendar-note-date {
