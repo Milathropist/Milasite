@@ -40,8 +40,8 @@
   const AIR_UNLOCK_SCORE = 200;
   const BASE_SPEED = 262;
   const SCORE_SPEED_LIMIT = 240;
-  const GRAVITY = 1950;
-  const JUMP_VELOCITY = 735;
+  const GRAVITY = 1880;
+  const JUMP_VELOCITY = 780;
   const MAX_FRAME_DELTA = 48;
   const STORAGE_KEY = "milancholy_404_runner_best";
 
@@ -127,32 +127,33 @@
     state.speed = BASE_SPEED + earlySpeedGain + lateSpeedGain;
   }
 
+  // Keep collisions a bit tighter than the sprite art so jumps feel fair.
   function getPlayerRect() {
     const { playerX, playerWidth, playerHeight } = state.metrics;
 
     return {
-      left: playerX + playerWidth * 0.18,
-      right: playerX + playerWidth * 0.79,
-      bottom: state.dinoY + playerHeight * 0.07,
-      top: state.dinoY + playerHeight * 0.88,
+      left: playerX + playerWidth * 0.24,
+      right: playerX + playerWidth * 0.73,
+      bottom: state.dinoY + playerHeight * 0.12,
+      top: state.dinoY + playerHeight * 0.8,
     };
   }
 
   function getObstacleRect(obstacle) {
     if (obstacle.type === "air") {
       return {
-        left: obstacle.x + obstacle.width * 0.14,
-        right: obstacle.x + obstacle.width * 0.82,
-        bottom: obstacle.y + obstacle.height * 0.22,
-        top: obstacle.y + obstacle.height * 0.78,
+        left: obstacle.x + obstacle.width * 0.18,
+        right: obstacle.x + obstacle.width * 0.78,
+        bottom: obstacle.y + obstacle.height * 0.28,
+        top: obstacle.y + obstacle.height * 0.72,
       };
     }
 
     return {
-      left: obstacle.x + obstacle.width * 0.2,
-      right: obstacle.x + obstacle.width * 0.8,
-      bottom: obstacle.height * 0.04,
-      top: obstacle.height * 0.94,
+      left: obstacle.x + obstacle.width * 0.24,
+      right: obstacle.x + obstacle.width * 0.76,
+      bottom: obstacle.height * 0.08,
+      top: obstacle.height * 0.86,
     };
   }
 
@@ -229,13 +230,13 @@
         maxAirHeight
       );
     } else {
-      obstacle.width = playerWidth * choose([0.4, 0.48, 0.58, 0.68]);
+      obstacle.width = playerWidth * choose([0.34, 0.42, 0.5, 0.58]);
       obstacle.height = obstacle.width * LOLIPOP_RATIO;
     }
 
     const lastObstacle = state.obstacles[state.obstacles.length - 1];
     if (lastObstacle) {
-      const gap = randomBetween(playerWidth * 1.55, playerWidth * 2.6);
+      const gap = randomBetween(playerWidth * 1.8, playerWidth * 2.9);
       obstacle.x = Math.max(obstacle.x, lastObstacle.x + lastObstacle.width + gap);
     }
 
