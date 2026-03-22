@@ -1883,12 +1883,12 @@ input, select, textarea {
 	}
 
 	.xp-search-window.is-closing {
-		animation: xp-window-close 0.34s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+		animation: xp-window-close 0.26s cubic-bezier(0.22, 0.8, 0.22, 1) forwards;
 		pointer-events: none;
 	}
 
 	.xp-search-window.is-closing::after {
-		animation: xp-window-close-pop 0.34s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+		animation: xp-window-close-pop 0.26s cubic-bezier(0.22, 0.8, 0.22, 1) forwards;
 	}
 
 	@keyframes xp-window-close {
@@ -1897,35 +1897,107 @@ input, select, textarea {
 			transform: translateZ(0) scale(1);
 			filter: none;
 		}
-		72% {
-			opacity: 1;
-			transform: translateZ(0) scale(0.72);
-			filter: saturate(1.08) brightness(1.03);
+		62% {
+			opacity: 0.98;
+			transform: translateZ(0) scale(0.58);
+			filter: saturate(1.04) brightness(1.02);
 		}
-		86% {
-			opacity: 1;
-			transform: translateZ(0) scale(0.24);
-			filter: saturate(1.16) brightness(1.08);
+		84% {
+			opacity: 0.72;
+			transform: translateZ(0) scale(0.16);
+			filter: blur(0.6px) saturate(1.08) brightness(1.04);
 		}
 		100% {
 			opacity: 0;
 			transform: translateZ(0) scale(0);
-			filter: blur(2px) saturate(1.24);
+			filter: blur(1.5px) saturate(1.12);
 		}
 	}
 
 	@keyframes xp-window-close-pop {
-		0%, 70% {
+		0%, 58% {
 			opacity: 0;
-			transform: scale(0.35);
+			transform: scale(0.5);
 		}
-		88% {
-			opacity: 0.78;
-			transform: scale(1);
+		80% {
+			opacity: 0.34;
+			transform: scale(0.88);
 		}
 		100% {
 			opacity: 0;
-			transform: scale(1.45);
+			transform: scale(1.15);
+		}
+	}
+
+	.window-firework {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 1.15rem;
+		height: 1.15rem;
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 10060;
+		transform: translate(-50%, -50%) scale(0.16);
+		background: radial-gradient(circle, rgba(255, 255, 255, 0.98) 0%, rgba(255, 210, 248, 0.98) 22%, rgba(212, 125, 255, 0.72) 48%, rgba(212, 125, 255, 0) 72%);
+		filter: drop-shadow(0 0 0.7rem rgba(218, 133, 255, 0.42));
+		animation: window-firework-bloom 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+	}
+
+	.window-firework::before,
+	.window-firework::after {
+		content: "";
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.window-firework::before {
+		width: 0.14rem;
+		height: 0.14rem;
+		background: rgba(255, 255, 255, 0.98);
+		box-shadow:
+			0 -0.95rem 0 0 rgba(255, 194, 244, 0.98),
+			0.7rem -0.7rem 0 0 rgba(194, 124, 255, 0.92),
+			0.98rem 0 0 0 rgba(255, 168, 233, 0.98),
+			0.7rem 0.7rem 0 0 rgba(170, 105, 255, 0.9),
+			0 0.95rem 0 0 rgba(255, 183, 248, 0.96),
+			-0.7rem 0.7rem 0 0 rgba(210, 126, 255, 0.92),
+			-0.98rem 0 0 0 rgba(255, 171, 235, 0.96),
+			-0.7rem -0.7rem 0 0 rgba(182, 112, 255, 0.9);
+	}
+
+	.window-firework::after {
+		width: 1.7rem;
+		height: 1.7rem;
+		border: 1px solid rgba(255, 186, 242, 0.56);
+		box-shadow:
+			0 0 1rem rgba(214, 123, 255, 0.3),
+			inset 0 0 0.45rem rgba(255, 210, 247, 0.18);
+	}
+
+	@keyframes window-firework-bloom {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, -50%) scale(0.16);
+			filter: drop-shadow(0 0 0.25rem rgba(218, 133, 255, 0.18));
+		}
+		22% {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(0.78);
+			filter: drop-shadow(0 0 0.8rem rgba(224, 148, 255, 0.44));
+		}
+		64% {
+			opacity: 0.86;
+			transform: translate(-50%, -50%) scale(1.06);
+			filter: drop-shadow(0 0 1rem rgba(201, 108, 255, 0.38));
+		}
+		100% {
+			opacity: 0;
+			transform: translate(-50%, -50%) scale(1.28);
+			filter: drop-shadow(0 0 0.5rem rgba(201, 108, 255, 0));
 		}
 	}
 

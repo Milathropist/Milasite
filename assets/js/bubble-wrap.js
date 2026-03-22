@@ -3,7 +3,7 @@
   const BUBBLE_COUNT = 36;
   const REFORM_DURATION = 420;
   const RESTART_WAVE_DURATION = 220;
-  const CLOSE_ANIMATION_DURATION = 340;
+  const CLOSE_ANIMATION_DURATION = 260;
   const CLOSE_ANIMATION_NAME = "xp-window-close";
 
   const state = {
@@ -14,6 +14,7 @@
     isClosing: false,
     closeAnimationHandler: null,
     closeTimerId: 0,
+    closeOrigin: null,
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -107,9 +108,26 @@
     };
 
     const finishClose = () => {
+      const fireworkOrigin = state.closeOrigin;
+      state.closeOrigin = null;
       clearCloseAnimation();
       windowNode.hidden = true;
       windowNode.setAttribute("aria-hidden", "true");
+      if (fireworkOrigin && !prefersReducedMotion()) {
+        const fireworkNode = document.createElement("span");
+        fireworkNode.className = "window-firework";
+        fireworkNode.setAttribute("aria-hidden", "true");
+        fireworkNode.style.left = `${Math.round(fireworkOrigin.x)}px`;
+        fireworkNode.style.top = `${Math.round(fireworkOrigin.y)}px`;
+        document.body.appendChild(fireworkNode);
+
+        const removeFirework = () => {
+          fireworkNode.remove();
+        };
+
+        fireworkNode.addEventListener("animationend", removeFirework, { once: true });
+        window.setTimeout(removeFirework, 500);
+      }
     };
 
     const setMeta = () => {
@@ -289,6 +307,12 @@
       clearResetTimers();
       stopSounds();
 
+      const rect = windowNode.getBoundingClientRect();
+      state.closeOrigin = {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      };
+
       if (prefersReducedMotion()) {
         finishClose();
         return;
@@ -307,6 +331,7 @@
 
     const open = () => {
       clearCloseAnimation();
+      state.closeOrigin = null;
       resetBoard();
       windowNode.hidden = false;
       windowNode.setAttribute("aria-hidden", "false");
