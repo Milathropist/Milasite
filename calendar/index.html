@@ -132,17 +132,6 @@ calendar_entries:
     margin: 0;
   }
 
-  .calendar-month-count {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 999px;
-    font-size: 0.66rem;
-    letter-spacing: 0.12rem;
-    opacity: 0.88;
-    padding: 0.35rem 0.65rem;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
   .calendar-weekdays,
   .calendar-days {
     display: grid;
@@ -201,10 +190,7 @@ calendar_entries:
   }
 
   .calendar-day-button--note {
-    align-items: center;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 0.5rem;
+    padding: 0.45rem;
   }
 
   .calendar-day-button:hover,
@@ -226,11 +212,17 @@ calendar_entries:
     border-radius: 999px;
     box-shadow: 0 0 0 0.18rem rgba(255, 157, 200, 0.15);
     height: 0.45rem;
-    margin-top: 0.48rem;
+    left: 50%;
+    margin-top: 0;
+    position: absolute;
+    pointer-events: none;
+    bottom: 0.55rem;
+    transform: translateX(-50%);
     width: 0.45rem;
   }
 
   .calendar-day-number {
+    display: block;
     font-size: 0.92rem;
     font-weight: 600;
     line-height: 1;
@@ -293,7 +285,7 @@ calendar_entries:
     </button>
     <div class="calendar-year-display" aria-live="polite">
       <span class="calendar-kicker">Viewing</span>
-      <strong class="calendar-year-value" data-calendar-year>2007</strong>
+      <strong class="calendar-year-value" data-calendar-year></strong>
     </div>
     <button type="button" class="calendar-year-button" data-calendar-next>
       Year +1
@@ -328,6 +320,8 @@ calendar_entries:
     ];
     const weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const minimumYear = 2007;
+    const getCurrentCalendarYear = () =>
+      Math.max(minimumYear, new Date().getFullYear());
 
     const entryMap = new Map();
     rawEntries.forEach((entry) => {
@@ -343,11 +337,37 @@ calendar_entries:
     });
 
     const datedKeys = Array.from(entryMap.keys()).sort();
-    const defaultYear = datedKeys.length
-      ? Math.max(minimumYear, Number(datedKeys[0].slice(0, 4)))
-      : Math.max(minimumYear, new Date().getUTCFullYear());
+    const parseYearFromHash = () => {
+      const hashValue = window.location.hash.replace(/^#/, "").trim();
+      if (!hashValue || !/^\d{4}$/.test(hashValue)) {
+        return null;
+      }
 
-    let currentYear = defaultYear;
+      const parsedYear = Number(hashValue);
+      return Number.isInteger(parsedYear) && parsedYear >= minimumYear
+        ? parsedYear
+        : null;
+    };
+
+    const writeYearHash = (year) => {
+      const nextHash = `#${year}`;
+      if (window.location.hash === nextHash) {
+        return;
+      }
+
+      if (window.history && typeof window.history.replaceState === "function") {
+        window.history.replaceState(
+          null,
+          "",
+          `${window.location.pathname}${window.location.search}${nextHash}`
+        );
+        return;
+      }
+
+      window.location.hash = String(year);
+    };
+
+    let currentYear = parseYearFromHash() || getCurrentCalendarYear();
     let selectedDateKey = null;
 
     const rootNode = document.querySelector("[data-calendar-root]");
@@ -373,6 +393,21 @@ calendar_entries:
     const formatLongDate = (dateKey) => {
       const [year, month, day] = dateKey.split("-").map(Number);
       return `${day} ${monthNames[month - 1]} ${year}`;
+    };
+
+    const setCurrentYear = (year) => {
+      if (!Number.isInteger(year) || year < minimumYear) {
+        return false;
+      }
+
+      const didChange = currentYear !== year;
+      currentYear = year;
+
+      if (selectedDateKey && !selectedDateKey.startsWith(`${currentYear}-`)) {
+        selectedDateKey = null;
+      }
+
+      return didChange;
     };
 
     const createDayNumber = (day) => {
@@ -424,13 +459,6 @@ calendar_entries:
 
       const monthKeyPrefix = `${currentYear}-${String(monthIndex + 1).padStart(2, "0")}-`;
       const monthDates = datedKeys.filter((dateKey) => dateKey.startsWith(monthKeyPrefix));
-
-      if (monthDates.length) {
-        const monthCount = document.createElement("span");
-        monthCount.className = "calendar-month-count";
-        monthCount.textContent = `${monthDates.length} noted day${monthDates.length === 1 ? "" : "s"}`;
-        monthHeader.appendChild(monthCount);
-      }
 
       monthNode.appendChild(monthHeader);
 
@@ -561,16 +589,44 @@ calendar_entries:
         return;
       }
 
-      currentYear = nextYear;
-      if (selectedDateKey && !selectedDateKey.startsWith(`${currentYear}-`)) {
-        selectedDateKey = null;
+      if (window.location.hash === `#${nextYear}`) {
+        if (setCurrentYear(nextYear)) {
+          renderCalendar();
+        }
+        return;
       }
-      renderCalendar();
+
+      window.location.hash = String(nextYear);
+    };
+
+    const handleYearHashChange = () => {
+      const hashYear = parseYearFromHash();
+      if (hashYear !== null) {
+        if (setCurrentYear(hashYear)) {
+          renderCalendar();
+        }
+        return;
+      }
+
+      const fallbackYear = getCurrentCalendarYear();
+      const didChange = setCurrentYear(fallbackYear);
+
+      if (window.location.hash) {
+        writeYearHash(fallbackYear);
+      }
+
+      if (didChange || !rootNode.hasChildNodes()) {
+        renderCalendar();
+      }
     };
 
     prevButton.addEventListener("click", () => changeYear(-1));
     nextButton.addEventListener("click", () => changeYear(1));
+    window.addEventListener("hashchange", handleYearHashChange);
 
+    if (window.location.hash && parseYearFromHash() === null) {
+      writeYearHash(currentYear);
+    }
     renderCalendar();
   })();
 </script>
