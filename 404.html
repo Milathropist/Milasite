@@ -6,6 +6,12 @@ sitemap: false
 ---
 
 <style>
+  @font-face {
+    font-family: "Pixelify Sans";
+    src: url("{{ '/images/404sprites/PixelifySans.ttf' | relative_url }}") format("truetype");
+    font-display: swap;
+  }
+
   #header nav {
     display: none;
   }
@@ -22,14 +28,402 @@ sitemap: false
     justify-content: center;
   }
 
+  .not-found-game-shell {
+    width: min(100%, 46rem);
+    margin: 0 auto 1.35rem;
+  }
+
+  .not-found-game-frame {
+    padding: 0.9rem;
+    border-radius: 0.6rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(76, 42, 133, 0.08)),
+      rgba(17, 11, 33, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 1.1rem 2.2rem rgba(0, 0, 0, 0.28);
+  }
+
+  .not-found-game {
+    --runner-ground-offset: 2.8rem;
+    --runner-track-offset: 0px;
+    position: relative;
+    min-height: 16.5rem;
+    overflow: hidden;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background:
+      radial-gradient(circle at top left, rgba(238, 162, 214, 0.24), rgba(238, 162, 214, 0) 33%),
+      radial-gradient(circle at top right, rgba(140, 110, 255, 0.18), rgba(140, 110, 255, 0) 28%),
+      linear-gradient(180deg, rgba(23, 19, 45, 0.96), rgba(31, 19, 60, 0.95) 48%, rgba(47, 28, 79, 0.96));
+    cursor: pointer;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  .not-found-game:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.88);
+    outline-offset: 4px;
+  }
+
+  .not-found-game::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.78) 0 1px, transparent 2px),
+      radial-gradient(circle at 26% 10%, rgba(255, 255, 255, 0.58) 0 1px, transparent 2px),
+      radial-gradient(circle at 44% 22%, rgba(255, 255, 255, 0.52) 0 1px, transparent 2px),
+      radial-gradient(circle at 66% 14%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
+      radial-gradient(circle at 84% 26%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2px),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 42%);
+    opacity: 0.42;
+    pointer-events: none;
+  }
+
+  .not-found-game::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--runner-ground-offset) - 0.2rem);
+    height: 2.5rem;
+    background: linear-gradient(180deg, rgba(255, 191, 225, 0.05), rgba(255, 191, 225, 0.18));
+    pointer-events: none;
+  }
+
+  .not-found-game-hud {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.8rem;
+    right: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    z-index: 4;
+    font-family: "Pixelify Sans", "Courier New", monospace;
+  }
+
+  .not-found-game-instructions,
+  .not-found-game-scorecard {
+    padding: 0.38rem 0.6rem;
+    border-radius: 0.38rem;
+    background: rgba(10, 8, 22, 0.44);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .not-found-game-instructions {
+    text-align: left;
+    max-width: 17rem;
+  }
+
+  .not-found-game-instructions strong,
+  .not-found-game-scorelabel,
+  .not-found-game-scorevalue,
+  .not-found-game-overlay-title,
+  .not-found-game-overlay-copy,
+  .not-found-game-caption {
+    font-family: "Pixelify Sans", "Courier New", monospace;
+    text-transform: none;
+  }
+
+  .not-found-game-instructions strong {
+    display: block;
+    font-size: 0.92rem;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+  }
+
+  .not-found-game-instructions span {
+    display: block;
+    margin-top: 0.18rem;
+    font-size: 0.74rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.76);
+  }
+
+  .not-found-game-scoreboard {
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .not-found-game-scorecard {
+    min-width: 6.8rem;
+    text-align: right;
+  }
+
+  .not-found-game-scorelabel {
+    display: block;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.66);
+    letter-spacing: 0.08em;
+  }
+
+  .not-found-game-scorevalue {
+    display: block;
+    margin-top: 0.1rem;
+    color: #fff4ff;
+    font-size: 1.15rem;
+    line-height: 1;
+    letter-spacing: 0.05em;
+  }
+
+  .not-found-game-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--runner-ground-offset);
+    background:
+      linear-gradient(180deg, rgba(85, 47, 138, 0.9), rgba(38, 19, 67, 0.98)),
+      rgba(25, 13, 49, 0.96);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .not-found-game-track::before,
+  .not-found-game-track::after {
+    content: "";
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    background-repeat: repeat-x;
+    transform: translateX(var(--runner-track-offset));
+  }
+
+  .not-found-game-track::before {
+    bottom: 0.95rem;
+    height: 2px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.82) 0 1.45rem,
+      transparent 1.45rem 2.55rem
+    );
+    opacity: 0.72;
+  }
+
+  .not-found-game-track::after {
+    bottom: 0.55rem;
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(255, 224, 244, 0.72) 0 0.8rem,
+      transparent 0.8rem 1.7rem
+    );
+    opacity: 0.58;
+  }
+
+  .not-found-game-obstacles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .not-found-game-obstacle {
+    position: absolute;
+    left: 0;
+    bottom: calc(var(--runner-ground-offset) - 0.1rem);
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .not-found-game-obstacle img,
+  .not-found-game-dino {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    pointer-events: none;
+  }
+
+  .not-found-game-obstacle--ground {
+    transform-origin: 50% 100%;
+    filter: drop-shadow(0 0.45rem 0.55rem rgba(0, 0, 0, 0.35));
+  }
+
+  .not-found-game-obstacle--air {
+    transform-origin: 50% 50%;
+    filter: drop-shadow(0 0.4rem 0.55rem rgba(0, 0, 0, 0.32));
+  }
+
+  .not-found-game-obstacle--air img {
+    animation: not-found-plane-bob 0.92s ease-in-out infinite alternate;
+  }
+
+  .not-found-game-dino {
+    position: absolute;
+    left: 3.3rem;
+    bottom: calc(var(--runner-ground-offset) - 0.15rem);
+    width: 5.55rem;
+    height: 5.9rem;
+    z-index: 3;
+    transform-origin: 50% 100%;
+    filter: drop-shadow(0 0.55rem 0.6rem rgba(0, 0, 0, 0.4));
+    will-change: transform;
+  }
+
+  .not-found-game-dino.is-dead {
+    filter: grayscale(0.08) brightness(0.96) drop-shadow(0 0.55rem 0.6rem rgba(0, 0, 0, 0.42));
+  }
+
+  .not-found-game-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(12, 10, 23, 0.2), rgba(12, 10, 23, 0.68));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 5;
+  }
+
+  .not-found-game-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .not-found-game-overlay-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.15rem;
+    border-radius: 0.65rem;
+    background: rgba(15, 10, 29, 0.68);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .not-found-game-overlay-title,
+  .not-found-game-overlay-copy {
+    margin: 0;
+    letter-spacing: 0.06em;
+  }
+
+  .not-found-game-overlay-title {
+    font-size: 1.45rem;
+    color: #ffffff;
+  }
+
+  .not-found-game-overlay-copy {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .not-found-game .runner-retry-button {
+    width: 3.45rem;
+    height: 3.45rem;
+    font-size: 1.4rem;
+  }
+
+  .not-found-game-caption {
+    margin: 0.85rem 0 0;
+    font-size: 0.92rem;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
   .not-found-home .icon.brands.fa-house:before {
     content: "\f015";
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
   }
+
+  @keyframes not-found-plane-bob {
+    from {
+      transform: translateY(-1px) rotate(-1deg);
+    }
+
+    to {
+      transform: translateY(2px) rotate(1.5deg);
+    }
+  }
+
+  @media screen and (max-width: 736px) {
+    .not-found-game {
+      min-height: 13.6rem;
+    }
+
+    .not-found-game-hud {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .not-found-game-scoreboard {
+      justify-content: flex-start;
+    }
+
+    .not-found-game-dino {
+      left: 1.8rem;
+      width: 4.75rem;
+      height: 5.05rem;
+    }
+  }
 </style>
 
 <section class="item-block not-found-panel">
+  <div
+    class="not-found-game-shell"
+    id="notFoundRunner"
+    data-dino-src="{{ '/images/404sprites/DinoNoWifi.png' | relative_url }}"
+    data-ground-src="{{ '/images/404sprites/lolipop.png' | relative_url }}"
+    data-air-src="{{ '/images/404sprites/PinkPaperPlane.png' | relative_url }}">
+    <div class="not-found-game-frame">
+      <div
+        class="not-found-game"
+        data-runner-scene
+        role="button"
+        tabindex="0"
+        aria-label="No internet runner game. Click the game area or press space to jump.">
+        <div class="not-found-game-hud">
+          <div class="not-found-game-instructions">
+            <strong>No Wifi Run</strong>
+            <span>Press SPACE or click to jump. Pink paper planes arrive at score 0200.</span>
+          </div>
+          <div class="not-found-game-scoreboard">
+            <div class="not-found-game-scorecard">
+              <span class="not-found-game-scorelabel">Score</span>
+              <span class="not-found-game-scorevalue" data-runner-score>0000</span>
+            </div>
+            <div class="not-found-game-scorecard">
+              <span class="not-found-game-scorelabel">Best</span>
+              <span class="not-found-game-scorevalue" data-runner-best>0000</span>
+            </div>
+          </div>
+        </div>
+        <div class="not-found-game-obstacles" data-runner-obstacles aria-hidden="true"></div>
+        <img class="not-found-game-dino" data-runner-dino alt="" aria-hidden="true" />
+        <div class="not-found-game-track" data-runner-track aria-hidden="true"></div>
+        <div class="not-found-game-overlay" data-runner-overlay aria-hidden="true">
+          <div class="not-found-game-overlay-card">
+            <p class="not-found-game-overlay-title">Try Again</p>
+            <p class="not-found-game-overlay-copy" data-runner-overlay-copy>Score 0000</p>
+            <button
+              type="button"
+              class="bubble-wrap-action icon solid fa-rotate runner-retry-button"
+              data-runner-retry
+              aria-label="Respawn and retry">
+              <span class="label">Retry</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="not-found-game-caption">Click the playfield or press SPACE to jump.</p>
+    </div>
+  </div>
   <h2>404 page not found</h2>
   <p>The page you tried to open does not exist.</p>
   <ul class="icons item-link not-found-home">
@@ -44,3 +438,5 @@ sitemap: false
     </li>
   </ul>
 </section>
+
+<script src="{{ '/assets/js/404-runner.js' | relative_url }}"></script>
