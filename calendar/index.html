@@ -155,22 +155,26 @@ calendar_entries:
   .calendar-day,
   .calendar-day-button {
     align-items: center;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(238, 162, 214, 0.23);
     border-radius: 25px;
+    border-top: 1px solid rgba(158, 157, 157, 0.4);
+    border-left: 1px solid rgba(158, 157, 157, 0.3);
     box-sizing: border-box;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
+    color: #ffffff;
     display: flex;
     justify-content: center;
     justify-self: center;
     aspect-ratio: 1 / 1;
-    padding: 0.45rem;
+    padding: 0;
     position: relative;
     text-align: center;
     width: min(100%, 3rem);
   }
 
   .calendar-day {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #ffffff;
     width: min(100%, 3rem);
   }
 
@@ -182,14 +186,6 @@ calendar_entries:
   }
 
   .calendar-day-button {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    background: rgba(158, 157, 157, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-top-color: rgba(158, 157, 157, 0.4);
-    border-left-color: rgba(158, 157, 157, 0.3);
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.085);
-    color: #ffffff;
     cursor: pointer;
     font: inherit;
     transition: background-color 0.2s ease, border-color 0.2s ease,
@@ -226,9 +222,12 @@ calendar_entries:
   }
 
   .calendar-day-number {
-    display: block;
+    align-items: center;
+    display: flex;
     font-size: 0.92rem;
     font-weight: 600;
+    height: 100%;
+    justify-content: center;
     line-height: 1;
     text-align: center;
     width: 100%;
