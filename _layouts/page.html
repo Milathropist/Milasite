@@ -527,9 +527,19 @@
           </button>
         </header>
         <div class="xp-search-body">
-          <p class="bubble-wrap-intro">Pop every bubble. Close and reopen the window to reset it.</p>
           <div class="bubble-wrap-meta" id="bubbleWrapMeta" aria-live="polite"></div>
           <div class="bubble-wrap-board" id="bubbleWrapBoard" role="group" aria-label="Bubble wrap sheet"></div>
+          <ul class="bubble-wrap-actions" aria-label="Bubble wrap controls">
+            <li>
+              <button
+                type="button"
+                class="bubble-wrap-action icon solid fa-rotate"
+                data-bubble-wrap-restart
+                aria-label="Restart bubble wrap">
+                <span class="label">Restart</span>
+              </button>
+            </li>
+          </ul>
         </div>
       </section>
       <audio

@@ -257,7 +257,18 @@ calendar_entries:
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 1rem;
     margin-top: 0.85rem;
+    overflow: hidden;
     padding: 0.95rem;
+    transform-origin: top center;
+  }
+
+  .calendar-note-panel--open {
+    animation: collapse-text-drop 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .calendar-note-panel--closing {
+    animation: collapse-text-glitch 0.24s steps(2, end);
+    pointer-events: none;
   }
 
   .calendar-note-date {
@@ -298,6 +309,13 @@ calendar_entries:
     .calendar-year-display {
       min-width: 0;
       width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .calendar-note-panel--open,
+    .calendar-note-panel--closing {
+      animation: none;
     }
   }
 </style>
@@ -393,6 +411,7 @@ calendar_entries:
 
     let currentYear = parseYearFromHash() || getCurrentCalendarYear();
     let selectedDateKey = null;
+    let isNoteTransitioning = false;
 
     const rootNode = document.querySelector("[data-calendar-root]");
     const yearNode = document.querySelector("[data-calendar-year]");
@@ -418,6 +437,12 @@ calendar_entries:
       const [year, month, day] = dateKey.split("-").map(Number);
       return `${day} ${monthNames[month - 1]} ${year}`;
     };
+
+    const prefersReducedMotion = () =>
+      Boolean(
+        window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
 
     const setCurrentYear = (year) => {
       if (!Number.isInteger(year) || year < minimumYear) {
@@ -461,6 +486,42 @@ calendar_entries:
       });
 
       return card;
+    };
+
+    const updateSelectedDate = (nextDateKey) => {
+      if (isNoteTransitioning) {
+        return;
+      }
+
+      const activePanel = rootNode.querySelector(".calendar-note-panel");
+      if (!activePanel || !selectedDateKey || prefersReducedMotion()) {
+        selectedDateKey = nextDateKey;
+        renderCalendar();
+        return;
+      }
+
+      isNoteTransitioning = true;
+      activePanel.classList.remove("calendar-note-panel--open");
+      activePanel.classList.add("calendar-note-panel--closing");
+
+      let completed = false;
+      const finishTransition = () => {
+        if (completed) return;
+        completed = true;
+        isNoteTransitioning = false;
+        selectedDateKey = nextDateKey;
+        renderCalendar();
+      };
+
+      const fallbackTimeout = window.setTimeout(finishTransition, 280);
+      activePanel.addEventListener(
+        "animationend",
+        () => {
+          window.clearTimeout(fallbackTimeout);
+          finishTransition();
+        },
+        { once: true }
+      );
     };
 
     const buildMonth = (monthIndex) => {
@@ -527,8 +588,7 @@ calendar_entries:
           button.appendChild(createDayNumber(day));
 
           button.addEventListener("click", () => {
-            selectedDateKey = selectedDateKey === dateKey ? null : dateKey;
-            renderCalendar();
+            updateSelectedDate(selectedDateKey === dateKey ? null : dateKey);
           });
 
           dayNode.appendChild(button);
@@ -558,7 +618,7 @@ calendar_entries:
 
       if (monthDates.length && isSelectedMonth) {
         const notePanel = document.createElement("div");
-        notePanel.className = "calendar-note-panel";
+        notePanel.className = "calendar-note-panel calendar-note-panel--open";
 
         const label = document.createElement("span");
         label.className = "calendar-note-date";

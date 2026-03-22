@@ -26,6 +26,7 @@
     const soundNode = document.getElementById("bubbleWrapPopSound");
     const openNodes = document.querySelectorAll("[data-bubble-wrap-open]");
     const closeNodes = document.querySelectorAll("[data-bubble-wrap-close]");
+    const restartNodes = document.querySelectorAll("[data-bubble-wrap-restart]");
     const dragHandle = windowNode?.querySelector("[data-bubble-wrap-drag-handle]");
 
     if (!windowNode || !boardNode || !metaNode || openNodes.length === 0) return;
@@ -52,7 +53,7 @@
       const remaining = boardNode.querySelectorAll(".bubble-wrap-bubble:not(.is-popped)").length;
       metaNode.textContent = remaining
         ? `${remaining} bubble${remaining === 1 ? "" : "s"} left.`
-        : "All popped. Close and reopen to reset.";
+        : "All popped. Hit restart to play again.";
     };
 
     const playPopSound = () => {
@@ -148,6 +149,12 @@
       })
     );
     closeNodes.forEach((node) => node.addEventListener("click", close));
+    restartNodes.forEach((node) =>
+      node.addEventListener("click", (event) => {
+        event.preventDefault();
+        resetBoard();
+      })
+    );
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
