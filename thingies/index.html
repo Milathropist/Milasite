@@ -4,15 +4,25 @@ title: Thingies
 permalink: /thingies/
 hero_image: /images/thingies.jpg
 ---
-<p class="toc"><strong>Table of Contents:</strong></p>
-<ul>
-  {% assign posts = site.thingies_articles | sort: 'order' | reverse %}
-  {% for item in posts %}
-    <li>
-      <a href="#{{ item.slug }}">{{ item.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+<button
+  type="button"
+  class="collapsible"
+  aria-expanded="false"
+  aria-controls="thingiesTableOfContents">
+  Table of Contents
+</button>
+<div class="collapse-content" id="thingiesTableOfContents">
+  <div class="toc">
+    <ul>
+      {% assign posts = site.thingies_articles | sort: 'order' | reverse %}
+      {% for item in posts %}
+        <li>
+          <a href="#{{ item.slug }}">{{ item.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
 {% for item in posts %}
   <section class="item-block" id="{{ item.slug }}">

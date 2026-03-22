@@ -522,8 +522,10 @@
 
       const collapsibleNodes = document.querySelectorAll(".collapsible");
       collapsibleNodes.forEach((node) => {
+        node.setAttribute("aria-expanded", node.classList.contains("active") ? "true" : "false");
         node.addEventListener("click", () => {
           const isOpen = node.classList.toggle("active");
+          node.setAttribute("aria-expanded", isOpen ? "true" : "false");
           let content = node.nextElementSibling;
           while (content && !content.classList.contains("collapse-content")) {
             content = content.nextElementSibling;

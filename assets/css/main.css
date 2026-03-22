@@ -1706,6 +1706,66 @@ input, select, textarea {
 		content: "\f002";
 	}
 
+	html,
+	body,
+	.xp-search-results {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(238, 162, 214, 0.9) rgba(255, 255, 255, 0.08);
+	}
+
+	html::-webkit-scrollbar,
+	body::-webkit-scrollbar,
+	.xp-search-results::-webkit-scrollbar {
+		width: 10px;
+		height: 10px;
+	}
+
+	html::-webkit-scrollbar-track,
+	body::-webkit-scrollbar-track,
+	.xp-search-results::-webkit-scrollbar-track {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02)),
+			repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 1px, rgba(255, 255, 255, 0) 1px 4px),
+			rgba(255, 255, 255, 0.08);
+		border-radius: 2px;
+	}
+
+	html::-webkit-scrollbar-thumb,
+	body::-webkit-scrollbar-thumb,
+	.xp-search-results::-webkit-scrollbar-thumb {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0) 32%),
+			repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0 1px, rgba(255, 255, 255, 0) 1px 4px),
+			linear-gradient(#f7b4e4, #d35aa9);
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		border-radius: 2px;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+	}
+
+	html::-webkit-scrollbar-thumb:hover,
+	body::-webkit-scrollbar-thumb:hover,
+	.xp-search-results::-webkit-scrollbar-thumb:hover {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.04) 32%),
+			repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0 1px, rgba(255, 255, 255, 0) 1px 4px),
+			linear-gradient(#ffd1ee, #e06ab4);
+	}
+
+	html::-webkit-scrollbar-thumb:active,
+	body::-webkit-scrollbar-thumb:active,
+	.xp-search-results::-webkit-scrollbar-thumb:active {
+		background:
+			linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02) 30%),
+			repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 1px, rgba(255, 255, 255, 0) 1px 4px),
+			linear-gradient(#e06ab4, #b73b8d);
+	}
+
+	html::-webkit-scrollbar-corner,
+	body::-webkit-scrollbar-corner,
+	.xp-search-results::-webkit-scrollbar-corner {
+		background: rgba(255, 255, 255, 0.08);
+	}
+
 	.site-corner-tools {
 		position: fixed;
 		top: 0.75rem;
@@ -1896,38 +1956,12 @@ input, select, textarea {
 		overflow-y: auto;
 		overflow-x: hidden;
 		scrollbar-gutter: stable;
-		scrollbar-width: thin;
-		scrollbar-color: rgba(238, 162, 214, 0.78) rgba(255, 255, 255, 0.08);
 		background: rgba(0, 0, 0, 0.18);
 		backdrop-filter: blur(8px);
 		-webkit-backdrop-filter: blur(8px);
 		border: 1px solid rgba(255, 255, 255, 0.35);
 		border-radius: 2px;
 		padding: 0.25rem;
-	}
-
-	.xp-search-results::-webkit-scrollbar {
-		width: 10px;
-	}
-
-	.xp-search-results::-webkit-scrollbar-track {
-		background: rgba(255, 255, 255, 0.08);
-		border-radius: 2px;
-	}
-
-	.xp-search-results::-webkit-scrollbar-thumb {
-		background: linear-gradient(#f7b4e4, #d35aa9);
-		border: 1px solid rgba(255, 255, 255, 0.35);
-		border-radius: 2px;
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
-	}
-
-	.xp-search-results::-webkit-scrollbar-thumb:hover {
-		background: linear-gradient(#ffd1ee, #e06ab4);
-	}
-
-	.xp-search-results::-webkit-scrollbar-thumb:active {
-		background: linear-gradient(#e06ab4, #b73b8d);
 	}
 
 	.xp-search-results a {

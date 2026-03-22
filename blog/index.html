@@ -4,15 +4,25 @@ title: Blog
 permalink: /blog/
 hero_image: /images/blog.jpg
 ---
-<p class="toc"><strong>Table of Contents:</strong></p>
-<ul>
-  {% assign posts = site.blog_articles | sort: 'order' | reverse %}
-  {% for article in posts %}
-    <li>
-      <a href="#{{ article.slug }}">{{ article.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+<button
+  type="button"
+  class="collapsible"
+  aria-expanded="false"
+  aria-controls="blogTableOfContents">
+  Table of Contents
+</button>
+<div class="collapse-content" id="blogTableOfContents">
+  <div class="toc">
+    <ul>
+      {% assign posts = site.blog_articles | sort: 'order' | reverse %}
+      {% for article in posts %}
+        <li>
+          <a href="#{{ article.slug }}">{{ article.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
 {% for article in posts %}
   <section class="article-block" id="{{ article.slug }}">
