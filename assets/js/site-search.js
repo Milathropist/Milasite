@@ -67,76 +67,6 @@
       .map((token) => token.trim())
       .filter(Boolean);
 
-  const parseDateValue = (value) => {
-    const raw = String(value || "").trim();
-    if (!raw || raw.toUpperCase() === "N/A") return null;
-
-    let parts = null;
-    let year = 0;
-    let month = 0;
-    let day = 0;
-
-    parts = raw.match(/^(\d{2})-(\d{2})-(\d{2})$/);
-    if (parts) {
-      year = 2000 + Number(parts[1]);
-      month = Number(parts[2]);
-      day = Number(parts[3]);
-    } else {
-      parts = raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:\D|$)/);
-      if (!parts) return null;
-      year = Number(parts[1]);
-      month = Number(parts[2]);
-      day = Number(parts[3]);
-    }
-
-    const parsed = new Date(Date.UTC(year, month - 1, day));
-    if (
-      Number.isNaN(parsed.getTime()) ||
-      parsed.getUTCFullYear() !== year ||
-      parsed.getUTCMonth() !== month - 1 ||
-      parsed.getUTCDate() !== day
-    ) {
-      return null;
-    }
-
-    return parsed.getTime();
-  };
-
-  const compareResults = (leftItem, rightItem) => {
-    const leftDate = parseDateValue(leftItem.date);
-    const rightDate = parseDateValue(rightItem.date);
-    const leftHasDate = leftDate !== null;
-    const rightHasDate = rightDate !== null;
-
-    if (leftHasDate && rightHasDate && leftDate !== rightDate) {
-      return rightDate - leftDate;
-    }
-
-    if (leftHasDate !== rightHasDate) {
-      return leftHasDate ? -1 : 1;
-    }
-
-    const titleComparison = String(leftItem.title || "").localeCompare(
-      String(rightItem.title || ""),
-      undefined,
-      { sensitivity: "base" }
-    );
-    if (titleComparison !== 0) {
-      return titleComparison;
-    }
-
-    const typeComparison = String(leftItem.type || "").localeCompare(
-      String(rightItem.type || ""),
-      undefined,
-      { sensitivity: "base" }
-    );
-    if (typeComparison !== 0) {
-      return typeComparison;
-    }
-
-    return String(leftItem.url || "").localeCompare(String(rightItem.url || ""));
-  };
-
   const state = {
     index: null,
     indexPromise: null,
@@ -244,7 +174,7 @@
 
       const title = document.createElement("span");
       title.className = "xp-search-result-title";
-      title.textContent = result.snippet || result.title || "Untitled";
+      title.textContent = result.title || "Untitled";
 
       const type = document.createElement("span");
       type.className = "xp-search-result-type";
@@ -262,25 +192,28 @@
     const tokens = tokenize(query);
     if (tokens.length === 0) return [];
 
-    const matches = [];
+    const scored = [];
     for (const item of items) {
       const titleText = normalizeText(item.title);
       const contentText = normalizeText(item.content);
       const haystack = `${titleText} ${contentText}`;
 
+      let score = 0;
       let matchesAll = true;
       for (const token of tokens) {
-        if (!haystack.includes(token)) {
+        const idx = haystack.indexOf(token);
+        if (idx === -1) {
           matchesAll = false;
           break;
         }
+        score += titleText.includes(token) ? 4 : 1;
       }
       if (!matchesAll) continue;
-      matches.push(item);
+      scored.push({ item, score });
     }
 
-    matches.sort(compareResults);
-    return matches.slice(0, MAX_RESULTS);
+    scored.sort((a, b) => b.score - a.score);
+    return scored.slice(0, MAX_RESULTS).map(({ item }) => item);
   };
 
   const init = () => {
@@ -401,7 +334,7 @@
       inputNode.focus();
       inputNode.select();
 
-      setMeta("Loading search index...");
+      setMeta("Loading articles...");
       try {
         await getIndex();
         if (inputNode.value.trim().length < MIN_QUERY_LENGTH) {
