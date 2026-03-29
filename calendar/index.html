@@ -8,16 +8,24 @@ calendar_entries:
   # Repeat a date if you want more than one expandable note on the same day.
   - date: 2007-06-01
     title: Mila has been born!
-    content: ""
+    content: "This day marks the beginning of Mila's life. That's how a princess, a legend, was born!"
 
   - date: 2019-08-09
     title: Mila made her steam account!
     content: "On that day, Mila finally made her own steam account and stopped using her brothers' one^^"
 
   - date: 2022-11-29
-    title: Mila has started using Discord!
+    title: Mila started using Discord!
     content: "She had tried earlier too, but she deleted the account shortly after making it back then. This date is when she joined Discord for real!"
----
+
+  - date: 2025-12-06
+    title: Mila got her ears pierced!
+    content: "On that day, Mila finally got her ears pierced! It takes some time for it to heal though so she still had to wait a bit for her 1st true earrings! (she was wearing temporary ones in the meantime)"
+
+  - date: 2026-03-25
+    title: Mila put on her 1st real earrings!
+    content: "On that day, Mila finally changed the temporary earrings for real ones! She has 3 pairs now too:3"
+    ---
 
 <style>
   .calendar-shell {
@@ -456,20 +464,35 @@ calendar_entries:
     });
 
     const datedKeys = Array.from(entryMap.keys()).sort();
-    const parseYearFromHash = () => {
+    const parseHashState = () => {
       const hashValue = window.location.hash.replace(/^#/, "").trim();
-      if (!hashValue || !/^\d{4}$/.test(hashValue)) {
-        return null;
+      if (!hashValue) {
+        return { year: null, dateKey: null };
       }
 
-      const parsedYear = Number(hashValue);
-      return Number.isInteger(parsedYear) && parsedYear >= minimumYear
-        ? parsedYear
-        : null;
+      if (/^\d{4}$/.test(hashValue)) {
+        const parsedYear = Number(hashValue);
+        if (Number.isInteger(parsedYear) && parsedYear >= minimumYear) {
+          return { year: parsedYear, dateKey: null };
+        }
+        return { year: null, dateKey: null };
+      }
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(hashValue)) {
+        const parsedYear = Number(hashValue.slice(0, 4));
+        if (Number.isInteger(parsedYear) && parsedYear >= minimumYear) {
+          return {
+            year: parsedYear,
+            dateKey: entryMap.has(hashValue) ? hashValue : null
+          };
+        }
+      }
+
+      return { year: null, dateKey: null };
     };
 
-    const writeYearHash = (year) => {
-      const nextHash = `#${year}`;
+    const writeHash = (value) => {
+      const nextHash = value ? `#${value}` : "";
       if (window.location.hash === nextHash) {
         return;
       }
@@ -483,11 +506,12 @@ calendar_entries:
         return;
       }
 
-      window.location.hash = String(year);
+      window.location.hash = String(value || "");
     };
 
-    let currentYear = parseYearFromHash() || getCurrentCalendarYear();
-    let selectedDateKey = null;
+    const initialHashState = parseHashState();
+    let currentYear = initialHashState.year || getCurrentCalendarYear();
+    let selectedDateKey = initialHashState.dateKey;
     let isNoteTransitioning = false;
 
     const rootNode = document.querySelector("[data-calendar-root]");
@@ -574,6 +598,7 @@ calendar_entries:
       if (!activePanel || !selectedDateKey || prefersReducedMotion()) {
         selectedDateKey = nextDateKey;
         renderCalendar();
+        writeHash(selectedDateKey || String(currentYear));
         return;
       }
 
@@ -588,6 +613,7 @@ calendar_entries:
         isNoteTransitioning = false;
         selectedDateKey = nextDateKey;
         renderCalendar();
+        writeHash(selectedDateKey || String(currentYear));
       };
 
       const fallbackTimeout = window.setTimeout(finishTransition, 280);
@@ -741,9 +767,14 @@ calendar_entries:
     };
 
     const handleYearHashChange = () => {
-      const hashYear = parseYearFromHash();
-      if (hashYear !== null) {
-        if (setCurrentYear(hashYear)) {
+      const hashState = parseHashState();
+      if (hashState.year !== null) {
+        const didChange = setCurrentYear(hashState.year);
+        const nextSelectedDateKey = hashState.dateKey;
+        const didSelectionChange = selectedDateKey !== nextSelectedDateKey;
+        selectedDateKey = nextSelectedDateKey;
+
+        if (didChange || didSelectionChange || !rootNode.hasChildNodes()) {
           renderCalendar();
         }
         return;
@@ -751,12 +782,14 @@ calendar_entries:
 
       const fallbackYear = getCurrentCalendarYear();
       const didChange = setCurrentYear(fallbackYear);
+      const hadSelectedDate = selectedDateKey !== null;
+      selectedDateKey = null;
 
       if (window.location.hash) {
-        writeYearHash(fallbackYear);
+        writeHash(String(fallbackYear));
       }
 
-      if (didChange || !rootNode.hasChildNodes()) {
+      if (didChange || hadSelectedDate || !rootNode.hasChildNodes()) {
         renderCalendar();
       }
     };
@@ -765,8 +798,8 @@ calendar_entries:
     nextButton.addEventListener("click", () => changeYear(1));
     window.addEventListener("hashchange", handleYearHashChange);
 
-    if (window.location.hash && parseYearFromHash() === null) {
-      writeYearHash(currentYear);
+    if (window.location.hash && parseHashState().year === null) {
+      writeHash(String(currentYear));
     }
     renderCalendar();
   })();

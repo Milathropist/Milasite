@@ -54,7 +54,7 @@
   const LOLIPOP_RATIO = 1903 / 927;
   const SPIRAL_CANDY_WIDTH_RATIO = 1837 / 953;
   const PAPER_PLANE_RATIO = 883 / 1910;
-  const SCORE_NEGATIVE_INTERVAL = 30;
+  const SCORE_NEGATIVE_INTERVAL = 120;
   const SPIRAL_UNLOCK_SCORE = 45;
   const AIR_UNLOCK_SCORE = 90;
   const GROUND_OBSTACLE_MAX_HEIGHT_RATIO = 0.9;
@@ -62,7 +62,9 @@
   const SCORE_SPEED_LIMIT = 240;
   const GRAVITY = 1880;
   const DUCK_FALL_MULTIPLIER = 1.68;
-  const JUMP_VELOCITY = 780;
+  const MAX_JUMP_VELOCITY = 780;
+  const MIN_JUMP_HEIGHT_RATIO = 0.5;
+  const MIN_JUMP_CUTOFF_VELOCITY = MAX_JUMP_VELOCITY * Math.sqrt(MIN_JUMP_HEIGHT_RATIO);
   const MAX_FRAME_DELTA = 48;
   const STORAGE_KEY = "milancholy_404_runner_best";
   const music = assetSources.music ? new Audio(assetSources.music) : null;
@@ -94,6 +96,7 @@
     obstacles: [],
     duckHeld: false,
     ducking: false,
+    jumpHeld: false,
     hasInteracted: false,
     musicEnabled: true,
     metrics: {
@@ -454,9 +457,22 @@
     if (!state.alive) return;
     if (state.dinoY > 4) return;
 
-    state.velocityY = JUMP_VELOCITY;
+    state.jumpHeld = true;
+    state.velocityY = MAX_JUMP_VELOCITY;
     state.dinoY = Math.max(state.dinoY, 1);
     updateDuckState();
+  }
+
+  function releaseJump() {
+    if (!state.jumpHeld) return;
+
+    state.jumpHeld = false;
+
+    if (!state.alive) return;
+    if (state.dinoY <= 0.001) return;
+    if (state.velocityY <= MIN_JUMP_CUTOFF_VELOCITY) return;
+
+    state.velocityY = MIN_JUMP_CUTOFF_VELOCITY;
   }
 
   function setDuckHeld(nextValue) {
@@ -494,6 +510,7 @@
     state.velocityY = 0;
     state.dinoY = 0;
     state.ducking = false;
+    state.jumpHeld = false;
 
     if (state.score > state.best) {
       state.best = state.score;
@@ -521,6 +538,7 @@
     state.velocityY = 0;
     state.lastFrame = performance.now();
     state.ducking = false;
+    state.jumpHeld = false;
 
     clearObstacles();
     setOverlayVisible(false);
@@ -559,6 +577,7 @@
 
       if (state.dinoY === 0 && state.velocityY < 0) {
         state.velocityY = 0;
+        state.jumpHeld = false;
       }
 
       updateDuckState();
@@ -627,9 +646,31 @@
 
     registerInteraction();
     event.preventDefault();
+    try {
+      scene.setPointerCapture(event.pointerId);
+    } catch {
+    }
     focusNode(scene);
     jump();
     syncMusicPlayback();
+  });
+
+  scene.addEventListener("pointerup", (event) => {
+    if (shouldIgnoreJumpEvent(event)) return;
+
+    releaseJump();
+    try {
+      scene.releasePointerCapture(event.pointerId);
+    } catch {
+    }
+  });
+
+  scene.addEventListener("pointercancel", () => {
+    releaseJump();
+  });
+
+  scene.addEventListener("lostpointercapture", () => {
+    releaseJump();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -655,6 +696,11 @@
   });
 
   document.addEventListener("keyup", (event) => {
+    if (isJumpKey(event)) {
+      releaseJump();
+      return;
+    }
+
     if (!isDuckKey(event)) return;
 
     setDuckHeld(false);
@@ -689,6 +735,7 @@
   });
 
   window.addEventListener("blur", () => {
+    releaseJump();
     setDuckHeld(false);
     state.lastFrame = performance.now();
   });
@@ -697,6 +744,7 @@
     state.lastFrame = performance.now();
 
     if (document.visibilityState !== "visible") {
+      releaseJump();
       setDuckHeld(false);
       pauseMusic(false);
       return;
