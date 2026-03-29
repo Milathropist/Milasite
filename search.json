@@ -7,21 +7,12 @@ permalink: /search.json
   {% assign posts = site.blog_articles | sort: 'order' | reverse %}
   {% for post in posts %}
     {% capture post_url %}{{ '/blog/' | relative_url }}#{{ post.slug }}{% endcapture %}
-    {% assign post_date_value = post.date | append: '' %}
     {% unless is_first %},{% endunless %}
     {% assign is_first = false %}
     {
       "title": {{ post.title | jsonify }},
       "url": {{ post_url | jsonify }},
       "type": "Blog",
-      "date":
-        {% if post_date_value == '' or post_date_value == 'N/A' %}
-          "N/A"
-        {% elsif post_date_value.size == 8 and post_date_value contains '-' %}
-          {{ post_date_value | prepend: '20' | jsonify }}
-        {% else %}
-          {{ post.date | date: "%Y-%m-%d" | jsonify }}
-        {% endif %},
       "content": {{ post.content | strip_html | strip_newlines | jsonify }}
     }
   {% endfor %}
@@ -29,40 +20,13 @@ permalink: /search.json
   {% assign posts = site.thingies_articles | sort: 'order' | reverse %}
   {% for post in posts %}
     {% capture post_url %}{{ '/thingies/' | relative_url }}#{{ post.slug }}{% endcapture %}
-    {% assign post_date_value = post.date | append: '' %}
     {% unless is_first %},{% endunless %}
     {% assign is_first = false %}
     {
       "title": {{ post.title | jsonify }},
       "url": {{ post_url | jsonify }},
       "type": "Thingies",
-      "date":
-        {% if post_date_value == '' or post_date_value == 'N/A' %}
-          "N/A"
-        {% elsif post_date_value.size == 8 and post_date_value contains '-' %}
-          {{ post_date_value | prepend: '20' | jsonify }}
-        {% else %}
-          {{ post.date | date: "%Y-%m-%d" | jsonify }}
-        {% endif %},
       "content": {{ post.content | strip_html | strip_newlines | jsonify }}
     }
   {% endfor %}
-
-  {% assign calendar_page = site.pages | where: "url", "/calendar/" | first %}
-  {% if calendar_page and calendar_page.calendar_entries %}
-    {% assign calendar_entries = calendar_page.calendar_entries | sort: 'date' | reverse %}
-    {% for entry in calendar_entries %}
-      {% capture calendar_url %}{{ '/calendar/' | relative_url }}#{{ entry.date | date: '%Y' }}{% endcapture %}
-      {% unless is_first %},{% endunless %}
-      {% assign is_first = false %}
-      {
-        "title": {{ entry.title | jsonify }},
-        "url": {{ calendar_url | jsonify }},
-        "type": "Calendar",
-        "date": {{ entry.date | date: "%Y-%m-%d" | jsonify }},
-        "snippet": {{ entry.title | jsonify }},
-        "content": {{ entry.content | strip_html | strip_newlines | jsonify }}
-      }
-    {% endfor %}
-  {% endif %}
 ]
