@@ -82,7 +82,7 @@
       month = Number(parts[2]);
       day = Number(parts[3]);
     } else {
-      parts = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      parts = raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:\D|$)/);
       if (!parts) return null;
       year = Number(parts[1]);
       month = Number(parts[2]);
@@ -244,7 +244,7 @@
 
       const title = document.createElement("span");
       title.className = "xp-search-result-title";
-      title.textContent = result.title || "Untitled";
+      title.textContent = result.snippet || result.title || "Untitled";
 
       const type = document.createElement("span");
       type.className = "xp-search-result-type";
