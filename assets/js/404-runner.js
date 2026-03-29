@@ -3,6 +3,7 @@
 
   if (!root) return;
 
+  const frame = root.querySelector(".not-found-game-frame");
   const scene = root.querySelector("[data-runner-scene]");
   const track = root.querySelector("[data-runner-track]");
   const dino = root.querySelector("[data-runner-dino]");
@@ -15,6 +16,7 @@
   const bestNode = root.querySelector("[data-runner-best]");
 
   if (
+    !frame ||
     !scene ||
     !track ||
     !dino ||
@@ -36,6 +38,7 @@
     groundAlt: root.dataset.groundAltSrc || "",
     air: root.dataset.airSrc || "",
     music: root.dataset.musicSrc || "",
+    duckSfx: root.dataset.duckSfxSrc || "",
   };
 
   if (
@@ -51,6 +54,7 @@
   const LOLIPOP_RATIO = 1903 / 927;
   const SPIRAL_CANDY_WIDTH_RATIO = 1837 / 953;
   const PAPER_PLANE_RATIO = 883 / 1910;
+  const SCORE_NEGATIVE_INTERVAL = 120;
   const SPIRAL_UNLOCK_SCORE = 45;
   const AIR_UNLOCK_SCORE = 90;
   const GROUND_OBSTACLE_MAX_HEIGHT_RATIO = 0.9;
@@ -62,11 +66,17 @@
   const MAX_FRAME_DELTA = 48;
   const STORAGE_KEY = "milancholy_404_runner_best";
   const music = assetSources.music ? new Audio(assetSources.music) : null;
+  const duckSound = assetSources.duckSfx ? new Audio(assetSources.duckSfx) : null;
 
   if (music) {
     music.loop = true;
     music.preload = "auto";
     music.volume = 0.26;
+  }
+
+  if (duckSound) {
+    duckSound.preload = "auto";
+    duckSound.volume = 0.16;
   }
 
   const state = {
@@ -139,6 +149,14 @@
   function updateScoreboard() {
     scoreNode.textContent = formatScore(state.score);
     bestNode.textContent = formatScore(state.best);
+    updatePalette();
+  }
+
+  function updatePalette() {
+    const useNegativePalette =
+      Math.floor(Math.max(0, state.score) / SCORE_NEGATIVE_INTERVAL) % 2 === 1;
+
+    frame.classList.toggle("is-negative", useNegativePalette);
   }
 
   function updateAudioButton() {
@@ -198,6 +216,21 @@
     state.hasInteracted = true;
   }
 
+  function playDuckSound() {
+    if (!duckSound || !state.hasInteracted || document.visibilityState !== "visible") return;
+
+    try {
+      duckSound.currentTime = 0;
+    } catch {
+    }
+
+    const playback = duckSound.play();
+    if (playback && typeof playback.catch === "function") {
+      playback.catch(() => {
+      });
+    }
+  }
+
   function setOverlayVisible(visible) {
     overlay.classList.toggle("is-visible", visible);
     overlay.setAttribute("aria-hidden", visible ? "false" : "true");
@@ -246,7 +279,12 @@
   }
 
   function updateDuckState() {
+    const wasDucking = state.ducking;
     state.ducking = state.alive && state.duckHeld && state.dinoY <= 0.001;
+
+    if (!wasDucking && state.ducking) {
+      playDuckSound();
+    }
   }
 
   // Keep collisions a bit tighter than the sprite art so jumps feel fair.
