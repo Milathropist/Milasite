@@ -13,6 +13,8 @@ permalink: /search.json
       "title": {{ post.title | jsonify }},
       "url": {{ post_url | jsonify }},
       "type": "Blog",
+      "group": "article",
+      "order": {{ post.order | default: 0 | plus: 0 | jsonify }},
       "content": {{ post.content | strip_html | strip_newlines | jsonify }}
     }
   {% endfor %}
@@ -26,7 +28,31 @@ permalink: /search.json
       "title": {{ post.title | jsonify }},
       "url": {{ post_url | jsonify }},
       "type": "Thingies",
+      "group": "article",
+      "order": {{ post.order | default: 0 | plus: 0 | jsonify }},
       "content": {{ post.content | strip_html | strip_newlines | jsonify }}
     }
   {% endfor %}
+
+  {% assign calendar_page = site.pages | where_exp: "item", "item.path == 'calendar/index.html'" | first %}
+  {% if calendar_page and calendar_page.calendar_entries %}
+    {% assign calendar_entries = calendar_page.calendar_entries | sort: 'date' | reverse %}
+    {% for entry in calendar_entries %}
+      {% assign entry_title = entry.title | default: 'Calendar note' %}
+      {% assign entry_date = entry.date | date: "%Y-%m-%d" %}
+      {% assign entry_year = entry.date | date: "%Y" %}
+      {% capture calendar_url %}{{ '/calendar/' | relative_url }}#{{ entry_year }}{% endcapture %}
+      {% capture calendar_content %}{{ entry_date }} {{ entry_title }} {{ entry.content }}{% endcapture %}
+      {% unless is_first %},{% endunless %}
+      {% assign is_first = false %}
+      {
+        "title": {{ entry_title | jsonify }},
+        "url": {{ calendar_url | jsonify }},
+        "type": "Calendar",
+        "group": "calendar",
+        "date": {{ entry_date | jsonify }},
+        "content": {{ calendar_content | strip_html | strip_newlines | jsonify }}
+      }
+    {% endfor %}
+  {% endif %}
 ]

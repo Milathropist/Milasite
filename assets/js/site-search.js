@@ -45,7 +45,7 @@
 
   const SEARCH_INDEX_URLS = getSearchIndexUrls();
   const MIN_QUERY_LENGTH = 2;
-  const MAX_RESULTS = 12;
+  const MAX_RESULTS = 24;
   const WINDOW_MARGIN = 12;
   const CLOSE_ANIMATION_DURATION = 260;
   const CLOSE_ANIMATION_NAME = "xp-window-close";
@@ -188,6 +188,18 @@
     resultsNode.appendChild(fragment);
   };
 
+  const getGroupRank = (item) => (item && item.group === "calendar" ? 1 : 0);
+
+  const getOrderValue = (item) => {
+    const value = Number(item && item.order);
+    return Number.isFinite(value) ? value : 0;
+  };
+
+  const getDateValue = (item) => {
+    const value = Date.parse(String((item && item.date) || ""));
+    return Number.isFinite(value) ? value : 0;
+  };
+
   const runSearch = (items, query) => {
     const tokens = tokenize(query);
     if (tokens.length === 0) return [];
@@ -212,7 +224,23 @@
       scored.push({ item, score });
     }
 
-    scored.sort((a, b) => b.score - a.score);
+    scored.sort((a, b) => {
+      const groupDiff = getGroupRank(a.item) - getGroupRank(b.item);
+      if (groupDiff !== 0) return groupDiff;
+
+      if (getGroupRank(a.item) === 0) {
+        const orderDiff = getOrderValue(b.item) - getOrderValue(a.item);
+        if (orderDiff !== 0) return orderDiff;
+      } else {
+        const dateDiff = getDateValue(b.item) - getDateValue(a.item);
+        if (dateDiff !== 0) return dateDiff;
+      }
+
+      const scoreDiff = b.score - a.score;
+      if (scoreDiff !== 0) return scoreDiff;
+
+      return String(a.item?.title || "").localeCompare(String(b.item?.title || ""));
+    });
     return scored.slice(0, MAX_RESULTS).map(({ item }) => item);
   };
 
@@ -334,7 +362,7 @@
       inputNode.focus();
       inputNode.select();
 
-      setMeta("Loading articles...");
+      setMeta("Loading articles and calendar...");
       try {
         await getIndex();
         if (inputNode.value.trim().length < MIN_QUERY_LENGTH) {
