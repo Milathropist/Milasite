@@ -97,6 +97,7 @@
     duckHeld: false,
     ducking: false,
     jumpHeld: false,
+    gameActive: false,
     hasInteracted: false,
     musicEnabled: true,
     metrics: {
@@ -217,6 +218,15 @@
 
   function registerInteraction() {
     state.hasInteracted = true;
+  }
+
+  function setGameActive(active) {
+    state.gameActive = active;
+
+    if (active) return;
+
+    releaseJump();
+    setDuckHeld(false);
   }
 
   function playDuckSound() {
@@ -527,7 +537,7 @@
     focusNode(retryButton);
   }
 
-  function resetGame() {
+  function resetGame({ focusScene = true } = {}) {
     state.alive = true;
     state.score = 0;
     state.scoreAccumulator = 0;
@@ -548,7 +558,9 @@
     render();
     syncMusicPlayback({ restart: true });
 
-    focusNode(scene);
+    if (focusScene) {
+      focusNode(scene);
+    }
   }
 
   function step(timestamp) {
@@ -621,6 +633,10 @@
     return event.code === "Space" || event.code === "KeyW" || event.code === "ArrowUp";
   }
 
+  function isScrollLockKey(event) {
+    return event.code === "Space" || event.code.startsWith("Arrow");
+  }
+
   function isDuckKey(event) {
     return event.code === "ArrowDown" || event.code === "KeyS" || event.key === "Shift";
   }
@@ -645,6 +661,7 @@
     if (shouldIgnoreJumpEvent(event)) return;
 
     registerInteraction();
+    setGameActive(true);
     event.preventDefault();
     try {
       scene.setPointerCapture(event.pointerId);
@@ -673,14 +690,36 @@
     releaseJump();
   });
 
+  root.addEventListener("focusin", () => {
+    setGameActive(true);
+  });
+
+  root.addEventListener("focusout", (event) => {
+    const nextTarget = event.relatedTarget;
+
+    if (nextTarget instanceof Node && root.contains(nextTarget)) return;
+
+    setGameActive(false);
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    if (!(event.target instanceof Node) || root.contains(event.target)) return;
+
+    setGameActive(false);
+  });
+
   document.addEventListener("keydown", (event) => {
     if (shouldIgnoreJumpEvent(event)) return;
+    if (!state.gameActive) return;
+
+    if (isScrollLockKey(event)) {
+      event.preventDefault();
+    }
 
     if (isJumpKey(event)) {
       if (event.repeat) return;
 
       registerInteraction();
-      event.preventDefault();
       jump();
       syncMusicPlayback();
       return;
@@ -735,8 +774,7 @@
   });
 
   window.addEventListener("blur", () => {
-    releaseJump();
-    setDuckHeld(false);
+    setGameActive(false);
     state.lastFrame = performance.now();
   });
 
@@ -744,8 +782,7 @@
     state.lastFrame = performance.now();
 
     if (document.visibilityState !== "visible") {
-      releaseJump();
-      setDuckHeld(false);
+      setGameActive(false);
       pauseMusic(false);
       return;
     }
@@ -755,6 +792,6 @@
 
   updateScoreboard();
   updateMetrics();
-  resetGame();
+  resetGame({ focusScene: false });
   window.requestAnimationFrame(step);
 })();
