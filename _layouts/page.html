@@ -238,15 +238,21 @@
 
       .intro-page-content a:not(.icon):not(.close) {
         border-bottom: 0;
-        text-shadow: 0 0 0.32rem rgba(238, 162, 214, 0.42);
+        color: rgba(255, 236, 246, 0.98);
+        text-shadow:
+          0 0 0.22rem rgba(255, 214, 235, 0.82),
+          0 0 0.48rem rgba(238, 162, 214, 0.56),
+          0 0 0.9rem rgba(238, 162, 214, 0.18);
         transition: color 0.2s ease-in-out, text-shadow 0.2s ease-in-out;
       }
 
       .intro-page-content a:not(.icon):not(.close):hover,
       .intro-page-content a:not(.icon):not(.close):focus-visible {
+        color: #ffffff;
         text-shadow:
-          0 0 0.5rem rgba(255, 203, 232, 0.54),
-          0 0 0.9rem rgba(238, 162, 214, 0.22);
+          0 0 0.28rem rgba(255, 229, 240, 0.98),
+          0 0 0.7rem rgba(255, 199, 226, 0.82),
+          0 0 1.2rem rgba(238, 162, 214, 0.44);
       }
 
       .share-article.is-copied {
