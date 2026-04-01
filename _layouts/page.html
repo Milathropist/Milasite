@@ -546,6 +546,55 @@
         id="bubbleWrapPopSound"
         preload="auto"
         src="{{ '/images/bubblepopsoundeffect.mp3' | relative_url }}"></audio>
+      <section
+        class="xp-search-window xp-minesweeper-window"
+        id="minesweeperWindow"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="minesweeperTitle"
+        aria-hidden="true"
+        hidden>
+        <header class="xp-search-titlebar" data-minesweeper-drag-handle>
+          <div class="xp-search-title" id="minesweeperTitle">Minesweeper</div>
+          <button
+            type="button"
+            class="xp-search-close"
+            data-minesweeper-close
+            aria-label="Close Minesweeper"
+            title="Close">
+            X
+          </button>
+        </header>
+        <div class="xp-search-body">
+          <div class="minesweeper-shell">
+            <div class="minesweeper-meta" id="minesweeperMeta" aria-live="polite"></div>
+            <div class="minesweeper-statusbar" aria-label="Minesweeper status">
+              <div class="minesweeper-status-pill" id="minesweeperCounter">10 mines left</div>
+              <div class="minesweeper-status-pill" id="minesweeperState" data-state="ready">Ready</div>
+            </div>
+            <div
+              class="minesweeper-board"
+              id="minesweeperBoard"
+              role="group"
+              aria-label="Minesweeper board"></div>
+            <ul
+              class="bubble-wrap-actions minesweeper-actions"
+              id="minesweeperActions"
+              aria-label="Minesweeper controls"
+              hidden>
+              <li>
+                <button
+                  type="button"
+                  class="bubble-wrap-action icon solid fa-rotate"
+                  data-minesweeper-restart
+                  aria-label="Restart Minesweeper">
+                  <span class="label">Restart</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
     {% endif %}
 
     <div id="wrapper">
@@ -737,6 +786,7 @@
     <script src="{{ '/assets/js/site-search.js' | relative_url }}"></script>
     {% if page.permalink == '/intro/' %}
       <script src="{{ '/assets/js/bubble-wrap.js' | relative_url }}"></script>
+      <script src="{{ '/assets/js/minesweeper.js' | relative_url }}"></script>
     {% endif %}
   </body>
 </html>

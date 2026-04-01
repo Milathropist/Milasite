@@ -2,7 +2,7 @@
 layout: page
 title: Intro
 permalink: /intro/
-hero_image: /images/intro.jpg
+hero_image: /images/Intro.jpg
 ---
 
 <p>Hi, I'm Mila!<br>
@@ -18,8 +18,13 @@ Also, <a href="https://milancholy.com/wa">check this out;3</a></p>
 
 <ul class="icons socials-icons">
   <li>
-    <a href="#bubble-wrap" class="icon brands fa-gamepad" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
+    <a href="#bubble-wrap" class="icon brands fa-burst" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
       <span class="label">Bubble Wrap</span>
+    </a>
+  </li>
+  <li>
+    <a href="#minesweeper" class="icon solid fa-bomb" data-minesweeper-open title="Open Minesweeper" role="button">
+      <span class="label">Minesweeper</span>
     </a>
   </li>
 </ul>
