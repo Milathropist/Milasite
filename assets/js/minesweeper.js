@@ -12,6 +12,7 @@
   const state = {
     board: [],
     cellNodes: [],
+    activeEffects: new Set(),
     boardArmed: false,
     hasPosition: false,
     status: "ready",
@@ -175,6 +176,8 @@
     const counterNode = document.getElementById("minesweeperCounter");
     const stateNode = document.getElementById("minesweeperState");
     const actionsNode = document.getElementById("minesweeperActions");
+    const explosionSoundNode = document.getElementById("minesweeperExplosionSound");
+    const confettiSoundNode = document.getElementById("minesweeperConfettiSound");
     const openNodes = document.querySelectorAll("[data-minesweeper-open]");
     const closeNodes = document.querySelectorAll("[data-minesweeper-close]");
     const restartNodes = document.querySelectorAll("[data-minesweeper-restart]");
@@ -212,6 +215,52 @@
       state.suppressClickCell = null;
     };
 
+    const stopSoundEffects = () => {
+      [explosionSoundNode, confettiSoundNode].forEach((soundNode) => {
+        if (!soundNode) return;
+        soundNode.pause();
+        try {
+          soundNode.currentTime = 0;
+        } catch {
+        }
+      });
+
+      state.activeEffects.forEach((effect) => {
+        effect.pause();
+      });
+      state.activeEffects.clear();
+    };
+
+    const playSoundEffect = (soundNode) => {
+      if (!soundNode?.getAttribute("src")) return;
+
+      const effect = soundNode.paused ? soundNode : soundNode.cloneNode();
+      try {
+        effect.currentTime = 0;
+      } catch {
+      }
+
+      if (effect !== soundNode) {
+        state.activeEffects.add(effect);
+        effect.addEventListener(
+          "ended",
+          () => {
+            state.activeEffects.delete(effect);
+          },
+          { once: true }
+        );
+      }
+
+      const playPromise = effect.play();
+      if (playPromise?.catch) {
+        playPromise.catch(() => {
+          if (effect !== soundNode) {
+            state.activeEffects.delete(effect);
+          }
+        });
+      }
+    };
+
     const setRestartAvailability = (available) => {
       actionsNode.hidden = !available;
       restartNodes.forEach((node) => {
@@ -241,6 +290,7 @@
       state.closeOrigin = null;
       clearCloseAnimation();
       clearLongPressState();
+      stopSoundEffects();
       windowNode.hidden = true;
       windowNode.setAttribute("aria-hidden", "true");
       if (fireworkOrigin && !prefersReducedMotion()) {
@@ -441,6 +491,7 @@
       }
 
       state.status = "won";
+      playSoundEffect(confettiSoundNode);
       state.board.forEach((row) => {
         row.forEach((cell) => {
           if (cell.isMine && !cell.isFlagged) {
@@ -472,6 +523,7 @@
         cell.isTriggeredMine = true;
         state.status = "lost";
         revealMines();
+        playSoundEffect(explosionSoundNode);
         renderBoard();
         updateStatus();
         restartNodes[0]?.focus();
@@ -511,6 +563,7 @@
 
     const resetGame = () => {
       clearLongPressState();
+      stopSoundEffects();
       state.board = buildEmptyBoard();
       state.boardArmed = false;
       state.status = "ready";
