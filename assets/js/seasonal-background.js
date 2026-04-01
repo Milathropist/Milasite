@@ -2,7 +2,7 @@
   const DEFAULT_BACKGROUND = "bg.jpg";
   const SCHEDULES = [
     {
-      start: { month: 2, day: 2 },
+      start: { month: 6, day: 2 },
       end: { month: 6, day: 30 },
       image: "bgPrideMonth.jpg",
     },
