@@ -176,6 +176,16 @@
         margin: 0 0.3rem;
       }
 
+      #main article ul.icons.intro-game-links {
+        gap: 0.6rem;
+        margin-top: 1.25rem;
+      }
+
+      #main article ul.icons.intro-game-links li {
+        display: flex;
+        margin: 0;
+      }
+
       #main article ul.icons li a,
       #main article .share-article {
         background-color: rgba(238, 162, 214, 0.23);
@@ -198,6 +208,15 @@
           border-top-color 0.2s ease-in-out, border-left-color 0.2s ease-in-out;
       }
 
+      #main article ul.icons.intro-game-links li a {
+        line-height: 1;
+      }
+
+      #main article ul.icons.intro-game-links li a:before {
+        line-height: 1;
+        transform: translateY(0.01em);
+      }
+
       #main article.active ul.icons li a,
       #main article.active .share-article,
       body.is-article-visible #main article ul.icons li a,
@@ -215,6 +234,19 @@
       #main article ul.icons li a:active,
       #main article .share-article:active {
         background-color: rgba(231, 161, 217, 0.2);
+      }
+
+      .intro-page-content a:not(.icon):not(.close) {
+        border-bottom: 0;
+        text-shadow: 0 0 0.32rem rgba(238, 162, 214, 0.42);
+        transition: color 0.2s ease-in-out, text-shadow 0.2s ease-in-out;
+      }
+
+      .intro-page-content a:not(.icon):not(.close):hover,
+      .intro-page-content a:not(.icon):not(.close):focus-visible {
+        text-shadow:
+          0 0 0.5rem rgba(255, 203, 232, 0.54),
+          0 0 0.9rem rgba(238, 162, 214, 0.22);
       }
 
       .share-article.is-copied {
@@ -607,7 +639,7 @@
         {% include nav.html %}
       </header>
       <div id="main">
-        <article id="page-content" class="active">
+        <article id="page-content" class="active{% if page.permalink == '/intro/' %} intro-page-content{% endif %}">
           <a class="close" href="{{ '/' | relative_url }}">Close</a>
           <header class="hero">
             {% if page.hero_image %}

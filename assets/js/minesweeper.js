@@ -20,6 +20,7 @@
     isClosing: false,
     closeAnimationHandler: null,
     closeTimerId: 0,
+    closeOrigin: null,
     longPressTimerId: 0,
     suppressClickCell: null,
   };
@@ -236,10 +237,27 @@
     };
 
     const finishClose = () => {
+      const fireworkOrigin = state.closeOrigin;
+      state.closeOrigin = null;
       clearCloseAnimation();
       clearLongPressState();
       windowNode.hidden = true;
       windowNode.setAttribute("aria-hidden", "true");
+      if (fireworkOrigin && !prefersReducedMotion()) {
+        const fireworkNode = document.createElement("span");
+        fireworkNode.className = "window-firework";
+        fireworkNode.setAttribute("aria-hidden", "true");
+        fireworkNode.style.left = `${Math.round(fireworkOrigin.x)}px`;
+        fireworkNode.style.top = `${Math.round(fireworkOrigin.y)}px`;
+        document.body.appendChild(fireworkNode);
+
+        const removeFirework = () => {
+          fireworkNode.remove();
+        };
+
+        fireworkNode.addEventListener("animationend", removeFirework, { once: true });
+        window.setTimeout(removeFirework, 500);
+      }
     };
 
     const updateStatus = () => {
@@ -581,6 +599,12 @@
 
       clearLongPressState();
 
+      const rect = windowNode.getBoundingClientRect();
+      state.closeOrigin = {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+      };
+
       if (prefersReducedMotion()) {
         finishClose();
         return;
@@ -599,6 +623,7 @@
 
     const open = () => {
       clearCloseAnimation();
+      state.closeOrigin = null;
       resetGame();
       windowNode.hidden = false;
       windowNode.setAttribute("aria-hidden", "false");

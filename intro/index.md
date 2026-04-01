@@ -16,9 +16,9 @@ Some info on me:<br>
 <p>Check out my <a href="https://milancholy.com/blog">thoughts:3</a>, or <a href="https://milancholy.com/thingies">go here</a> for something more silly^^.<br>
 Also, <a href="https://milancholy.com/wa">check this out;3</a></p>
 
-<ul class="icons socials-icons">
+<ul class="icons socials-icons intro-game-links">
   <li>
-    <a href="#bubble-wrap" class="icon brands fa-burst" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
+    <a href="#bubble-wrap" class="icon solid fa-burst" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
       <span class="label">Bubble Wrap</span>
     </a>
   </li>
