@@ -6,6 +6,8 @@
   const CLOSE_ANIMATION_DURATION = 260;
   const CLOSE_ANIMATION_NAME = "xp-window-close";
   const LONG_PRESS_DURATION = 360;
+  const MAX_STARTING_CASCADE = 18;
+  const MAX_LAYOUT_ATTEMPTS = 6;
 
   const state = {
     board: [],
@@ -79,6 +81,67 @@
     }
 
     return shuffled;
+  };
+
+  const clearMineLayout = (board) => {
+    board.forEach((row) => {
+      row.forEach((cell) => {
+        cell.isMine = false;
+        cell.adjacent = 0;
+      });
+    });
+  };
+
+  const calculateAdjacencies = (board) => {
+    board.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.isMine) {
+          cell.adjacent = 0;
+          return;
+        }
+
+        cell.adjacent = getNeighbors(cell.row, cell.column).reduce(
+          (count, [neighborRow, neighborColumn]) =>
+            count + (board[neighborRow][neighborColumn].isMine ? 1 : 0),
+          0
+        );
+      });
+    });
+  };
+
+  const applyMineLayout = (board, minePositions) => {
+    clearMineLayout(board);
+    minePositions.forEach(([row, column]) => {
+      board[row][column].isMine = true;
+    });
+    calculateAdjacencies(board);
+  };
+
+  const measureCascadeSize = (board, startRow, startColumn) => {
+    const visited = Array.from({ length: ROWS }, () => Array(COLUMNS).fill(false));
+    const stack = [[startRow, startColumn]];
+    let revealCount = 0;
+
+    while (stack.length > 0) {
+      const [row, column] = stack.pop();
+      if (visited[row][column]) continue;
+      visited[row][column] = true;
+
+      const cell = board[row][column];
+      if (!cell || cell.isMine) continue;
+
+      revealCount += 1;
+
+      if (cell.adjacent !== 0) continue;
+
+      getNeighbors(row, column).forEach(([neighborRow, neighborColumn]) => {
+        if (!visited[neighborRow][neighborColumn]) {
+          stack.push([neighborRow, neighborColumn]);
+        }
+      });
+    }
+
+    return revealCount;
   };
 
   const init = () => {
@@ -271,39 +334,25 @@
 
     const armBoard = (safeRow, safeColumn) => {
       const safeZone = new Set([`${safeRow}:${safeColumn}`]);
-      getNeighbors(safeRow, safeColumn).forEach(([neighborRow, neighborColumn]) => {
-        safeZone.add(`${neighborRow}:${neighborColumn}`);
-      });
-
       const candidates = [];
+
       state.board.forEach((row) => {
         row.forEach((cell) => {
           if (!safeZone.has(`${cell.row}:${cell.column}`)) {
-            candidates.push(cell);
+            candidates.push([cell.row, cell.column]);
           }
         });
       });
 
-      shuffle(candidates)
-        .slice(0, MINE_COUNT)
-        .forEach((cell) => {
-          cell.isMine = true;
-        });
+      for (let attempt = 0; attempt < MAX_LAYOUT_ATTEMPTS; attempt += 1) {
+        const minePositions = shuffle(candidates).slice(0, MINE_COUNT);
+        applyMineLayout(state.board, minePositions);
 
-      state.board.forEach((row) => {
-        row.forEach((cell) => {
-          if (cell.isMine) {
-            cell.adjacent = 0;
-            return;
-          }
-
-          cell.adjacent = getNeighbors(cell.row, cell.column).reduce(
-            (count, [neighborRow, neighborColumn]) =>
-              count + (state.board[neighborRow][neighborColumn].isMine ? 1 : 0),
-            0
-          );
-        });
-      });
+        const cascadeSize = measureCascadeSize(state.board, safeRow, safeColumn);
+        if (cascadeSize <= MAX_STARTING_CASCADE || attempt === MAX_LAYOUT_ATTEMPTS - 1) {
+          break;
+        }
+      }
 
       state.boardArmed = true;
     };
