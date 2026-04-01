@@ -2463,7 +2463,6 @@ input, select, textarea {
 	}
 
 	.minesweeper-board {
-		position: relative;
 		display: grid;
 		grid-template-columns: repeat(9, minmax(0, 1fr));
 		gap: 0.28rem;
@@ -2476,29 +2475,13 @@ input, select, textarea {
 		box-shadow:
 			inset 0 1px 0 rgba(255, 255, 255, 0.18),
 			0 0.7rem 1.35rem rgba(54, 18, 92, 0.2);
-		isolation: isolate;
-		overflow: hidden;
-	}
-
-	.minesweeper-board::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background:
-			linear-gradient(135deg, rgba(255, 236, 246, 0.92) 0%, rgba(247, 185, 217, 0.88) 35%, rgba(228, 124, 182, 0.82) 62%, rgba(144, 82, 196, 0.9) 100%);
-		pointer-events: none;
-		z-index: 0;
 	}
 
 	.minesweeper-cell {
-		position: relative;
-		z-index: 1;
 		width: 100%;
 		aspect-ratio: 1 / 1;
 		align-items: center;
-		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.04)),
-			rgba(95, 38, 146, 0.14);
+		background: rgba(95, 38, 146, 0.14);
 		border: 1px solid rgba(255, 255, 255, 0.22);
 		border-radius: 0.4rem;
 		box-shadow:
@@ -2529,8 +2512,8 @@ input, select, textarea {
 
 	.minesweeper-cell.is-hidden {
 		background:
-			linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.02)),
-			rgba(84, 28, 133, 0.12);
+			linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0.02) 100%),
+			linear-gradient(135deg, var(--ms-tile-top), var(--ms-tile-mid) 54%, var(--ms-tile-bottom));
 	}
 
 	.minesweeper-cell.is-hidden:hover,
@@ -2566,8 +2549,8 @@ input, select, textarea {
 	.minesweeper-cell.has-flag {
 		background:
 			center / 64% 64% no-repeat url("../../images/MineSweeperSprites/flagpole.png"),
-			linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.02)),
-			rgba(84, 28, 133, 0.12);
+			linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0.02) 100%),
+			linear-gradient(135deg, var(--ms-tile-top), var(--ms-tile-mid) 54%, var(--ms-tile-bottom));
 	}
 
 	.minesweeper-cell.is-mine {
@@ -2634,7 +2617,9 @@ input, select, textarea {
 
 	.minesweeper-cell[class*="count-"] {
 		font-family: "Pixelify Sans", "Courier New", monospace;
+		font-size: clamp(1.2rem, 4vw, 1.8rem);
 		font-weight: 400;
+		line-height: 0.9;
 		text-shadow: none;
 	}
 

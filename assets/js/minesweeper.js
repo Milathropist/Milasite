@@ -83,6 +83,29 @@
     return shuffled;
   };
 
+  const interpolateChannel = (start, end, factor) =>
+    Math.round(start + (end - start) * factor);
+
+  const interpolateColor = (start, end, factor, alpha) =>
+    `rgba(${interpolateChannel(start[0], end[0], factor)}, ${interpolateChannel(start[1], end[1], factor)}, ${interpolateChannel(start[2], end[2], factor)}, ${alpha})`;
+
+  const applyTilePalette = (node, row, column) => {
+    const boardDepth = (row + column) / Math.max(1, ROWS + COLUMNS - 2);
+
+    node.style.setProperty(
+      "--ms-tile-top",
+      interpolateColor([255, 235, 246], [232, 146, 193], boardDepth, 0.96)
+    );
+    node.style.setProperty(
+      "--ms-tile-mid",
+      interpolateColor([247, 191, 221], [193, 113, 193], boardDepth, 0.9)
+    );
+    node.style.setProperty(
+      "--ms-tile-bottom",
+      interpolateColor([230, 151, 203], [111, 55, 167], boardDepth, 0.94)
+    );
+  };
+
   const clearMineLayout = (board) => {
     board.forEach((row) => {
       row.forEach((cell) => {
@@ -485,6 +508,7 @@
       button.className = "minesweeper-cell is-hidden";
       button.dataset.row = String(row);
       button.dataset.column = String(column);
+      applyTilePalette(button, row, column);
 
       button.addEventListener("click", (event) => {
         clearLongPressTimer();
