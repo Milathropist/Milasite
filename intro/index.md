@@ -18,7 +18,7 @@ Also, <a href="https://milancholy.com/wa">check this out;3</a></p>
 
 <ul class="icons socials-icons intro-game-links">
   <li>
-    <a href="#bubble-wrap" class="icon solid fa-gamepad" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
+    <a href="#bubble-wrap" class="icon solid fa-burst" data-bubble-wrap-open title="Open Bubble Wrap" role="button">
       <span class="label">Bubble Wrap</span>
     </a>
   </li>
